@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Menus">
+        <menu>
+            <item
+                android:id="@+id/emp_home_menu_item"
+                android:icon="@drawable/employee_home"
+                android:title="Home"
+                />
+            <item
+                android:id="@+id/emp_profile_menu_item"
+                android:icon="@drawable/employee_profile"
+                android:title="Profile" />
+        </menu>
+
+    </item>
+    <item android:title="Others">
+        <menu>
+            <item
+                android:id="@+id/emp_settings_menu_item"
+                android:icon="@drawable/employee_settings"
+                android:title="Settings" />
+            <item
+                android:id="@+id/emp_about_menu_item"
+                android:icon="@drawable/about"
+                android:title="About Us" />
+            <item
+                android:id="@+id/emp_feedback_menu_item"
+                android:icon="@drawable/employee_profile"
+                android:title="Feedback" />
+            <item
+                android:id="@+id/emp_quit_menu_item"
+                android:title="Quit"
+                android:icon="@drawable/quit" />
+            <item
+                android:id="@+id/emp_logout_menu_item"
+                android:title="Log out"
+                android:icon="@drawable/logout" />
+
+        </menu>
+
+    </item>
+
+</menu>
