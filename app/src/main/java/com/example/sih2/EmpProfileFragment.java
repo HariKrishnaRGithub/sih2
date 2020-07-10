@@ -1,5 +1,6 @@
 package com.example.sih2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -42,12 +45,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class EmpProfileFragment extends Fragment{
     SharedPrefrencesHelper sharedPrefrencesHelper;
-    TextView firstname, lastname, username, email,cancel;
+    TextView firstname, lastname, username, email,cancel, skillsListTV;
     Button addNewSkillButton;
     CardView skillCard;
     Spinner specializationSpinner,topicSpinner,levelSpinner;
     private RequestQueue rQueue;
     String specialization,topic,level;
+    ListView skillsLV;
+    boolean isSkillsOpen;
 
     @Nullable
     @Override
@@ -61,12 +66,29 @@ public class EmpProfileFragment extends Fragment{
         email = view.findViewById(R.id.emp_email);
         addNewSkillButton=view.findViewById(R.id.addNewSkillButton);
         skillCard=view.findViewById(R.id.skillCard);
+        skillsListTV=view.findViewById(R.id.skillsListTV);
+
+        isSkillsOpen=false;
 
         firstname.setText(sharedPrefrencesHelper.getFirstname());
         lastname.setText(sharedPrefrencesHelper.getLastname());
         username.setText(sharedPrefrencesHelper.getUsername());
         email.setText(sharedPrefrencesHelper.getEmail());
 
+        skillsLV=view.findViewById(R.id.skillsLV);
+        skillsListTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isSkillsOpen){
+                    isSkillsOpen=false;
+                    skillsLV.setVisibility(View.GONE);
+                }else{
+                    isSkillsOpen=true;
+                    skillsLV.setVisibility(View.VISIBLE);
+                    updateSkillsLV();
+                }
+            }
+        });
 
         addNewSkillButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +139,6 @@ public class EmpProfileFragment extends Fragment{
                         Toast.makeText(EmpProfileFragment.this.getActivity(), (String) parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                         specialization=(String) parent.getItemAtPosition(position);
                         updateTopicsSpinner(topicsList);
-
                     }
 
 
@@ -149,10 +170,69 @@ public class EmpProfileFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 uploadSkills();
+
             }
         });
 
         return view;
+
+    }
+
+    private void updateSkillsLV() {
+        final ArrayList<String> topicsList,specializationList,levelsList;
+        topicsList=new ArrayList<>();
+        specializationList=new ArrayList<>();
+        levelsList=new ArrayList<>();
+
+        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getEmpSkills.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                JSONArray jsonArray=jsonObject.getJSONArray("details");
+                                for(int i=0; i<jsonArray.length();i++){
+                                    JSONObject jsonObject3=jsonArray.getJSONObject(i);
+                                    String temptopic=jsonObject3.getString("topicName");
+                                    String tempspecialization=jsonObject3.getString("sname");
+                                    String templevel=jsonObject3.getString("lname");
+                                    topicsList.add(temptopic);
+                                    specializationList.add(tempspecialization);
+                                    levelsList.add(templevel);
+
+                                }
+
+                                SkillsListAdapter skillsListAdapter=new SkillsListAdapter(EmpProfileFragment.this.getActivity(),topicsList,specializationList,levelsList);
+                                skillsLV.setAdapter(skillsListAdapter);
+
+                            } else {
+                                Toast.makeText(EmpProfileFragment.this.getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username",sharedPrefrencesHelper.getUsername());
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+        rQueue.add(stringRequest2);
+
 
     }
 
@@ -207,6 +287,7 @@ public class EmpProfileFragment extends Fragment{
     }
 
     private void updateTopicsSpinner(final ArrayList<String> topicsList) {
+        topicsList.clear();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getTopics.php",
                 new Response.Listener<String>() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -316,18 +397,20 @@ public class EmpProfileFragment extends Fragment{
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject.optString("success").equals("1")) {
                                 //Toast.makeText(EmpProfileFragment.this.getActivity(), "Topics found", Toast.LENGTH_SHORT).show();
-                                JSONArray jsonArray=jsonObject.getJSONArray("details");
+                                /*JSONArray jsonArray=jsonObject.getJSONArray("details");
                                 for(int i=0; i<jsonArray.length();i++){
                                     JSONObject jsonObject3=jsonArray.getJSONObject(i);
                                     String tempvar=jsonObject3.getString("topicName");
 
-                                    //Toast.makeText(EmpProfileFragment.this.getActivity(),tempvar , Toast.LENGTH_SHORT).show();
+
                                 }
 
+                                 */
+                            Toast.makeText(EmpProfileFragment.this.getActivity(),"Skill upload success" , Toast.LENGTH_SHORT).show();
 
 
                             } else {
-                                Toast.makeText(EmpProfileFragment.this.getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(EmpProfileFragment.this.getActivity(), "Skill already exists", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
@@ -360,4 +443,29 @@ public class EmpProfileFragment extends Fragment{
     }
 
 
+}
+class SkillsListAdapter extends ArrayAdapter {
+    ArrayList<String> topicsList,specializationList,levelsList;
+    public SkillsListAdapter(Context context, ArrayList<String> topicsList, ArrayList<String> specializationList, ArrayList<String> levelsList){
+        super(context,R.layout.skills_custom_listview,R.id.topicTV,topicsList);
+        this.topicsList=topicsList;
+        this.specializationList=specializationList;
+        this.levelsList=levelsList;
+
+    }
+    @NonNull
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent){
+        LayoutInflater inflater=(LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row= inflater.inflate(R.layout.skills_custom_listview,parent,false);
+        TextView tasksTV=row.findViewById(R.id.topicTV);
+        TextView specializationTV=row.findViewById(R.id.specializationTV);
+        TextView levelTV=row.findViewById(R.id.levelTV);
+
+        tasksTV.setText(topicsList.get(position));
+        specializationTV.setText(specializationList.get(position));
+        levelTV.setText(levelsList.get(position));
+        return row;
+
+    }
 }

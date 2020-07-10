@@ -48,6 +48,14 @@
             android:layout_margin="20dp"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Details"
+                android:textSize="20sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -140,32 +148,31 @@
                     android:text="email" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Skills" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/skillsListTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="My Skills" />
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="My Skills"
+                    android:textSize="20sp" />
 
                 <ListView
+                    android:id="@+id/skillsLV"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="150dp"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/addNewSkillButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#80C86DD7"
                     android:text="add a new skill" />
 
             </LinearLayout>
@@ -251,7 +258,9 @@
                         android:id="@+id/cancel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp"
                         android:background="#B33023AE"
                         android:gravity="center"
                         android:padding="10dp"
