@@ -136,7 +136,7 @@ public class EmpProfileFragment extends Fragment{
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view,
                                                int position, long id) {
-                        Toast.makeText(EmpProfileFragment.this.getActivity(), (String) parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(EmpProfileFragment.this.getActivity(), (String) parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                         specialization=(String) parent.getItemAtPosition(position);
                         updateTopicsSpinner(topicsList);
                     }

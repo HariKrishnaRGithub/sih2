@@ -15,15 +15,18 @@ public class SplashScreen extends AppCompatActivity {
     TextView tagline,title;
     ImageView ceo,employee,deal;
     ConstraintLayout constraintLayout;
+    Boolean click;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        click =false;
 
         constraintLayout=(ConstraintLayout)findViewById(R.id.screen);
         constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                click=true;
                 Intent intent=new Intent(SplashScreen.this,MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -45,23 +48,25 @@ public class SplashScreen extends AppCompatActivity {
 
 
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ceo.animate().alpha(0).setDuration(1000);
-                employee.animate().alpha(0).setDuration(1000);
-            }
-        },2000);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ceo.animate().alpha(0).setDuration(1000);
+                    employee.animate().alpha(0).setDuration(1000);
+                }
+            },2000);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
 
-                tagline.animate().alpha((float) 0.5).setDuration(3000).setStartDelay(1500);
-                Intent intent=new Intent(SplashScreen.this,MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        },5000);
+                    tagline.animate().alpha((float) 0.5).setDuration(3000).setStartDelay(1500);
+                    Intent intent=new Intent(SplashScreen.this,MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            },5000);
+
+
     }
 }
