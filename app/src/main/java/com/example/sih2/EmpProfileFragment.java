@@ -1,7 +1,6 @@
 package com.example.sih2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,10 +24,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,21 +35,18 @@ import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.toolbox.StringRequest;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 public class EmpProfileFragment extends Fragment{
     SharedPrefrencesHelper sharedPrefrencesHelper;
-    TextView firstname, lastname, username, email,cancel, skillsListTV;
-    Button addNewSkillButton;
-    CardView skillCard;
-    Spinner specializationSpinner,topicSpinner,levelSpinner;
+    TextView firstname, lastname, username, email,cancel, skillsListTV,degreeTV,experienceTV;
+    Button addNewSkillButton,addNewDegreeButton,degreeSubmitButton,addExperienceButton;
+    CardView skillCard,degreeCD,innerDegreeCD,experienceCD,innerExperienceCV;
+    Spinner specializationSpinner,topicSpinner,levelSpinner,degreeSpinner;
     private RequestQueue rQueue;
-    String specialization,topic,level;
-    ListView skillsLV;
+    String specialization,topic,level,degree;
+    ListView skillsLV,degreesLV;
     boolean isSkillsOpen;
+    boolean isDegreeOpen;
+    boolean isExperienceOpen;
 
     @Nullable
     @Override
@@ -67,8 +61,19 @@ public class EmpProfileFragment extends Fragment{
         addNewSkillButton=view.findViewById(R.id.addNewSkillButton);
         skillCard=view.findViewById(R.id.skillCard);
         skillsListTV=view.findViewById(R.id.skillsListTV);
+        degreeCD=view.findViewById(R.id.degreeCD);
+        degreeTV=view.findViewById(R.id.degreeTV);
+        addNewDegreeButton=view.findViewById(R.id.addNewDegreeButton);
+        innerDegreeCD=view.findViewById(R.id.innerDegreeCD);
+        experienceTV=view.findViewById(R.id.experienceTV);
+        experienceCD=view.findViewById(R.id.experienceCV);
+        addExperienceButton=view.findViewById(R.id.addExperienceButton);
+        innerExperienceCV=view.findViewById(R.id.innerExperienceCV);
+
 
         isSkillsOpen=false;
+        isDegreeOpen=false;
+        isExperienceOpen=false;
 
         firstname.setText(sharedPrefrencesHelper.getFirstname());
         lastname.setText(sharedPrefrencesHelper.getLastname());
@@ -76,108 +81,364 @@ public class EmpProfileFragment extends Fragment{
         email.setText(sharedPrefrencesHelper.getEmail());
 
         skillsLV=view.findViewById(R.id.skillsLV);
+        degreesLV=view.findViewById(R.id.degreesLV);
+
+        // When Skills is clicked and all actions under that
         skillsListTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isSkillsOpen){
                     isSkillsOpen=false;
                     skillsLV.setVisibility(View.GONE);
+                    addNewSkillButton.setVisibility(View.GONE);
+                    skillCard.setVisibility(View.GONE);
                 }else{
                     isSkillsOpen=true;
                     skillsLV.setVisibility(View.VISIBLE);
                     updateSkillsLV();
+                    addNewSkillButton.setVisibility(View.VISIBLE);
+
+                    addNewSkillButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            addNewSkillButton.setVisibility(View.GONE);
+                            skillCard.setVisibility(View.VISIBLE);
+
+                            cancel=view.findViewById(R.id.cancel);
+                            cancel.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    addNewSkillButton.setVisibility(View.VISIBLE);
+                                    skillCard.setVisibility(View.GONE);
+                                }
+                            });
+
+                            final ArrayList<String> topicsList,speciazationList,levelsList;
+                            topicsList=new ArrayList<String>();
+                            speciazationList=new ArrayList<String>();
+                            levelsList=new ArrayList<String>();
+
+                            specializationSpinner = view.findViewById(R.id.specializationSpinner);
+                            topicSpinner=view.findViewById(R.id.topicSpinner);
+                            levelSpinner=view.findViewById(R.id.levelSpinnner);
+
+                            // Initializing specialization spinner
+                            initializeSpecializationSpinner(speciazationList);
+                            initializeLevelsSpinner(levelsList);
+
+                            levelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    level=(String) parent.getItemAtPosition(position);
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+
+                            // Setting topicSpinner using SpecializationSpinner
+
+                            specializationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view,
+                                                           int position, long id) {
+                                    //Toast.makeText(EmpProfileFragment.this.getActivity(), (String) parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                                    specialization=(String) parent.getItemAtPosition(position);
+                                    updateTopicsSpinner(topicsList);
+                                }
+
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+                                    // TODO Auto-generated method stub
+                                }
+                            });
+
+                            topicSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    topic=(String)(String) parent.getItemAtPosition(position);
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+
+                        }
+
+
+                    });
+
+                    Button addskillButton=view.findViewById(R.id.addSkillButton);
+                    addskillButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            uploadSkills();
+                            updateSkillsLV();
+                        }
+                    });
                 }
             }
         });
 
-        addNewSkillButton.setOnClickListener(new View.OnClickListener() {
+        // When Degree is clicked and all actions under that
+        degreeTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewSkillButton.setVisibility(View.GONE);
-                skillCard.setVisibility(View.VISIBLE);
+                final Button degreeCDcancel=view.findViewById(R.id.degreeCDcancel);
+                if(isDegreeOpen){
+                    isDegreeOpen=false;
+                    degreeCD.setVisibility(View.GONE);
+                }else{
+                    isDegreeOpen=true;
+                    degreeCD.setVisibility(View.VISIBLE);
+                    updateDegreeLV();
 
-                cancel=view.findViewById(R.id.cancel);
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addNewSkillButton.setVisibility(View.VISIBLE);
-                        skillCard.setVisibility(View.GONE);
-                    }
-                });
+                    degreeSpinner=view.findViewById(R.id.degreeSpinner);
 
-                final ArrayList<String> topicsList,speciazationList,levelsList;
-                topicsList=new ArrayList<String>();
-                speciazationList=new ArrayList<String>();
-                levelsList=new ArrayList<String>();
+                    addNewDegreeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                specializationSpinner = view.findViewById(R.id.specializationSpinner);
-                topicSpinner=view.findViewById(R.id.topicSpinner);
-                levelSpinner=view.findViewById(R.id.levelSpinnner);
+                            addNewDegreeButton.setVisibility(View.GONE);
+                            innerDegreeCD.setVisibility(View.VISIBLE);
 
-                // Initializing specialization spinner
-                initializeSpecializationSpinner(speciazationList);
-                initializeLevelsSpinner(levelsList);
+                            final ArrayList<String> degreesList=new ArrayList<>();
+                            initializeDegreeSpinner(degreesList);
 
-                levelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        level=(String) parent.getItemAtPosition(position);
-                    }
+                            degreeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    degree=(String) parent.getItemAtPosition(position);
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
+                                }
 
-                    }
-                });
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
 
-                // Setting topicSpinner using SpecializationSpinner
+                                }
+                            });
+                            degreeSubmitButton =view.findViewById(R.id.degreeSubmitButton);
+                            degreeSubmitButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    uploadDegree();
+                                    updateDegreeLV();
+                                }
+                            });
 
-                specializationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view,
-                                               int position, long id) {
-                        //Toast.makeText(EmpProfileFragment.this.getActivity(), (String) parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
-                        specialization=(String) parent.getItemAtPosition(position);
-                        updateTopicsSpinner(topicsList);
-                    }
+                            degreeCDcancel.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    addNewDegreeButton.setVisibility(View.VISIBLE);
+                                    innerDegreeCD.setVisibility(View.GONE);
+                                }
+                            });
+                        }
+                    });
 
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        // TODO Auto-generated method stub
-                    }
-                });
-
-                topicSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        topic=(String)(String) parent.getItemAtPosition(position);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-
-            }
-
-
-        });
-        
-        Button addskillButton=view.findViewById(R.id.addSkillButton);
-        addskillButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadSkills();
-
+                }
             }
         });
 
+        // When Experience is clicked and everything under that
+        experienceTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isExperienceOpen){
+                    isExperienceOpen=false;
+                    experienceCD.setVisibility(View.GONE);
+                }else{
+                    isExperienceOpen=true;
+                    experienceCD.setVisibility(View.VISIBLE);
+                    
+                    addExperienceButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            
+                            addExperienceButton.setVisibility(View.GONE);
+                            innerExperienceCV.setVisibility(View.VISIBLE);
+                            updateExperienceLV();
+                            
+                            Button cancelExperience=view.findViewById(R.id.experienceCancel);
+                            cancelExperience.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    addExperienceButton.setVisibility(View.VISIBLE);
+                                    innerExperienceCV.setVisibility(View.GONE);
+                                }
+                            });
+                            
+                        }
+                    });
+                }
+            }
+        });
+
+
+        //End of the OncreateView
         return view;
 
     }
 
+    private void updateExperienceLV() {
+    }
+
+    private void uploadDegree() {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "uploadDegree.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                //Toast.makeText(EmpProfileFragment.this.getActivity(), "Topics found", Toast.LENGTH_SHORT).show();
+                                /*JSONArray jsonArray=jsonObject.getJSONArray("details");
+                                for(int i=0; i<jsonArray.length();i++){
+                                    JSONObject jsonObject3=jsonArray.getJSONObject(i);
+                                    String tempvar=jsonObject3.getString("topicName");
+
+
+                                }
+
+                                 */
+                                Toast.makeText(EmpProfileFragment.this.getActivity(),"Degree upload success" , Toast.LENGTH_SHORT).show();
+
+
+                            } else {
+                                Toast.makeText(EmpProfileFragment.this.getActivity(), "Degree already exists", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+                    params.put("degree",degree);
+                    params.put("username",sharedPrefrencesHelper.getUsername());
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+        rQueue.add(stringRequest3);
+    }
+
+    private void initializeDegreeSpinner(final ArrayList<String> degreesList) {
+        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getDegrees.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                //Toast.makeText(EmpProfileFragment.this.getActivity(), "Topics found", Toast.LENGTH_SHORT).show();
+                                JSONArray jsonArray=jsonObject.getJSONArray("details");
+                                for(int i=0; i<jsonArray.length();i++){
+                                    JSONObject jsonObject3=jsonArray.getJSONObject(i);
+                                    String tempvar=jsonObject3.getString("dname");
+                                    degreesList.add(tempvar);
+                                    //Toast.makeText(EmpProfileFragment.this.getActivity(),tempvar , Toast.LENGTH_SHORT).show();
+                                }
+                                ArrayAdapter<String> degreeAdapter=new ArrayAdapter<String>(EmpProfileFragment.this.getActivity(),android.R.layout.simple_spinner_dropdown_item,degreesList);
+                                degreeSpinner.setAdapter(degreeAdapter);
+                                degreeAdapter.notifyDataSetChanged();
+
+
+                            } else {
+                                Toast.makeText(EmpProfileFragment.this.getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("degrees","getDegrees");
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+        rQueue.add(stringRequest2);
+    }
+
+    private void updateDegreeLV() {
+        final ArrayList<String> degreesList;
+        degreesList=new ArrayList<>();
+
+        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getEmpDegrees.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                JSONArray jsonArray=jsonObject.getJSONArray("details");
+                                for(int i=0; i<jsonArray.length();i++){
+                                    JSONObject jsonObject3=jsonArray.getJSONObject(i);
+                                    String temptopic=jsonObject3.getString("dname");
+                                    degreesList.add(temptopic);
+
+                                }
+                                ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(EmpProfileFragment.this.getActivity(),android.R.layout.simple_list_item_1,degreesList);
+                                degreesLV.setAdapter(arrayAdapter);
+                                arrayAdapter.notifyDataSetChanged();
+
+                            } else {
+                                Toast.makeText(EmpProfileFragment.this.getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username",sharedPrefrencesHelper.getUsername());
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+        rQueue.add(stringRequest2);
+    }
+
+    // function definitions
     private void updateSkillsLV() {
         final ArrayList<String> topicsList,specializationList,levelsList;
         topicsList=new ArrayList<>();
@@ -221,6 +482,7 @@ public class EmpProfileFragment extends Fragment{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                        Log.i("error :",error.toString());
                     }
                 }) {
             @Override
@@ -465,6 +727,29 @@ class SkillsListAdapter extends ArrayAdapter {
         tasksTV.setText(topicsList.get(position));
         specializationTV.setText(specializationList.get(position));
         levelTV.setText(levelsList.get(position));
+        return row;
+
+    }
+}
+
+class ExperienceListAdapter extends ArrayAdapter {
+    ArrayList<String> experience,description;
+    public ExperienceListAdapter(Context context, ArrayList<String> experience, ArrayList<String> description){
+        super(context,R.layout.experience_custom_listview,R.id.specializationTV,experience);
+        this.experience=experience;
+        this.description=description;
+
+    }
+    @NonNull
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent){
+        LayoutInflater inflater=(LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row= inflater.inflate(R.layout.experience_custom_listview,parent,false);
+        TextView experienceTV=row.findViewById(R.id.specializationTV);
+        TextView descriptionTV=row.findViewById(R.id.levelTV);
+
+        experienceTV.setText(experience.get(position));
+        descriptionTV.setText(description.get(position));
         return row;
 
     }

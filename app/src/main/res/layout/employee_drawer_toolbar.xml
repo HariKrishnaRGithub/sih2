@@ -9,8 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#803023AE"
-        android:foregroundGravity="center"
         android:title="Home"
+        app:logo="@drawable/employee_home"
+        app:title="Home"
         app:titleTextColor="@color/secondary_text_color_white" />
 
 </LinearLayout>

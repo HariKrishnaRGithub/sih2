@@ -31,99 +31,99 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                app:cardBackgroundColor="#0D3023AE">
+                app:cardCornerRadius="10dp"
+                app:contentPadding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Username or Email"
-                        android:textColor="@color/secondary_text_color_white"
-                        android:textColorHighlight="@color/secondary_text_color_white"
-                        android:textColorHint="@color/secondary_text_color_white"
-                        android:textColorLink="#FFFFFF"
-                        android:textSize="20dp"></TextView>
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        app:cardBackgroundColor="#0D3023AE"
+                        app:cardCornerRadius="5dp">
 
-                    <EditText
-                        android:id="@+id/user"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Username or Email"
+                                android:textColorLink="#FFFFFF"
+                                android:textSize="20dp"></TextView>
+
+                            <EditText
+                                android:id="@+id/user"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Username or Email"
+                                android:inputType="textAutoComplete"
+                                android:singleLine="true"
+                                android:textColorLink="#FFFFFF"
+                                android:textSize="20dp"></EditText>
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Username or Email"
-                        android:inputType="textAutoComplete"
-                        android:singleLine="true"
-                        android:textColor="@color/secondary_text_color_white"
-                        android:textColorHighlight="@color/secondary_text_color_white"
-                        android:textColorHint="@color/secondary_text_color_white"
-                        android:textColorLink="#FFFFFF"
-                        android:textSize="20dp"></EditText>
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="30dp"
+                        app:cardBackgroundColor="#0D3023AE"
+                        app:cardCornerRadius="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Password"
+                                android:textColorLink="#FFFFFF"
+                                android:textSize="20dp"></TextView>
+
+                            <EditText
+                                android:id="@+id/password"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Password"
+                                android:inputType="textPassword"
+                                android:singleLine="true"
+                                android:textColorLink="#FFFFFF"
+                                android:textSize="20dp"></EditText>
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="#1A3023AE"
+                        app:cardCornerRadius="25dp">
+
+                        <Button
+                            android:id="@+id/btnLogin"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#80C86DD7"
+                            android:text="Login"
+                            android:textColorLink="#FFFFFF" />
+                    </androidx.cardview.widget.CardView>
+
                 </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="30dp"
-                app:cardBackgroundColor="#0D3023AE">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Password"
-                        android:textColor="@color/secondary_text_color_white"
-                        android:textColorHighlight="@color/secondary_text_color_white"
-                        android:textColorHint="@color/secondary_text_color_white"
-                        android:textColorLink="#FFFFFF"
-                        android:textSize="20dp"></TextView>
-
-                    <EditText
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Password"
-                        android:inputType="textPassword"
-                        android:singleLine="true"
-                        android:textColor="@color/secondary_text_color_white"
-                        android:textColorHighlight="@color/secondary_text_color_white"
-                        android:textColorHint="@color/secondary_text_color_white"
-                        android:textColorLink="#FFFFFF"
-                        android:textSize="20dp"></EditText>
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
-                app:cardBackgroundColor="#1A3023AE"
-                app:cardCornerRadius="25dp">
-
-                <Button
-                    android:id="@+id/btnLogin"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#003023AE"
-                    android:text="Login"
-                    android:textColor="@color/secondary_text_color_white"
-                    android:textColorHighlight="@color/secondary_text_color_white"
-                    android:textColorHint="@color/secondary_text_color_white"
-                    android:textColorLink="#FFFFFF" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -133,11 +133,9 @@
                 android:gravity="center"
                 android:paddingVertical="10dp"
                 android:text="New user? Register an account here !"
-                android:textColor="@color/secondary_text_color_white"
-                android:textColorHighlight="@color/secondary_text_color_white"
-                android:textColorHint="@color/secondary_text_color_white"
-                android:textColorLink="#FFFFFF"
                 android:textSize="20dp"></TextView>
+
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
