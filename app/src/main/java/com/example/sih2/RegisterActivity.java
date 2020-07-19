@@ -105,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 Toast.makeText(RegisterActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
-                            Toast.makeText(RegisterActivity.this, "In catch", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "In catch :"+e.toString(), Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
                     }
