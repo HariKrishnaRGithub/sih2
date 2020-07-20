@@ -1,15 +1,18 @@
 package com.example.sih2;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,12 +35,14 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 public class EmpProfileFragment extends Fragment{
     SharedPrefrencesHelper sharedPrefrencesHelper;
-    TextView firstname, lastname, username, email,cancel, skillsListTV,degreeTV,experienceTV;
+    TextView firstname, lastname, username, email,cancel, skillsListTV,degreeTV,experienceTV,empDiscriptionTV;
     Button addNewSkillButton,addNewDegreeButton,degreeSubmitButton,addExperienceButton;
     CardView skillCard,degreeCD,innerDegreeCD,experienceCD,innerExperienceCV;
     Spinner specializationSpinner,topicSpinner,levelSpinner,degreeSpinner;
@@ -69,6 +74,7 @@ public class EmpProfileFragment extends Fragment{
         experienceCD=view.findViewById(R.id.experienceCV);
         addExperienceButton=view.findViewById(R.id.addExperienceButton);
         innerExperienceCV=view.findViewById(R.id.innerExperienceCV);
+        empDiscriptionTV=view.findViewById(R.id.empDiscriptionTV);
 
 
         isSkillsOpen=false;
@@ -82,6 +88,46 @@ public class EmpProfileFragment extends Fragment{
 
         skillsLV=view.findViewById(R.id.skillsLV);
         degreesLV=view.findViewById(R.id.degreesLV);
+        getEmpDiscription();
+
+        empDiscriptionTV.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                PopupMenu popup = new PopupMenu(EmpProfileFragment.this.getActivity(), empDiscriptionTV);
+                popup.getMenuInflater().inflate(R.menu.popup_edit, popup.getMenu());
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(EmpProfileFragment.this.getActivity());
+                        alert.setTitle("Profile Description");
+                        // Set an EditText view to get user input
+                        final EditText input = new EditText(EmpProfileFragment.this.getActivity());
+                        input.setText(empDiscriptionTV.getText());
+                        input.requestFocus();
+                        alert.setView(input);
+                        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                empDiscriptionTV.setText(input.getText());
+                                updateEmpDiscription();
+                            }
+                        });
+
+                        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                // Canceled.
+                            }
+                        });
+
+                        alert.show();
+                        return true;
+                    }
+                });
+
+                popup.show();//showing popup menu
+                return false;
+            }
+        });
 
         // When Skills is clicked and all actions under that
         skillsListTV.setOnClickListener(new View.OnClickListener() {
@@ -283,6 +329,12 @@ public class EmpProfileFragment extends Fragment{
         //End of the OncreateView
         return view;
 
+    }
+
+    private void getEmpDiscription() {
+    }
+
+    private void updateEmpDiscription() {
     }
 
     private void updateExperienceLV() {

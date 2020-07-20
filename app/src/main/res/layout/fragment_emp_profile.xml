@@ -44,6 +44,7 @@
                             android:layout_height="60dp"
                             android:layout_gravity="center"
                             android:layout_margin="20dp"
+                            android:background="@drawable/circle_bag"
                             app:srcCompat="@drawable/worker" />
 
                         <LinearLayout
@@ -107,12 +108,13 @@
                         app:cardBackgroundColor="#E6FFFFFF">
 
                         <TextView
-                            android:id="@+id/textView2"
+                            android:id="@+id/empDiscriptionTV"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="20dp"
                             android:gravity="center"
                             android:text="Your description will apperar here., long press to edit" />
+
                     </androidx.cardview.widget.CardView>
 
                 </LinearLayout>
