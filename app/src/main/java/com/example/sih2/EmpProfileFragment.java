@@ -332,6 +332,7 @@ public class EmpProfileFragment extends Fragment{
     }
 
     private void getEmpDiscription() {
+
     }
 
     private void updateEmpDiscription() {
