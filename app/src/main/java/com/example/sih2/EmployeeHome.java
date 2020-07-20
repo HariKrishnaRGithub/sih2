@@ -2,6 +2,7 @@ package com.example.sih2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -9,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -83,7 +85,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.employee_container, new EmpHomeFragment());
-                toolbar.setLogo(R.drawable.employee_home);
+                //toolbar.setLogo(R.drawable.employee_home);
                 toolbar.setTitle("Home");
                 fragmentTransaction.commit();
                 break;
@@ -92,7 +94,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.employee_container, new EmpProfileFragment());
-                toolbar.setLogo(R.drawable.employee_profile);
+                //toolbar.setLogo(R.drawable.employee_profile);
                 toolbar.setTitle("Profile");
                 fragmentTransaction.commit();
                 break;
@@ -129,6 +131,30 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
     @Override
     public void btnProfileClicked() {
       // run any actions which cannot be executed in the emp home fragment
+    }
+
+
+    @Override
+    public void onBackPressed() { // exit dialog
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeHome.this);
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setMessage("Do you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 
 
