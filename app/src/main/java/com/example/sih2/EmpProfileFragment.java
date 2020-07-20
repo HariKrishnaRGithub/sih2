@@ -783,6 +783,7 @@ class SkillsListAdapter extends ArrayAdapter {
         return row;
 
     }
+
 }
 
 class ExperienceListAdapter extends ArrayAdapter {

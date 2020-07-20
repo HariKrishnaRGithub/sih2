@@ -44,7 +44,6 @@
                             android:layout_height="60dp"
                             android:layout_gravity="center"
                             android:layout_margin="20dp"
-                            android:background="@drawable/circle_bag"
                             app:srcCompat="@drawable/worker" />
 
                         <LinearLayout
@@ -114,7 +113,6 @@
                             android:layout_margin="20dp"
                             android:gravity="center"
                             android:text="Your description will apperar here., long press to edit" />
-
                     </androidx.cardview.widget.CardView>
 
                 </LinearLayout>

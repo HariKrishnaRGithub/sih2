@@ -21,6 +21,7 @@ android:orientation="vertical">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:fontFamily="casual"
             android:gravity="center"
             android:text="Welcome to BetterFuture!"
             android:textColor="#FFFFFF"
@@ -32,7 +33,7 @@ android:orientation="vertical">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Go set uour profile !"
+            android:text="Go set your profile !"
             android:textColor="@color/secondary_text_material_light" />
     </LinearLayout>
 </ScrollView>
