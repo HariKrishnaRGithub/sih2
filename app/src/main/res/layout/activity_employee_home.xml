@@ -29,10 +29,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@drawable/gradient_background"
+        android:background="#FFFFFF"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/employee_drawer_header"
-        app:itemTextColor="@color/secondary_text_color_white"
+        app:itemTextColor="#09203F"
         app:menu="@menu/employee_drawer_menu" />
 
 

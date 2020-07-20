@@ -46,8 +46,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="I am looking for my dream job !"
-                    android:textColor="#80FFFFFF"
-                    android:textSize="14sp" />
+                    android:textColor="@color/design_default_color_background"
+                    android:textSize="18sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -71,7 +71,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="I want to hire the perfect candidate !"
-                    android:textColor="#80FFFFFF" />
+                    android:textColor="@color/design_default_color_background"
+                    android:textSize="18sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
