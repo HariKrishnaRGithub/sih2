@@ -46,7 +46,7 @@
         android:textColorHint="@color/design_default_color_on_primary"
         android:textColorLink="@color/design_default_color_on_primary"
         android:textSize="20sp"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/e_dp" />

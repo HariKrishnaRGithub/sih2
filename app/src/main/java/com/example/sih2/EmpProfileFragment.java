@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -44,6 +45,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 public class EmpProfileFragment extends Fragment{
@@ -54,7 +56,8 @@ public class EmpProfileFragment extends Fragment{
     Spinner specializationSpinner,topicSpinner,levelSpinner,degreeSpinner;
     private RequestQueue rQueue;
     String specialization,topic,level,degree;
-    ListView skillsLV,degreesLV;
+    ListView degreesLV;
+    MyListView skillsLV;
     boolean isSkillsOpen;
     boolean isDegreeOpen;
     boolean isExperienceOpen;
@@ -83,9 +86,9 @@ public class EmpProfileFragment extends Fragment{
         empDiscriptionTV=view.findViewById(R.id.empDiscriptionTV);
 
 
-        isSkillsOpen=false;
-        isDegreeOpen=false;
-        isExperienceOpen=false;
+        isSkillsOpen=true;
+        isDegreeOpen=true;
+        isExperienceOpen=true;
 
         firstname.setText(sharedPrefrencesHelper.getFirstname());
         lastname.setText(sharedPrefrencesHelper.getLastname());
@@ -142,11 +145,9 @@ public class EmpProfileFragment extends Fragment{
         });
 
         // When Skills is clicked and all actions under that
-        skillsListTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isSkillsOpen){
-                    isSkillsOpen=false;
+
+                if(!isSkillsOpen){
+                    //isSkillsOpen=false;
                     skillsLV.setVisibility(View.GONE);
                     addNewSkillButton.setVisibility(View.GONE);
                     skillCard.setVisibility(View.GONE);
@@ -155,7 +156,7 @@ public class EmpProfileFragment extends Fragment{
                     skillsLV.setVisibility(View.VISIBLE);
                     updateSkillsLV();
                     addNewSkillButton.setVisibility(View.VISIBLE);
-
+/*
                     skillsLV.setOnTouchListener(new ListView.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
@@ -177,7 +178,7 @@ public class EmpProfileFragment extends Fragment{
                             return true;
                         }
                     });
-
+*/
                     addNewSkillButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -262,8 +263,8 @@ public class EmpProfileFragment extends Fragment{
                         }
                     });
                 }
-            }
-        });
+
+
 
         // When Degree is clicked and all actions under that
         degreeTV.setOnClickListener(new View.OnClickListener() {
@@ -588,6 +589,7 @@ public class EmpProfileFragment extends Fragment{
                                 SkillsListAdapter skillsListAdapter=new SkillsListAdapter(EmpProfileFragment.this.getActivity(),topicsList,specializationList,levelsList);
                                 skillsLV.setAdapter(skillsListAdapter);
 
+
                             } else {
                                 Toast.makeText(EmpProfileFragment.this.getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                             }
@@ -893,5 +895,26 @@ class ExperienceListAdapter extends ArrayAdapter {
         descriptionTV.setText(description.get(position));
         return row;
 
+    }
+}
+class MyListView  extends ListView {
+
+    public MyListView  (Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public MyListView  (Context context) {
+        super(context);
+    }
+
+    public MyListView  (Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    @Override
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
+                MeasureSpec.AT_MOST);
+        super.onMeasure(widthMeasureSpec, expandSpec);
     }
 }

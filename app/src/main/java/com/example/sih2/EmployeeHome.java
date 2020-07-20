@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +101,12 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.emp_about_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
+                AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeHome.this);
+                ViewGroup viewGroup = findViewById(android.R.id.content);
+                View dialogView = LayoutInflater.from(EmployeeHome.this).inflate(R.layout.about_us, viewGroup, false);
+                builder.setView(dialogView);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
                 break;
             case R.id.emp_settings_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
