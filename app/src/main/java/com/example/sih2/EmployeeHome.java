@@ -37,8 +37,6 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_home);
 
-
-
         sharedPrefrencesHelper =new SharedPrefrencesHelper(this);
 
         toolbar =findViewById(R.id.e_toolbar);

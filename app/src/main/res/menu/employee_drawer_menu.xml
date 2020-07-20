@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Menu">
-        <menu>
+
+
             <item
                 android:id="@+id/emp_home_menu_item"
                 android:icon="@drawable/employee_home"
@@ -13,11 +13,7 @@
                 android:icon="@drawable/employee_profile"
                 android:title="Profile"
                 />
-        </menu>
 
-    </item>
-    <item android:title="Others">
-        <menu>
             <item
                 android:id="@+id/emp_settings_menu_item"
                 android:icon="@drawable/employee_settings"
@@ -39,8 +35,9 @@
                 android:title="Log out"
                 android:icon="@drawable/logout" />
 
-        </menu>
 
-    </item>
+
+
+
 
 </menu>
