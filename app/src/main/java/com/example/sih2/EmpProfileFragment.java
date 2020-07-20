@@ -85,10 +85,15 @@ public class EmpProfileFragment extends Fragment{
         lastname.setText(sharedPrefrencesHelper.getLastname());
         username.setText(sharedPrefrencesHelper.getUsername());
         email.setText(sharedPrefrencesHelper.getEmail());
+        if(sharedPrefrencesHelper.getDiscription().equals("null")){
+            empDiscriptionTV.setText("Long press to set a description for your profile");
+        }else{
+            empDiscriptionTV.setText(sharedPrefrencesHelper.getDiscription());
+        }
 
         skillsLV=view.findViewById(R.id.skillsLV);
         degreesLV=view.findViewById(R.id.degreesLV);
-        getEmpDiscription();
+        //getEmpDiscription();
 
         empDiscriptionTV.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -108,7 +113,8 @@ public class EmpProfileFragment extends Fragment{
                         alert.setView(input);
                         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                empDiscriptionTV.setText(input.getText());
+                                empDiscriptionTV.setText(input.getText().toString());
+                                sharedPrefrencesHelper.setDiscription(input.getText().toString());
                                 updateEmpDiscription();
                             }
                         });
@@ -331,11 +337,43 @@ public class EmpProfileFragment extends Fragment{
 
     }
 
-    private void getEmpDiscription() {
-
-    }
-
     private void updateEmpDiscription() {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "updateEmpDiscription.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+
+                            } else {
+                                //Toast.makeText(EmpProfileFragment.this.getActivity(), "error", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("discription",sharedPrefrencesHelper.getDiscription());
+                params.put("username",sharedPrefrencesHelper.getUsername());
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+        rQueue.add(stringRequest3);
     }
 
     private void updateExperienceLV() {
