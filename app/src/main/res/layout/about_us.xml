@@ -24,7 +24,7 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="50dp"
                 android:gravity="center"
-                android:text="T E A M  P I"
+                android:text="T E A M  P Y"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp"
                 android:textStyle="bold" />
