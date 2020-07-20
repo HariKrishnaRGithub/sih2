@@ -22,10 +22,18 @@ android:orientation="vertical">
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:text="Welcome to BETTER FUTURE"
+            android:text="Welcome to BetterFuture!"
             android:textColor="#FFFFFF"
-            android:textSize="30dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Go set uour profile !"
+            android:textColor="@color/secondary_text_material_light" />
     </LinearLayout>
 </ScrollView>
 </LinearLayout>
