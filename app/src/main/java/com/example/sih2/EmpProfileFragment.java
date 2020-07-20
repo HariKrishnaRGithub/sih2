@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.icu.util.ValueIterator;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -58,6 +59,7 @@ public class EmpProfileFragment extends Fragment{
     String specialization,topic,level,degree;
     ListView degreesLV;
     MyListView skillsLV;
+    EditText empdiscriptionET;
     boolean isSkillsOpen;
     boolean isDegreeOpen;
     boolean isExperienceOpen;
@@ -86,6 +88,7 @@ public class EmpProfileFragment extends Fragment{
         empDiscriptionTV=view.findViewById(R.id.empDiscriptionTV);
 
 
+
         isSkillsOpen=true;
         isDegreeOpen=true;
         isExperienceOpen=true;
@@ -106,35 +109,42 @@ public class EmpProfileFragment extends Fragment{
 
         empDiscriptionTV.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public boolean onLongClick(final View v) {
 
                 PopupMenu popup = new PopupMenu(EmpProfileFragment.this.getActivity(), empDiscriptionTV);
                 popup.getMenuInflater().inflate(R.menu.popup_edit, popup.getMenu());
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        AlertDialog.Builder alert = new AlertDialog.Builder(EmpProfileFragment.this.getActivity());
-                        alert.setTitle("Profile Description");
-                        // Set an EditText view to get user input
-                        final EditText input = new EditText(EmpProfileFragment.this.getActivity());
-                        input.setText(empDiscriptionTV.getText());
-                        input.requestFocus();
-                        alert.setView(input);
-                        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                empDiscriptionTV.setText(input.getText().toString());
-                                sharedPrefrencesHelper.setDiscription(input.getText().toString());
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(EmpProfileFragment.this.getActivity());
+                        final ViewGroup viewGroup = view.findViewById(android.R.id.content);
+                        View dialogView = LayoutInflater.from(EmpProfileFragment.this.getActivity()).inflate(R.layout.popup_change_emp_discription, viewGroup, false);
+                        builder.setView(dialogView);
+                        final AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+
+                        final EditText editText2 = dialogView.findViewById(R.id.empdiscriptionET);
+                        editText2.setText(empDiscriptionTV.getText().toString());
+                        editText2.requestFocus();
+
+                        dialogView.findViewById(R.id.empdiscriptioncancel).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.cancel();
+                            }
+                        });
+                        dialogView.findViewById(R.id.empdiscriptionokay).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                sharedPrefrencesHelper.setDiscription(editText2.getText().toString());
+                                empDiscriptionTV.setText(editText2.getText().toString());
                                 updateEmpDiscription();
+                                alertDialog.cancel();
                             }
                         });
 
-                        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                // Canceled.
-                            }
-                        });
 
-                        alert.show();
                         return true;
                     }
                 });
