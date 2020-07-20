@@ -2,11 +2,15 @@ package com.example.sih2;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -149,6 +155,28 @@ public class EmpProfileFragment extends Fragment{
                     skillsLV.setVisibility(View.VISIBLE);
                     updateSkillsLV();
                     addNewSkillButton.setVisibility(View.VISIBLE);
+
+                    skillsLV.setOnTouchListener(new ListView.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            int action = event.getAction();
+                            switch (action) {
+                                case MotionEvent.ACTION_DOWN:
+                                    // Disallow ScrollView to intercept touch events.
+                                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                                    break;
+
+                                case MotionEvent.ACTION_UP:
+                                    // Allow ScrollView to intercept touch events.
+                                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                                    break;
+                            }
+
+                            // Handle ListView touch events.
+                            v.onTouchEvent(event);
+                            return true;
+                        }
+                    });
 
                     addNewSkillButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -814,10 +842,31 @@ class SkillsListAdapter extends ArrayAdapter {
         TextView tasksTV=row.findViewById(R.id.topicTV);
         TextView specializationTV=row.findViewById(R.id.specializationTV);
         TextView levelTV=row.findViewById(R.id.levelTV);
-
+        ProgressBar levelProgressbar=row.findViewById(R.id.level_progressbar);
         tasksTV.setText(topicsList.get(position));
         specializationTV.setText(specializationList.get(position));
         levelTV.setText(levelsList.get(position));
+        if(levelsList.get(position).equals("Beginner")){
+            levelProgressbar.setProgress(25);
+            Drawable progressDrawable = levelProgressbar.getProgressDrawable().mutate();
+            progressDrawable.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+            levelProgressbar.setProgressDrawable(progressDrawable);
+        }else if(levelsList.get(position).equals("Intermediate")){
+            levelProgressbar.setProgress(50);
+            Drawable progressDrawable = levelProgressbar.getProgressDrawable().mutate();
+            progressDrawable.setColorFilter(Color.YELLOW, android.graphics.PorterDuff.Mode.SRC_IN);
+            levelProgressbar.setProgressDrawable(progressDrawable);
+        }else if(levelsList.get(position).equals("Advanced")){
+            levelProgressbar.setProgress(75);
+            Drawable progressDrawable = levelProgressbar.getProgressDrawable().mutate();
+            progressDrawable.setColorFilter(Color.BLUE, android.graphics.PorterDuff.Mode.SRC_IN);
+            levelProgressbar.setProgressDrawable(progressDrawable);
+        }else{
+            levelProgressbar.setProgress(100);
+            Drawable progressDrawable = levelProgressbar.getProgressDrawable().mutate();
+            progressDrawable.setColorFilter(Color.GREEN, android.graphics.PorterDuff.Mode.SRC_IN);
+            levelProgressbar.setProgressDrawable(progressDrawable);
+        }
         return row;
 
     }
