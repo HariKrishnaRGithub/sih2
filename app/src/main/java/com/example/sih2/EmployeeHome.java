@@ -95,18 +95,16 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.employee_container, new EmpProfileFragment());
-                //toolbar.setLogo(R.drawable.employee_profile);
                 toolbar.setTitle("Profile");
                 fragmentTransaction.commit();
                 break;
             case R.id.emp_about_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
-                AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeHome.this);
-                ViewGroup viewGroup = findViewById(android.R.id.content);
-                View dialogView = LayoutInflater.from(EmployeeHome.this).inflate(R.layout.about_us, viewGroup, false);
-                builder.setView(dialogView);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.employee_container, new AboutUsFragment());
+                toolbar.setTitle("About Us");
+                fragmentTransaction.commit();
                 break;
             case R.id.emp_settings_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
