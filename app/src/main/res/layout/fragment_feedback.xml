@@ -56,6 +56,8 @@
                         android:layout_height="200dp"
                         android:gravity="start"
                         android:hint="Enter your feedback here"
+                        android:scrollbarSize="0dp"
+                        android:textColorLink="#FFFFFF"
                         android:textSize="16sp">
 
                     </EditText>
