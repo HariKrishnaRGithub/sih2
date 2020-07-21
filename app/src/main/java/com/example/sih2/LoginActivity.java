@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getBaseContext(), AccountTypeActivity.class));
-
             }
         });
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                                 sharedPrefrencesHelper.setLastname(jsonObject1.getString("lastname"));
                                 sharedPrefrencesHelper.setUsername(jsonObject1.getString("username"));
                                 sharedPrefrencesHelper.setEmail(jsonObject1.getString("email"));
+                                sharedPrefrencesHelper.setDiscription(jsonObject1.getString("discription"));
                                 if(jsonObject1.getString("usertype").equals("1")){
                                     sharedPrefrencesHelper.setAccountType("employee");
                                     Toast.makeText(LoginActivity.this, "Login Successfully! ", Toast.LENGTH_SHORT).show();

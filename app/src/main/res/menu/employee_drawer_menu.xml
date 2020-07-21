@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="Menus">
         <menu>
@@ -10,9 +11,9 @@
             <item
                 android:id="@+id/emp_profile_menu_item"
                 android:icon="@drawable/employee_profile"
-                android:title="Profile" />
+                android:title="Profile"
+                />
         </menu>
-
     </item>
     <item android:title="Others">
         <menu>
@@ -36,9 +37,6 @@
                 android:id="@+id/emp_logout_menu_item"
                 android:title="Log out"
                 android:icon="@drawable/logout" />
-
         </menu>
-
     </item>
-
 </menu>

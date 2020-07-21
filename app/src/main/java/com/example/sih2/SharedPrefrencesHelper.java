@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 public class SharedPrefrencesHelper {
     private SharedPreferences sharedPreferences;
     private Context context;
-    private String firstname = "firstname", lastname = "lastname", username = "username", email = "email";
+    private String firstname = "firstname", lastname = "lastname", username = "username", email = "email", discription="discription";
     private String accountType="accountType";
     public SharedPrefrencesHelper(Context context) {
         this.sharedPreferences = context.getSharedPreferences("login_session",
@@ -25,6 +25,9 @@ public class SharedPrefrencesHelper {
     }
     public String getAccountType(){
         return sharedPreferences.getString(accountType,"");
+    }
+    public String getDiscription(){
+        return sharedPreferences.getString(discription,"");
     }
     public void setFirstname(String firstname) {
         SharedPreferences.Editor edit = sharedPreferences.edit();
@@ -49,6 +52,11 @@ public class SharedPrefrencesHelper {
     public void setAccountType(String accountType){
         SharedPreferences.Editor edit =sharedPreferences.edit();
         edit.putString(this.accountType,accountType);
+        edit.commit();
+    }
+    public void setDiscription(String discription) {
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString(this.discription, discription);
         edit.commit();
     }
 }

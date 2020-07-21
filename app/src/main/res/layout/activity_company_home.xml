@@ -23,35 +23,44 @@
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:text="Company"
+                android:textColor="#FFFFFF"
                 android:textSize="30dp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/firstnameemp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:text="First Name"
+                android:textColor="#FFFFFF"
                 android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/lastnameemp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:text="Last Name"
+                android:textColor="#FFFFFF"
                 android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/usernameemp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:text="Username"
+                android:textColor="#FFFFFF"
                 android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/emailemp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:text="Email"
+                android:textColor="#FFFFFF"
                 android:textSize="20dp" />
 
             <TextView
@@ -60,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:text="AccountType"
+                android:textColor="#FFFFFF"
                 android:textSize="20dp" />
 
         </LinearLayout>

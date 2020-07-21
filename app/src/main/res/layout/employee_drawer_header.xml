@@ -3,16 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/gradient_background"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/emp_email_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingBottom="20dp"
+        android:text="email"
+        android:textColor="@color/secondary_text_color_white"
+        android:textColorHighlight="@color/secondary_text_color_white"
+        android:textColorHint="@color/secondary_text_color_white"
+        android:textColorLink="@color/secondary_text_color_white"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emp_name_dp" />
 
     <ImageView
         android:id="@+id/e_dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="51dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/circle_bag"
         android:contentDescription="TODO"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/worker" />
@@ -21,31 +39,16 @@
         android:id="@+id/emp_name_dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:text="name"
-        android:textColor="@color/secondary_text_color_white"
-        android:textColorHighlight="@color/secondary_text_color_white"
-        android:textColorHint="@color/secondary_text_color_white"
-        android:textColorLink="@color/secondary_text_color_white"
+        android:textColor="@color/design_default_color_on_primary"
+        android:textColorHighlight="@color/design_default_color_on_primary"
+        android:textColorHint="@color/design_default_color_on_primary"
+        android:textColorLink="@color/design_default_color_on_primary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/e_dp" />
-
-    <TextView
-        android:id="@+id/emp_email_dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:paddingBottom="20dp"
-        android:text="email"
-        android:textColor="@color/secondary_text_color_white"
-        android:textColorHighlight="@color/secondary_text_color_white"
-        android:textColorHint="@color/secondary_text_color_white"
-        android:textColorLink="@color/secondary_text_color_white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emp_name_dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
