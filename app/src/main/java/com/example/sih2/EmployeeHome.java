@@ -119,18 +119,50 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.emp_quit_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
-                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(1);
+                AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeHome.this);
+                builder.setTitle(R.string.app_name);
+                builder.setIcon(R.mipmap.ic_launcher);
+                builder.setMessage("Do you want to exit?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
                 break;
             case R.id.emp_logout_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
-                sharedPrefrencesHelper.setFirstname(null);
-                sharedPrefrencesHelper.setLastname(null);
-                sharedPrefrencesHelper.setUsername(null);
-                sharedPrefrencesHelper.setEmail(null);
-                sharedPrefrencesHelper.setAccountType(null);
-                startActivity(new Intent(EmployeeHome.this, LoginActivity.class));
-                finish();
+
+                builder = new AlertDialog.Builder(EmployeeHome.this);
+                builder.setTitle(R.string.app_name);
+                builder.setIcon(R.mipmap.ic_launcher);
+                builder.setMessage("Do you want to LogOut?")
+                        .setCancelable(false)
+                        .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                sharedPrefrencesHelper.setFirstname(null);
+                                sharedPrefrencesHelper.setLastname(null);
+                                sharedPrefrencesHelper.setUsername(null);
+                                sharedPrefrencesHelper.setEmail(null);
+                                sharedPrefrencesHelper.setAccountType(null);
+                                startActivity(new Intent(EmployeeHome.this, LoginActivity.class));
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                alert = builder.create();
+                alert.show();
                 break;
         }
 
