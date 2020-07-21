@@ -14,35 +14,15 @@ import android.view.ViewGroup;
 
 public class AboutUsFragment extends Fragment {
 
-    AboutUsFragment.aboutusSelected listener;
     SharedPrefrencesHelper sharedPrefrencesHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_about_us,container,false);
-
-        sharedPrefrencesHelper =new SharedPrefrencesHelper(this.getActivity());
-
-
+        sharedPrefrencesHelper =new SharedPrefrencesHelper(AboutUsFragment.this.getActivity());
+        // write the code for about here
 
         return view;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if(context instanceof AboutUsFragment.aboutusSelected){
-            //listener = (AboutUsFragment.aboutusSelected) context;
-            listener=(AboutUsFragment.aboutusSelected) context;
-
-        }else{
-            throw new ClassCastException(context.toString()+" must implement listener");
-        }
-
-    }
-
-    public interface aboutusSelected{
-        public void btnProfileClicked();
     }
 }

@@ -62,7 +62,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
         e_name.setText(sharedPrefrencesHelper.getUsername());
         e_email.setText(sharedPrefrencesHelper.getEmail());
         
-        toolbar.setLogo(R.drawable.employee_home);
+        //toolbar.setLogo(R.drawable.employee_home);
         toolbar.setTitle("Home");
 
         //default fragment is home
