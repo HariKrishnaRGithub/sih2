@@ -176,7 +176,7 @@ public class EmpProfileFragment extends Fragment {
                                     public void onClick(DialogInterface dialog, int id) {
                                         deleteEmpSkill(tempspecialization.getText().toString(),temptopic.getText().toString(),templevel.getText().toString());
                                         updateSkillsLV();
-                                        dialog.dismiss();
+                                        dialog.cancel();
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -190,8 +190,8 @@ public class EmpProfileFragment extends Fragment {
                         return false;
                     }
                 });
-
-                return true;
+                popup.show();//showing popup menu
+                return false;
             }
         });
 
@@ -398,9 +398,10 @@ public class EmpProfileFragment extends Fragment {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject.optString("success").equals("1")) {
-                                Toast.makeText(getActivity(), "Skill deleted", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getActivity(), "Skill deleted", Toast.LENGTH_SHORT).show();
                             } else {
                                 //Toast.makeText(EmpProfileFragment.this.getActivity(), "error", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getActivity(), "failed", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
@@ -692,7 +693,7 @@ public class EmpProfileFragment extends Fragment {
 
                                 SkillsListAdapter skillsListAdapter = new SkillsListAdapter(EmpProfileFragment.this.getActivity(), topicsList, specializationList, levelsList);
                                 skillsLV.setAdapter(skillsListAdapter);
-
+                                skillsListAdapter.notifyDataSetChanged();
 
                             } else {
                                 Toast.makeText(EmpProfileFragment.this.getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
