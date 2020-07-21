@@ -111,6 +111,11 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.emp_feedback_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.employee_container, new FeedbackFragment());
+                toolbar.setTitle("Feedback");
+                fragmentTransaction.commit();
                 break;
             case R.id.emp_quit_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
