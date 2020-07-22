@@ -11,6 +11,7 @@ import android.widget.TextView;
 public class AccountTypeActivity extends AppCompatActivity {
 
     private SharedPrefrencesHelper sharedPrefrencesHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
