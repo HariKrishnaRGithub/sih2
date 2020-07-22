@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -126,7 +127,46 @@ public class EmpProfileFragment extends Fragment {
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        setDisplayPicture();
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(EmpProfileFragment.this.getActivity());
+                        final ViewGroup viewGroup = view.findViewById(android.R.id.content);
+                        final View dialogView = LayoutInflater.from(EmpProfileFragment.this.getActivity()).inflate(R.layout.popup_edit_display_picture, viewGroup, false);
+                        builder.setView(dialogView);
+                        final AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+
+                        ImageView displayPicture;
+                        Button cancel,delete,edit,submit;
+                        displayPicture=dialogView.findViewById(R.id.displayPicture);
+
+                        cancel=dialogView.findViewById(R.id.cancel);
+                        delete=dialogView.findViewById(R.id.delete);
+                        edit=dialogView.findViewById(R.id.edit);
+                        submit=dialogView.findViewById(R.id.apply);
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.cancel();
+                            }
+                        });
+                        delete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.cancel();
+                            }
+                        });
+                        edit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.cancel();
+                            }
+                        });
+                        submit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.cancel();
+                            }
+                        });
                         return false;
                     }
                 });
