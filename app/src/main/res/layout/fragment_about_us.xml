@@ -295,7 +295,7 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
-                                app:srcCompat="@drawable/worker" />
+                                app:srcCompat="@drawable/github" />
 
                         </LinearLayout>
 
@@ -313,7 +313,7 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
-                                app:srcCompat="@drawable/worker" />
+                                app:srcCompat="@drawable/gmail" />
 
                         </LinearLayout>
 
@@ -331,7 +331,7 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
-                                app:srcCompat="@drawable/worker" />
+                                app:srcCompat="@drawable/twitter" />
 
                         </LinearLayout>
                         <LinearLayout
@@ -348,7 +348,7 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
-                                app:srcCompat="@drawable/worker" />
+                                app:srcCompat="@drawable/fb" />
 
                         </LinearLayout>
 
