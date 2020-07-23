@@ -1,24 +1,30 @@
 package com.example.sih2;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.icu.util.ValueIterator;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -31,26 +37,48 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.snackbar.SnackbarContentLayout;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+
+import co.lujun.androidtagview.ColorFactory;
+import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.view.View;
+import android.widget.Toast;
+
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class EmpProfileFragment extends Fragment {
     SharedPrefrencesHelper sharedPrefrencesHelper;
@@ -60,12 +88,12 @@ public class EmpProfileFragment extends Fragment {
     Spinner specializationSpinner, topicSpinner, levelSpinner, degreeSpinner;
     private RequestQueue rQueue;
     String specialization, topic, level, degree;
-    ListView degreesLV;
+    TagContainerLayout degreesLV;
     MyListView skillsLV;
     EditText empdiscriptionET;
-    boolean isSkillsOpen;
-    boolean isDegreeOpen;
     boolean isExperienceOpen;
+    TagContainerLayout educationTags;
+    CircleImageView displayPicture;
 
     @Nullable
     @Override
@@ -89,9 +117,65 @@ public class EmpProfileFragment extends Fragment {
         addExperienceButton = view.findViewById(R.id.addExperienceButton);
         innerExperienceCV = view.findViewById(R.id.innerExperienceCV);
         empDiscriptionTV = view.findViewById(R.id.empDiscriptionTV);
+        displayPicture=view.findViewById(R.id.displayPicture);
+
+        displayPicture.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                PopupMenu popup = new PopupMenu(EmpProfileFragment.this.getActivity(), displayPicture);
+                popup.getMenuInflater().inflate(R.menu.popup_edit, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(EmpProfileFragment.this.getActivity());
+                        final ViewGroup viewGroup = view.findViewById(android.R.id.content);
+                        final View dialogView = LayoutInflater.from(EmpProfileFragment.this.getActivity()).inflate(R.layout.popup_edit_display_picture, viewGroup, false);
+                        builder.setView(dialogView);
+                        final AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+
+                        ImageView displayPicture;
+                        Button cancel,delete,edit,submit;
+                        displayPicture=dialogView.findViewById(R.id.displayPicture);
+
+                        cancel=dialogView.findViewById(R.id.cancel);
+                        delete=dialogView.findViewById(R.id.delete);
+                        edit=dialogView.findViewById(R.id.edit);
+                        submit=dialogView.findViewById(R.id.apply);
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.cancel();
+                            }
+                        });
+                        delete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.cancel();
+                            }
+                        });
+                        edit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.cancel();
+                            }
+                        });
+                        submit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.cancel();
+                            }
+                        });
+                        return false;
+                    }
+                });
+                popup.show();
+                return false;
+            }
+        });
 
 
-        isDegreeOpen = true;
         isExperienceOpen = true;
 
         firstname.setText(sharedPrefrencesHelper.getFirstname());
@@ -105,7 +189,7 @@ public class EmpProfileFragment extends Fragment {
         }
 
         skillsLV = view.findViewById(R.id.skillsLV);
-        degreesLV = view.findViewById(R.id.degreesLV);
+        degreesLV = view.findViewById(R.id.degreeLV);
         getEmpDiscription();
 
         empDiscriptionTV.setOnLongClickListener(new View.OnLongClickListener() {
@@ -165,16 +249,18 @@ public class EmpProfileFragment extends Fragment {
                     public boolean onMenuItemClick(MenuItem item) {
 
                         View row = skillsLV.getAdapter().getView(index, view, container);
-                        final TextView tempspecialization=row.findViewById(R.id.specializationTV);
-                        final TextView temptopic=row.findViewById(R.id.topicTV);
-                        final TextView templevel=row.findViewById(R.id.levelTV);
+                        final TextView tempspecialization = row.findViewById(R.id.specializationTV);
+                        final TextView temptopic = row.findViewById(R.id.topicTV);
+                        final TextView templevel = row.findViewById(R.id.levelTV);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Do you want to delete the skill "+temptopic.getText().toString()+" under "+tempspecialization.getText().toString()+" ?")
+                        builder.setTitle("Delete Skill");
+                        builder.setMessage("Do you want to delete the skill " + temptopic.getText().toString() + " under " + tempspecialization.getText().toString() + " ?")
                                 .setCancelable(false)
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        deleteEmpSkill(tempspecialization.getText().toString(),temptopic.getText().toString(),templevel.getText().toString());
+                                        deleteEmpSkill(tempspecialization.getText().toString(), temptopic.getText().toString(), templevel.getText().toString());
+                                        degreesLV.removeAllTags();
                                         updateSkillsLV();
                                         dialog.cancel();
                                     }
@@ -194,6 +280,61 @@ public class EmpProfileFragment extends Fragment {
                 return false;
             }
         });
+
+        degreesLV.setBackgroundColor(ColorFactory.NONE);
+        degreesLV.setOnTagClickListener(new TagView.OnTagClickListener() {
+
+            @Override
+            public void onTagClick(int position, String text) {
+
+            }
+
+            @Override
+            public void onTagLongClick(final int position, final String text) {
+                final PopupMenu popup = new PopupMenu(EmpProfileFragment.this.getActivity(), degreesLV);
+                popup.getMenuInflater().inflate(R.menu.popup_delete, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Do you want to delete the degree " + text + " ?")
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        deletEmpDegree(text);
+                                        updateDegreeLV();
+                                        dialog.cancel();
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+
+                        return false;
+                    }
+
+                });
+                popup.show();//showing popup menu
+
+
+            }
+
+            @Override
+            public void onSelectedTagDrag(int position, String text) {
+
+            }
+
+            @Override
+            public void onTagCrossClick(int position) {
+
+            }
+
+        });
+
 
         // When Skills is clicked and all actions under that
 
@@ -289,64 +430,55 @@ public class EmpProfileFragment extends Fragment {
 
 
         // When Degree is clicked and all actions under that
-        degreeTV.setOnClickListener(new View.OnClickListener() {
+
+        updateDegreeLV();
+        addNewDegreeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Button degreeCDcancel = view.findViewById(R.id.degreeCDcancel);
-                if (isDegreeOpen) {
-                    isDegreeOpen = false;
-                    degreeCD.setVisibility(View.GONE);
-                } else {
-                    isDegreeOpen = true;
-                    degreeCD.setVisibility(View.VISIBLE);
-                    updateDegreeLV();
 
-                    degreeSpinner = view.findViewById(R.id.degreeSpinner);
+                AlertDialog.Builder builder = new AlertDialog.Builder(EmpProfileFragment.this.getActivity());
+                final ViewGroup viewGroup = view.findViewById(android.R.id.content);
+                final View dialogView = LayoutInflater.from(EmpProfileFragment.this.getActivity()).inflate(R.layout.popup_add_degree, viewGroup, false);
+                builder.setView(dialogView);
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
 
-                    addNewDegreeButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
 
-                            addNewDegreeButton.setVisibility(View.GONE);
-                            innerDegreeCD.setVisibility(View.VISIBLE);
+                final ArrayList<String> degreesList = new ArrayList<>();
+                initializeDegreeSpinner(degreesList);
+                degreeSpinner = dialogView.findViewById(R.id.degreeSpinner);
+                degreeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        degree = (String) parent.getItemAtPosition(position);
 
-                            final ArrayList<String> degreesList = new ArrayList<>();
-                            initializeDegreeSpinner(degreesList);
+                    }
 
-                            degreeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    degree = (String) parent.getItemAtPosition(position);
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
 
-                                }
-
-                                @Override
-                                public void onNothingSelected(AdapterView<?> parent) {
-
-                                }
-                            });
-                            degreeSubmitButton = view.findViewById(R.id.degreeSubmitButton);
-                            degreeSubmitButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    uploadDegree();
-                                    updateDegreeLV();
-                                }
-                            });
-
-                            degreeCDcancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    addNewDegreeButton.setVisibility(View.VISIBLE);
-                                    innerDegreeCD.setVisibility(View.GONE);
-                                }
-                            });
-                        }
-                    });
-
-                }
+                    }
+                });
+                Button degreeCDcancel;
+                degreeSubmitButton = dialogView.findViewById(R.id.degreeSubmitButton);
+                degreeSubmitButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        uploadDegree();
+                        updateDegreeLV();
+                        alertDialog.cancel();
+                    }
+                });
+                degreeCDcancel = dialogView.findViewById(R.id.degreeCDcancel);
+                degreeCDcancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.cancel();
+                    }
+                });
             }
         });
+
 
         // When Experience is clicked and everything under that
         experienceTV.setOnClickListener(new View.OnClickListener() {
@@ -388,6 +520,82 @@ public class EmpProfileFragment extends Fragment {
 
     }
 
+    private void setDisplayPicture() {
+        CropImage.ActivityBuilder activity = CropImage.activity();
+        activity.setGuidelines(CropImageView.Guidelines.ON);
+        activity.setAspectRatio(1, 1);
+        activity.start(getContext(),this);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            CropImage.ActivityResult result=CropImage.getActivityResult(data);
+
+            Uri resultUri = result.getUri();
+            int select=0;
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), resultUri);
+                int nh = (int) (bitmap.getHeight() * (250.0 / bitmap.getWidth()));
+                bitmap = Bitmap.createScaledBitmap(bitmap, 250, nh, true);
+                Bitmap image = bitmap;
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] b = byteArrayOutputStream.toByteArray();
+                String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+               // SharedPreferences.Editor editor = prefs.edit();
+                //editor.putString("namePreferance", itemNAme);
+              //  editor.putString("svdimgs", imageEncoded);
+               // editor.apply();
+                displayPicture.setImageBitmap(bitmap);
+                //Glide.with(this).load(path).into(profileImg);
+                select = 1;
+            } catch (IOException e) {
+                select = 0;
+            }
+
+        }
+    }
+
+    private void deletEmpDegree(final String tagText) {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "deleteEmpDegree.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                Toast.makeText(getActivity(), "deleted", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(EmpProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                params.put("degree", tagText);
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+        rQueue.add(stringRequest3);
+    }
+
     private void deleteEmpSkill(final String tempspecialization, final String temptopic, final String templevel) {
         StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "deleteEmpSkill.php",
                 new Response.Listener<String>() {
@@ -419,9 +627,9 @@ public class EmpProfileFragment extends Fragment {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", sharedPrefrencesHelper.getUsername());
-                params.put("specialization",tempspecialization);
-                params.put("topic",temptopic);
-                params.put("level",templevel);
+                params.put("specialization", tempspecialization);
+                params.put("topic", temptopic);
+                params.put("level", templevel);
                 return params;
             }
         };
@@ -633,9 +841,9 @@ public class EmpProfileFragment extends Fragment {
                                     degreesList.add(temptopic);
 
                                 }
-                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(EmpProfileFragment.this.getActivity(), android.R.layout.simple_list_item_1, degreesList);
-                                degreesLV.setAdapter(arrayAdapter);
-                                arrayAdapter.notifyDataSetChanged();
+                                educationTags = getView().findViewById(R.id.degreeLV);
+                                educationTags.setTags(degreesList);
+                                degreesLV.setTags(degreesList);
 
                             } else {
                                 Toast.makeText(EmpProfileFragment.this.getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
@@ -948,25 +1156,41 @@ class SkillsListAdapter extends ArrayAdapter {
         specializationTV.setText(specializationList.get(position));
         levelTV.setText(levelsList.get(position));
         if (levelsList.get(position).equals("Beginner")) {
-            levelProgressbar.setProgress(25);
             Drawable progressDrawable = levelProgressbar.getProgressDrawable().mutate();
             progressDrawable.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
             levelProgressbar.setProgressDrawable(progressDrawable);
+            ObjectAnimator progressAnimator;
+            progressAnimator = ObjectAnimator.ofInt(levelProgressbar, "progress", 0, 25);
+            progressAnimator.setDuration(1000);
+            progressAnimator.start();
         } else if (levelsList.get(position).equals("Intermediate")) {
-            levelProgressbar.setProgress(50);
             Drawable progressDrawable = levelProgressbar.getProgressDrawable().mutate();
             progressDrawable.setColorFilter(Color.YELLOW, android.graphics.PorterDuff.Mode.SRC_IN);
             levelProgressbar.setProgressDrawable(progressDrawable);
+            ObjectAnimator progressAnimator;
+            progressAnimator = ObjectAnimator.ofInt(levelProgressbar, "progress", 0, 50);
+            progressAnimator.setDuration(1000);
+            progressAnimator.start();
+
         } else if (levelsList.get(position).equals("Advanced")) {
-            levelProgressbar.setProgress(75);
+
             Drawable progressDrawable = levelProgressbar.getProgressDrawable().mutate();
             progressDrawable.setColorFilter(Color.BLUE, android.graphics.PorterDuff.Mode.SRC_IN);
             levelProgressbar.setProgressDrawable(progressDrawable);
+            ObjectAnimator progressAnimator;
+            progressAnimator = ObjectAnimator.ofInt(levelProgressbar, "progress", 0, 75);
+            progressAnimator.setDuration(1000);
+            progressAnimator.start();
+
         } else {
-            levelProgressbar.setProgress(100);
+
             Drawable progressDrawable = levelProgressbar.getProgressDrawable().mutate();
             progressDrawable.setColorFilter(Color.GREEN, android.graphics.PorterDuff.Mode.SRC_IN);
             levelProgressbar.setProgressDrawable(progressDrawable);
+            ObjectAnimator progressAnimator;
+            progressAnimator = ObjectAnimator.ofInt(levelProgressbar, "progress", 0, 100);
+            progressAnimator.setDuration(1000);
+            progressAnimator.start();
         }
         return row;
 
