@@ -254,6 +254,7 @@ public class EmpProfileFragment extends Fragment {
                         final TextView templevel = row.findViewById(R.id.levelTV);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Delete Skill");
                         builder.setMessage("Do you want to delete the skill " + temptopic.getText().toString() + " under " + tempspecialization.getText().toString() + " ?")
                                 .setCancelable(false)
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
