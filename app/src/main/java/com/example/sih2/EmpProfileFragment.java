@@ -297,6 +297,7 @@ public class EmpProfileFragment extends Fragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Delete Qualification");
                         builder.setMessage("Do you want to delete the degree " + text + " ?")
                                 .setCancelable(false)
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
