@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -535,7 +536,7 @@ public class EmpProfileFragment extends Fragment {
         });
 
 
-        getEmpExperience();
+        updateEmpExperience();
 
 
 
@@ -582,7 +583,7 @@ public class EmpProfileFragment extends Fragment {
         rQueue.add(stringRequest3);
     }
 
-    private void getEmpExperience() {
+    private void updateEmpExperience() {
         StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getEmpExperience.php",
                 new Response.Listener<String>() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -590,6 +591,13 @@ public class EmpProfileFragment extends Fragment {
                     public void onResponse(String response) {
                         rQueue.getCache().clear();
                         try {
+                            ArrayList arrayList=new ArrayList();
+                            arrayList.add("click on add to add an experience");
+                            ArrayList arrayList1=new ArrayList();
+                            arrayList1.add(" no experience yet");
+                            ExperienceListAdapter tempexperienceListAdapter= new ExperienceListAdapter(EmpProfileFragment.this.getActivity(),arrayList,arrayList1);
+                            experienceLV.setAdapter(tempexperienceListAdapter);
+                            tempexperienceListAdapter.notifyDataSetChanged();
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject.optString("success").equals("1")) {
                                 final ArrayList experienceList,yearsList;
@@ -976,7 +984,6 @@ public class EmpProfileFragment extends Fragment {
     private void updateDegreeLV() {
         final ArrayList<String> degreesList;
         degreesList = new ArrayList<>();
-
         StringRequest stringRequest2 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getEmpDegrees.php",
                 new Response.Listener<String>() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -984,6 +991,7 @@ public class EmpProfileFragment extends Fragment {
                     public void onResponse(String response) {
                         rQueue.getCache().clear();
                         try {
+                            degreesLV.removeAllTags();
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject.optString("success").equals("1")) {
                                 JSONArray jsonArray = jsonObject.getJSONArray("details");
