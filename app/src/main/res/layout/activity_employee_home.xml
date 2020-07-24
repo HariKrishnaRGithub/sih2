@@ -16,12 +16,14 @@
         <include
             layout="@layout/employee_drawer_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="#E91E58" />
 
         <include
             layout="@layout/employee_content_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="#E91E58" />
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

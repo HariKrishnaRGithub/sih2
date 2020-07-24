@@ -25,7 +25,7 @@
                 android:layout_marginBottom="50dp"
                 android:gravity="center"
                 android:text="S I G N   I N"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/purple"
                 android:textSize="24sp" />
 
             <androidx.cardview.widget.CardView
@@ -56,20 +56,19 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingTop="10dp"
                                 android:text="Username or Email"
                                 android:textColorLink="#FFFFFF"
-                                android:textSize="18dp"></TextView>
+                                android:textSize="20dp"></TextView>
 
                             <EditText
                                 android:id="@+id/user"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="example@mail.com"
+                                android:hint="Username or Email"
                                 android:inputType="textAutoComplete"
                                 android:singleLine="true"
                                 android:textColorLink="#FFFFFF"
-                                android:textSize="16dp"></EditText>
+                                android:textSize="20dp"></EditText>
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -91,10 +90,9 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingTop="10dp"
                                 android:text="Password"
                                 android:textColorLink="#FFFFFF"
-                                android:textSize="18dp"></TextView>
+                                android:textSize="20dp"></TextView>
 
                             <EditText
                                 android:id="@+id/password"
@@ -104,7 +102,7 @@
                                 android:inputType="textPassword"
                                 android:singleLine="true"
                                 android:textColorLink="#FFFFFF"
-                                android:textSize="16dp"></EditText>
+                                android:textSize="20dp"></EditText>
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -135,8 +133,7 @@
                 android:gravity="center"
                 android:paddingVertical="10dp"
                 android:text="New user? Register an account here !"
-                android:textColor="@color/design_default_color_surface"
-                android:textSize="18dp"></TextView>
+                android:textSize="20dp"></TextView>
 
         </LinearLayout>
     </ScrollView>
