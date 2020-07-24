@@ -25,14 +25,15 @@
             app:delay="0"
             android:id="@+id/slider"
             app:period="1000"
-            app:error_image="@drawable/bg_grey"
-            app:placeholder="@drawable/bg_grey"
+
+
             app:corner_radius="20"
             android:layout_height="200dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="20dp"
             android:fontFamily="sans-serif-smallcaps"
             android:gravity="center"
