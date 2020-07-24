@@ -36,7 +36,7 @@ public class FeedbackFragment extends Fragment {
 
             @Override
             public void onClick(View arg0) {
-                String to="maiya.harsha03@gmail.com";
+                String to="sih@betterfuture.tech";
                 String subject=editTextSubject.getText().toString();
                 String message=editTextMessage.getText().toString();
 
