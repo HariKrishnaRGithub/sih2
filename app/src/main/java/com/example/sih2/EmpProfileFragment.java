@@ -90,8 +90,8 @@ public class EmpProfileFragment extends Fragment {
     String specialization, topic, level, degree;
     TagContainerLayout degreesLV;
     MyListView skillsLV;
-    EditText empdiscriptionET;
-    boolean isExperienceOpen;
+
+
     TagContainerLayout educationTags;
     CircleImageView displayPicture;
 
@@ -112,10 +112,8 @@ public class EmpProfileFragment extends Fragment {
         degreeTV = view.findViewById(R.id.degreeTV);
         addNewDegreeButton = view.findViewById(R.id.addNewDegreeButton);
         innerDegreeCD = view.findViewById(R.id.innerDegreeCD);
-        experienceTV = view.findViewById(R.id.experienceTV);
-        experienceCD = view.findViewById(R.id.experienceCV);
+
         addExperienceButton = view.findViewById(R.id.addExperienceButton);
-        innerExperienceCV = view.findViewById(R.id.innerExperienceCV);
         empDiscriptionTV = view.findViewById(R.id.empDiscriptionTV);
         displayPicture=view.findViewById(R.id.displayPicture);
 
@@ -175,8 +173,6 @@ public class EmpProfileFragment extends Fragment {
             }
         });
 
-
-        isExperienceOpen = true;
 
         firstname.setText(sharedPrefrencesHelper.getFirstname());
         lastname.setText(sharedPrefrencesHelper.getLastname());
@@ -292,9 +288,9 @@ public class EmpProfileFragment extends Fragment {
                 final AlertDialog alertDialog = builder.create();
                 alertDialog.show();
 
-                final Button experienceDescriptionET=dialogView.findViewById(R.id.experienceDescriptionET);
+                final EditText experienceDescriptionET=dialogView.findViewById(R.id.experienceDescriptionET);
                 final EditText experienceYearsET=dialogView.findViewById(R.id.experienceYearsET);
-                Button experienceSubmit=dialogView.findViewById(R.id.experienceSubmit);
+                final Button experienceSubmit=dialogView.findViewById(R.id.experienceSubmit);
                 experienceSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
