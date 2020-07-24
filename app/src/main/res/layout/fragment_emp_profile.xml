@@ -280,7 +280,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="Experience"
                                 android:textColor="#000000"
-                                android:textSize="24sp" />
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
 
                             <com.example.sih2.MyListView
                                 android:id="@+id/experienceLV"

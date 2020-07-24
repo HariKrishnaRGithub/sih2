@@ -44,16 +44,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
+                    android:background="#00FFFFFF"
                     android:ems="10"
                     android:gravity="center"
                     android:hint="Enter a short discription"
-                    android:inputType="textPersonName" />
+                    android:inputType="text"
+                    android:padding="5dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
+                    android:background="#00FFFFFF"
                     android:orientation="horizontal">
 
                     <EditText
@@ -63,7 +66,7 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:gravity="center"
-                        android:hint="Enter no. of years"
+                        android:hint="Enter years of experience ( decimal )"
                         android:inputType="numberDecimal"
                         android:paddingLeft="5dp" />
 
@@ -88,7 +91,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/corner_round_shape"
+                        android:background="@drawable/button_shape"
                         android:text="cancel" />
 
                     <Button
@@ -97,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/corner_round_shape"
+                        android:background="@drawable/button_shape"
                         android:text="submit" />
                 </LinearLayout>
             </LinearLayout>
