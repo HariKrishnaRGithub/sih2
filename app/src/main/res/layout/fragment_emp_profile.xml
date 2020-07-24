@@ -295,7 +295,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="#00FFFFFF"
-                                android:text="add an eperience" />
+                                android:text="add an experience" />
 
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>

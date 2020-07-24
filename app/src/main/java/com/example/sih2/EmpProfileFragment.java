@@ -536,7 +536,7 @@ public class EmpProfileFragment extends Fragment {
         });
 
 
-        updateEmpExperience();
+        updateExperienceLV();
 
 
 
@@ -583,7 +583,7 @@ public class EmpProfileFragment extends Fragment {
         rQueue.add(stringRequest3);
     }
 
-    private void updateEmpExperience() {
+    private void updateExperienceLV() {
         StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getEmpExperience.php",
                 new Response.Listener<String>() {
                     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -594,7 +594,7 @@ public class EmpProfileFragment extends Fragment {
                             ArrayList arrayList=new ArrayList();
                             arrayList.add("click on add to add an experience");
                             ArrayList arrayList1=new ArrayList();
-                            arrayList1.add(" no experience yet");
+                            arrayList1.add(" no experience, no ");
                             ExperienceListAdapter tempexperienceListAdapter= new ExperienceListAdapter(EmpProfileFragment.this.getActivity(),arrayList,arrayList1);
                             experienceLV.setAdapter(tempexperienceListAdapter);
                             tempexperienceListAdapter.notifyDataSetChanged();
@@ -878,8 +878,6 @@ public class EmpProfileFragment extends Fragment {
         rQueue.add(stringRequest3);
     }
 
-    private void updateExperienceLV() {
-    }
 
     private void uploadDegree() {
         StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "uploadDegree.php",
@@ -1001,8 +999,8 @@ public class EmpProfileFragment extends Fragment {
                                     degreesList.add(temptopic);
 
                                 }
-                                educationTags = getView().findViewById(R.id.degreeLV);
-                                educationTags.setTags(degreesList);
+                                //educationTags = getView().findViewById(R.id.degreeLV);
+                                //educationTags.setTags(degreesList);
                                 degreesLV.setTags(degreesList);
 
                             } else {
