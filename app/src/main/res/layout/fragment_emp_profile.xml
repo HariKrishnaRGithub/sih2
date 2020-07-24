@@ -280,36 +280,22 @@
                                 android:layout_height="wrap_content"
                                 android:text="Experience"
                                 android:textColor="#000000"
-                                android:textSize="18sp" />
+                                android:textSize="24sp" />
 
-                            <androidx.cardview.widget.CardView
-                                android:id="@+id/experienceCV"
-                                android:layout_width="wrap_content"
+                            <com.example.sih2.MyListView
+                                android:id="@+id/experienceLV"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:visibility="visible"
-                                app:cardBackgroundColor="#00FFFFFF">
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp" />
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
 
-                                    <ListView
-                                        android:id="@+id/experienceLV"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent">
-
-                                    </ListView>
-
-                                    <Button
-                                        android:id="@+id/addExperienceButton"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:background="#00FFFFFF"
-                                        android:text="add an eperience" />
-
-                                </LinearLayout>
-                            </androidx.cardview.widget.CardView>
+                            <Button
+                                android:id="@+id/addExperienceButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="#00FFFFFF"
+                                android:text="add an eperience" />
 
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>

@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -63,23 +62,6 @@ import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
-import android.view.View;
-import android.widget.Toast;
-
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 public class EmpProfileFragment extends Fragment {
     SharedPrefrencesHelper sharedPrefrencesHelper;
     TextView firstname, lastname, username, email, cancel, skillsListTV, degreeTV, experienceTV, empDiscriptionTV;
@@ -89,7 +71,7 @@ public class EmpProfileFragment extends Fragment {
     private RequestQueue rQueue;
     String specialization, topic, level, degree;
     TagContainerLayout degreesLV;
-    MyListView skillsLV;
+    MyListView skillsLV,experienceLV;
 
 
     TagContainerLayout educationTags;
@@ -116,6 +98,7 @@ public class EmpProfileFragment extends Fragment {
         addExperienceButton = view.findViewById(R.id.addExperienceButton);
         empDiscriptionTV = view.findViewById(R.id.empDiscriptionTV);
         displayPicture=view.findViewById(R.id.displayPicture);
+        experienceLV=view.findViewById(R.id.experienceLV);
 
         displayPicture.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -281,6 +264,7 @@ public class EmpProfileFragment extends Fragment {
         addExperienceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(EmpProfileFragment.this.getActivity());
                 final ViewGroup viewGroup = view.findViewById(android.R.id.content);
                 final View dialogView = LayoutInflater.from(EmpProfileFragment.this.getActivity()).inflate(R.layout.popup_add_experience, viewGroup, false);
@@ -291,13 +275,61 @@ public class EmpProfileFragment extends Fragment {
                 final EditText experienceDescriptionET=dialogView.findViewById(R.id.experienceDescriptionET);
                 final EditText experienceYearsET=dialogView.findViewById(R.id.experienceYearsET);
                 final Button experienceSubmit=dialogView.findViewById(R.id.experienceSubmit);
+                final Button experienceCancel=dialogView.findViewById(R.id.experienceCancel);
+                experienceCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.cancel();
+                    }
+                });
                 experienceSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         addEmpExperience(experienceDescriptionET.getText().toString(),experienceYearsET.getText().toString());
+                        updateExperienceLV();
+                        alertDialog.cancel();
                     }
                 });
 
+            }
+        });
+        //when experience is long clicked and delete action
+        experienceLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> arg0, View v, final int index, long arg3) {
+
+                PopupMenu popup = new PopupMenu(EmpProfileFragment.this.getActivity(), experienceLV);
+                popup.getMenuInflater().inflate(R.menu.popup_delete, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        View row=experienceLV.getAdapter().getView(index,view,container);
+                        final  TextView tempdiscription=row.findViewById(R.id.experienceDiscription);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Delete Skill");
+                        builder.setMessage("Do you want to delete the experience "+tempdiscription.getText().toString()+" ?")
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        deleteEmpExperience(tempdiscription.getText().toString());
+                                        updateExperienceLV();
+                                        dialog.cancel();
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+
+                        return false;
+                    }
+                });
+                popup.show();//showing popup menu
+                return false;
             }
         });
 
@@ -503,13 +535,102 @@ public class EmpProfileFragment extends Fragment {
         });
 
 
-        // When Experience is clicked and everything under that
+        getEmpExperience();
 
 
 
         //End of the OncreateView
         return view;
 
+    }
+
+    private void deleteEmpExperience(final String tempdiscription) {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "deleteEmpExperience.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                Toast.makeText(getActivity(), "deleted", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(EmpProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                params.put("discription", tempdiscription);
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+        rQueue.add(stringRequest3);
+    }
+
+    private void getEmpExperience() {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getEmpExperience.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                final ArrayList experienceList,yearsList;
+                                experienceList=new ArrayList();
+                                yearsList=new ArrayList();
+                                JSONArray jsonArray = jsonObject.getJSONArray("details");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject3 = jsonArray.getJSONObject(i);
+                                    String tempdiscription = jsonObject3.getString("discription");
+                                    String tempyears = jsonObject3.getString("experience");
+                                    experienceList.add(tempdiscription);
+                                    yearsList.add(tempyears);
+
+                                }
+                                ExperienceListAdapter experienceListAdapter= new ExperienceListAdapter(EmpProfileFragment.this.getActivity(),experienceList,yearsList);
+                                experienceLV.setAdapter(experienceListAdapter);
+                                experienceListAdapter.notifyDataSetChanged();
+                            } else {
+                                //Toast.makeText(EmpProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+        rQueue.add(stringRequest3);
     }
 
     private void addEmpExperience(final String discription, final String years) {
@@ -1233,10 +1354,9 @@ class ExperienceListAdapter extends ArrayAdapter {
     ArrayList<String> experience, description;
 
     public ExperienceListAdapter(Context context, ArrayList<String> experience, ArrayList<String> description) {
-        super(context, R.layout.experience_custom_listview, R.id.specializationTV, experience);
+        super(context, R.layout.experience_custom_listview, R.id.experienceDiscription, experience);
         this.experience = experience;
         this.description = description;
-
     }
 
     @NonNull
@@ -1244,13 +1364,11 @@ class ExperienceListAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row = inflater.inflate(R.layout.experience_custom_listview, parent, false);
-        TextView experienceTV = row.findViewById(R.id.specializationTV);
-        TextView descriptionTV = row.findViewById(R.id.levelTV);
-
+        TextView experienceTV = row.findViewById(R.id.experienceDiscription);
+        TextView descriptionTV = row.findViewById(R.id.experienceYears);
         experienceTV.setText(experience.get(position));
         descriptionTV.setText(description.get(position));
         return row;
-
     }
 }
 
