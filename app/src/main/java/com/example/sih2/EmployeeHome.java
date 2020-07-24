@@ -120,7 +120,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
             case R.id.emp_quit_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeHome.this);
-                builder.setTitle(R.string.app_name);
+                builder.setTitle("BETTER FUTURE");
                 builder.setIcon(R.mipmap.ic_launcher);
                 builder.setMessage("Do you want to exit?")
                         .setCancelable(false)
@@ -143,7 +143,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 builder = new AlertDialog.Builder(EmployeeHome.this);
                 builder.setTitle(R.string.app_name);
                 builder.setIcon(R.mipmap.ic_launcher);
-                builder.setMessage("Do you want to LogOut?")
+                builder.setMessage("Do you want to Logout?")
                         .setCancelable(false)
                         .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -180,7 +180,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() { // exit dialog
 
         AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeHome.this);
-        builder.setTitle(R.string.app_name);
+        builder.setTitle("BETTER FUTURE");
         builder.setIcon(R.mipmap.ic_launcher);
         builder.setMessage("Do you want to exit?")
                 .setCancelable(false)
