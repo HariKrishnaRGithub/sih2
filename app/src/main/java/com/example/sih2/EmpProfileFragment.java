@@ -281,6 +281,32 @@ public class EmpProfileFragment extends Fragment {
             }
         });
 
+        // When add experience is clicked
+        addExperienceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(EmpProfileFragment.this.getActivity());
+                final ViewGroup viewGroup = view.findViewById(android.R.id.content);
+                final View dialogView = LayoutInflater.from(EmpProfileFragment.this.getActivity()).inflate(R.layout.popup_add_experience, viewGroup, false);
+                builder.setView(dialogView);
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                final Button experienceDescriptionET=dialogView.findViewById(R.id.experienceDescriptionET);
+                final EditText experienceYearsET=dialogView.findViewById(R.id.experienceYearsET);
+                Button experienceSubmit=dialogView.findViewById(R.id.experienceSubmit);
+                experienceSubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addEmpExperience(experienceDescriptionET.getText().toString(),experienceYearsET.getText().toString());
+                    }
+                });
+
+            }
+        });
+
+
+        // long press on degree
         degreesLV.setBackgroundColor(ColorFactory.NONE);
         degreesLV.setOnTagClickListener(new TagView.OnTagClickListener() {
 
@@ -482,43 +508,51 @@ public class EmpProfileFragment extends Fragment {
 
 
         // When Experience is clicked and everything under that
-        experienceTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isExperienceOpen) {
-                    isExperienceOpen = false;
-                    experienceCD.setVisibility(View.GONE);
-                } else {
-                    isExperienceOpen = true;
-                    experienceCD.setVisibility(View.VISIBLE);
 
-                    addExperienceButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            addExperienceButton.setVisibility(View.GONE);
-                            innerExperienceCV.setVisibility(View.VISIBLE);
-                            updateExperienceLV();
-
-                            Button cancelExperience = view.findViewById(R.id.experienceCancel);
-                            cancelExperience.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    addExperienceButton.setVisibility(View.VISIBLE);
-                                    innerExperienceCV.setVisibility(View.GONE);
-                                }
-                            });
-
-                        }
-                    });
-                }
-            }
-        });
 
 
         //End of the OncreateView
         return view;
 
+    }
+
+    private void addEmpExperience(final String discription, final String years) {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "addEmpExperience.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                Toast.makeText(getActivity(), "succcess", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(EmpProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                params.put("discription", discription);
+                params.put("years",years);
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+        rQueue.add(stringRequest3);
     }
 
     private void setDisplayPicture() {
