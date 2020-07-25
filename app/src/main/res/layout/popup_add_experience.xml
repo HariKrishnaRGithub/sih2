@@ -35,21 +35,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
-                    android:text="Discription on the experience"
+                    android:text="Experience"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/experienceDescriptionET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:background="#00FFFFFF"
                     android:ems="10"
-                    android:gravity="center"
                     android:hint="Enter a short discription"
                     android:inputType="text"
-                    android:padding="5dp" />
+                    android:padding="10dp"
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -57,32 +58,38 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
                     android:background="#00FFFFFF"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/experienceYearsET"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:gravity="center"
-                        android:hint="Enter years of experience ( decimal )"
+                        android:hint="Enter years of experience"
                         android:inputType="numberDecimal"
-                        android:paddingLeft="5dp" />
+                        android:padding="10dp"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/textView9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="years" />
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="years"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
                     android:orientation="horizontal">
 
                     <Button
