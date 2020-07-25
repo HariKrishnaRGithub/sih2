@@ -69,7 +69,6 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.employee_container, new EmpHomeFragment());
-
         fragmentTransaction.commit();
 
 

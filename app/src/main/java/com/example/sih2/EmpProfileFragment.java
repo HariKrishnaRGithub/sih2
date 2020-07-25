@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -55,8 +57,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import co.lujun.androidtagview.ColorFactory;
 import co.lujun.androidtagview.TagContainerLayout;
@@ -66,13 +71,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class EmpProfileFragment extends Fragment {
     SharedPrefrencesHelper sharedPrefrencesHelper;
     TextView firstname, lastname, username, email, cancel, skillsListTV, degreeTV, experienceTV, empDiscriptionTV;
-    Button addNewSkillButton, addNewDegreeButton, degreeSubmitButton, addExperienceButton;
+    Button addNewSkillButton, addNewDegreeButton, degreeSubmitButton, addExperienceButton,refreshButton;
     CardView skillCard, degreeCD, innerDegreeCD, experienceCD, innerExperienceCV;
     Spinner specializationSpinner, topicSpinner, levelSpinner, degreeSpinner;
     private RequestQueue rQueue;
-    String specialization, topic, level, degree;
+    String specialization, topic, level, degree, imageEncoded = "";
     TagContainerLayout degreesLV;
-    MyListView skillsLV,experienceLV;
+    MyListView skillsLV, experienceLV;
+    View previewDpView;
 
 
     TagContainerLayout educationTags;
@@ -98,8 +104,16 @@ public class EmpProfileFragment extends Fragment {
 
         addExperienceButton = view.findViewById(R.id.addExperienceButton);
         empDiscriptionTV = view.findViewById(R.id.empDiscriptionTV);
-        displayPicture=view.findViewById(R.id.displayPicture);
-        experienceLV=view.findViewById(R.id.experienceLV);
+        displayPicture = view.findViewById(R.id.displayPicture);
+        experienceLV = view.findViewById(R.id.experienceLV);
+        refreshButton=view.findViewById(R.id.refreshButton);
+
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "In development", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         displayPicture.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -110,6 +124,7 @@ public class EmpProfileFragment extends Fragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
 
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(EmpProfileFragment.this.getActivity());
                         final ViewGroup viewGroup = view.findViewById(android.R.id.content);
                         final View dialogView = LayoutInflater.from(EmpProfileFragment.this.getActivity()).inflate(R.layout.popup_edit_display_picture, viewGroup, false);
@@ -117,14 +132,17 @@ public class EmpProfileFragment extends Fragment {
                         final AlertDialog alertDialog = builder.create();
                         alertDialog.show();
 
-                        ImageView displayPicture;
-                        Button cancel,delete,edit,submit;
-                        displayPicture=dialogView.findViewById(R.id.displayPicture);
-
-                        cancel=dialogView.findViewById(R.id.cancel);
-                        delete=dialogView.findViewById(R.id.delete);
-                        edit=dialogView.findViewById(R.id.edit);
-                        submit=dialogView.findViewById(R.id.apply);
+                        ImageView imageView = view.findViewById(R.id.displayPicture);
+                        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                        final ImageView displayPicture;
+                        Button cancel, delete, edit, submit;
+                        displayPicture = dialogView.findViewById(R.id.displayPicture);
+                        previewDpView = dialogView;
+                        displayPicture.setImageBitmap(bitmap);
+                        cancel = dialogView.findViewById(R.id.cancel);
+                        delete = dialogView.findViewById(R.id.delete);
+                        edit = dialogView.findViewById(R.id.edit);
+                        submit = dialogView.findViewById(R.id.apply);
                         cancel.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -140,12 +158,14 @@ public class EmpProfileFragment extends Fragment {
                         edit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                alertDialog.cancel();
+                                getPreview();
                             }
                         });
                         submit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                setDisplayProfile();
+                                updateDisplayProfile();
                                 alertDialog.cancel();
                             }
                         });
@@ -273,10 +293,10 @@ public class EmpProfileFragment extends Fragment {
                 final AlertDialog alertDialog = builder.create();
                 alertDialog.show();
 
-                final EditText experienceDescriptionET=dialogView.findViewById(R.id.experienceDescriptionET);
-                final EditText experienceYearsET=dialogView.findViewById(R.id.experienceYearsET);
-                final Button experienceSubmit=dialogView.findViewById(R.id.experienceSubmit);
-                final Button experienceCancel=dialogView.findViewById(R.id.experienceCancel);
+                final EditText experienceDescriptionET = dialogView.findViewById(R.id.experienceDescriptionET);
+                final EditText experienceYearsET = dialogView.findViewById(R.id.experienceYearsET);
+                final Button experienceSubmit = dialogView.findViewById(R.id.experienceSubmit);
+                final Button experienceCancel = dialogView.findViewById(R.id.experienceCancel);
                 experienceCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -286,7 +306,7 @@ public class EmpProfileFragment extends Fragment {
                 experienceSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addEmpExperience(experienceDescriptionET.getText().toString(),experienceYearsET.getText().toString());
+                        addEmpExperience(experienceDescriptionET.getText().toString(), experienceYearsET.getText().toString());
                         updateExperienceLV();
                         alertDialog.cancel();
                     }
@@ -304,12 +324,12 @@ public class EmpProfileFragment extends Fragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
 
-                        View row=experienceLV.getAdapter().getView(index,view,container);
-                        final  TextView tempdiscription=row.findViewById(R.id.experienceDiscription);
+                        View row = experienceLV.getAdapter().getView(index, view, container);
+                        final TextView tempdiscription = row.findViewById(R.id.experienceDiscription);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setTitle("Delete Skill");
-                        builder.setMessage("Do you want to delete the experience "+tempdiscription.getText().toString()+" ?")
+                        builder.setMessage("Do you want to delete the experience " + tempdiscription.getText().toString() + " ?")
                                 .setCancelable(false)
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
@@ -539,10 +559,144 @@ public class EmpProfileFragment extends Fragment {
         updateExperienceLV();
 
 
-
         //End of the OncreateView
         return view;
 
+    }
+
+    private void updateDisplayProfile() {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getDisplayProfile.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                //Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
+                                JSONObject jsonObject1 = jsonObject.getJSONObject("details");
+                                imageEncoded=jsonObject1.getString("imagelocation");
+                            } else {
+                                Toast.makeText(EmpProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+        rQueue.add(stringRequest3);
+    }
+
+    private void setDisplayProfile() {
+        ImageView previewImage;
+        previewImage=previewDpView.findViewById(R.id.displayPicture);
+        Bitmap bitmap = ((BitmapDrawable) previewImage.getDrawable()).getBitmap();
+        //displayPicture.setImageBitmap(bitmap);
+
+        Bitmap image = bitmap;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] b = byteArrayOutputStream.toByteArray();
+        imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "setDisplayProfile.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
+                                updateDisplayProfile();
+                            } else {
+                                Toast.makeText(EmpProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                params.put("imageEncoded",imageEncoded);
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+        rQueue.add(stringRequest3);
+
+    }
+
+    private void getPreview() {
+        CropImage.ActivityBuilder activity = CropImage.activity();
+        activity.setGuidelines(CropImageView.Guidelines.ON);
+        activity.setAspectRatio(1, 1);
+        activity.start(getContext(), this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            Uri resultUri = result.getUri();
+            int select = 0;
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), resultUri);
+                int nh = (int) (bitmap.getHeight() * (250.0 / bitmap.getWidth()));
+                bitmap = Bitmap.createScaledBitmap(bitmap, 250, nh, true);
+                Bitmap image = bitmap;
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] b = byteArrayOutputStream.toByteArray();
+                imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+                // SharedPreferences.Editor editor = prefs.edit();
+                //editor.putString("namePreferance", itemNAme);
+                //  editor.putString("svdimgs", imageEncoded);
+                // editor.apply();
+                //displayPicture.setImageBitmap(bitmap);
+                //Glide.with(this).load(path).into(profileImg);
+                select = 1;
+                ImageView previewDp = previewDpView.findViewById(R.id.displayPicture);
+                previewDp.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                select = 0;
+            }
+
+        }
+    }
+
+
+    private void getProfilePicture() {
     }
 
     private void deleteEmpExperience(final String tempdiscription) {
@@ -591,18 +745,18 @@ public class EmpProfileFragment extends Fragment {
                     public void onResponse(String response) {
                         rQueue.getCache().clear();
                         try {
-                            ArrayList arrayList=new ArrayList();
+                            ArrayList arrayList = new ArrayList();
                             arrayList.add("click on add to add an experience");
-                            ArrayList arrayList1=new ArrayList();
+                            ArrayList arrayList1 = new ArrayList();
                             arrayList1.add(" no experience, no ");
-                            ExperienceListAdapter tempexperienceListAdapter= new ExperienceListAdapter(EmpProfileFragment.this.getActivity(),arrayList,arrayList1);
+                            ExperienceListAdapter tempexperienceListAdapter = new ExperienceListAdapter(EmpProfileFragment.this.getActivity(), arrayList, arrayList1);
                             experienceLV.setAdapter(tempexperienceListAdapter);
                             tempexperienceListAdapter.notifyDataSetChanged();
                             JSONObject jsonObject = new JSONObject(response);
                             if (jsonObject.optString("success").equals("1")) {
-                                final ArrayList experienceList,yearsList;
-                                experienceList=new ArrayList();
-                                yearsList=new ArrayList();
+                                final ArrayList experienceList, yearsList;
+                                experienceList = new ArrayList();
+                                yearsList = new ArrayList();
                                 JSONArray jsonArray = jsonObject.getJSONArray("details");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject3 = jsonArray.getJSONObject(i);
@@ -612,7 +766,7 @@ public class EmpProfileFragment extends Fragment {
                                     yearsList.add(tempyears);
 
                                 }
-                                ExperienceListAdapter experienceListAdapter= new ExperienceListAdapter(EmpProfileFragment.this.getActivity(),experienceList,yearsList);
+                                ExperienceListAdapter experienceListAdapter = new ExperienceListAdapter(EmpProfileFragment.this.getActivity(), experienceList, yearsList);
                                 experienceLV.setAdapter(experienceListAdapter);
                                 experienceListAdapter.notifyDataSetChanged();
                             } else {
@@ -672,7 +826,7 @@ public class EmpProfileFragment extends Fragment {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", sharedPrefrencesHelper.getUsername());
                 params.put("discription", discription);
-                params.put("years",years);
+                params.put("years", years);
                 return params;
             }
         };
@@ -680,44 +834,46 @@ public class EmpProfileFragment extends Fragment {
         rQueue.add(stringRequest3);
     }
 
-    private void setDisplayPicture() {
-        CropImage.ActivityBuilder activity = CropImage.activity();
-        activity.setGuidelines(CropImageView.Guidelines.ON);
-        activity.setAspectRatio(1, 1);
-        activity.start(getContext(),this);
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
-            CropImage.ActivityResult result=CropImage.getActivityResult(data);
-
-            Uri resultUri = result.getUri();
-            int select=0;
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), resultUri);
-                int nh = (int) (bitmap.getHeight() * (250.0 / bitmap.getWidth()));
-                bitmap = Bitmap.createScaledBitmap(bitmap, 250, nh, true);
-                Bitmap image = bitmap;
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                byte[] b = byteArrayOutputStream.toByteArray();
-                String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-               // SharedPreferences.Editor editor = prefs.edit();
-                //editor.putString("namePreferance", itemNAme);
-              //  editor.putString("svdimgs", imageEncoded);
-               // editor.apply();
-                displayPicture.setImageBitmap(bitmap);
-                //Glide.with(this).load(path).into(profileImg);
-                select = 1;
-            } catch (IOException e) {
-                select = 0;
-            }
-
+    /*
+        private void setDisplayPicture() {
+            CropImage.ActivityBuilder activity = CropImage.activity();
+            activity.setGuidelines(CropImageView.Guidelines.ON);
+            activity.setAspectRatio(1, 1);
+            activity.start(getContext(),this);
         }
-    }
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
 
+            if (requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+                CropImage.ActivityResult result=CropImage.getActivityResult(data);
+
+                Uri resultUri = result.getUri();
+                int select=0;
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), resultUri);
+                    int nh = (int) (bitmap.getHeight() * (250.0 / bitmap.getWidth()));
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 250, nh, true);
+                    Bitmap image = bitmap;
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                    byte[] b = byteArrayOutputStream.toByteArray();
+                    imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+                   // SharedPreferences.Editor editor = prefs.edit();
+                    //editor.putString("namePreferance", itemNAme);
+                  //  editor.putString("svdimgs", imageEncoded);
+                   // editor.apply();
+                    //displayPicture.setImageBitmap(bitmap);
+                    //Glide.with(this).load(path).into(profileImg);
+                    select = 1;
+                    displayPicture.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    select = 0;
+                }
+
+            }
+        }
+    */
     private void deletEmpDegree(final String tagText) {
         StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "deleteEmpDegree.php",
                 new Response.Listener<String>() {
