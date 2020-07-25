@@ -1,9 +1,14 @@
 package com.example.sih2;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,6 +23,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+
 public class RegisterActivity extends AppCompatActivity {
     TextView loginTV;
     EditText fisrtName, lastName, username, email, password, password1;
@@ -46,9 +53,75 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerAction();
+                String mail = email.getText().toString();
+                if (mail.isEmpty()) {
+                    email.setError("Email is required");
+                    email.requestFocus();
+                    return;
+                }
+                Random random =new Random();
+                final String randomNumber = String.format("%04d", random.nextInt(10000));
+                sendOTP(randomNumber,mail);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                final ViewGroup viewGroup = view.findViewById(android.R.id.content);
+                final View dialogView = LayoutInflater.from(RegisterActivity.this).inflate(R.layout.email_verification, viewGroup, false);
+                builder.setView(dialogView);
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                Button actualRegisterButton=dialogView.findViewById(R.id.actualRegisterButton);
+                actualRegisterButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EditText otpNumber=dialogView.findViewById(R.id.otpNumber);
+                        if(otpNumber.getText().toString().equals(randomNumber)){
+                            registerAction();
+                        }else{
+                            Toast.makeText(RegisterActivity.this, "Try again", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
+    }
+
+    private void sendOTP(final String randomNumber, final String mail) {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "sendOTPforRegister.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                Toast.makeText(RegisterActivity.this, "OTP sent successfully, check your mail", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(RegisterActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", mail);
+                params.put("otp",randomNumber);
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(RegisterActivity.this);
+        rQueue.add(stringRequest3);
     }
 
     private void registerAction() {

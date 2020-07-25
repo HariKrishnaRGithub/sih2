@@ -252,10 +252,10 @@
                             android:id="@+id/registerBtn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/purple"
-                            android:text="Register"
-                            android:textColorLink="#FFFFFF"
+                            android:background="@drawable/button_shape"
+                            android:text="next"
 
+                            android:textColorLink="#FFFFFF"
                             android:textSize="20dp" />
                     </androidx.cardview.widget.CardView>
 
