@@ -160,8 +160,7 @@ public class EmpProfileFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 getPreview();
-                                setDisplayProfile();
-                                updateDisplayProfile();
+
                                 alertDialog.cancel();
                             }
                         });
