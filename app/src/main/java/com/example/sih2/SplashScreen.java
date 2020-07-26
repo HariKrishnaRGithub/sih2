@@ -35,11 +35,11 @@ public class SplashScreen extends AppCompatActivity {
 
         tagline=(TextView)findViewById(R.id.tagline);
         title=(TextView)findViewById(R.id.futuretext);
-        ceo=(ImageView)findViewById(R.id.ceo);
-        employee=(ImageView)findViewById(R.id.employee);
+        //ceo=(ImageView)findViewById(R.id.ceo);
+        //employee=(ImageView)findViewById(R.id.employee);
         deal=(ImageView)findViewById(R.id.deal);
-        ceo.animate().translationX(0).setDuration(1000);
-        employee.animate().translationX(0).setDuration(1000);
+        //ceo.animate().translationX(0).setDuration(1000);
+        //.animate().translationX(0).setDuration(1000);
         deal.animate().translationY(0).setDuration(2500);
         title.setAlpha(0);
         title.animate().alpha((float) 0.8).setDuration(3000).setStartDelay(1500);
@@ -47,7 +47,7 @@ public class SplashScreen extends AppCompatActivity {
         tagline.animate().alpha((float) 0.5).setDuration(3000).setStartDelay(1500);
 
 
-
+/*
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -55,7 +55,7 @@ public class SplashScreen extends AppCompatActivity {
                     employee.animate().alpha(0).setDuration(1000);
                 }
             },2000);
-
+*/
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
