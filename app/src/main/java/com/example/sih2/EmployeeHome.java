@@ -1,6 +1,7 @@
 package com.example.sih2;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +13,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,13 +25,27 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EmployeeHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,EmpHomeFragment.employeeHomeSelected {
     private SharedPrefrencesHelper sharedPrefrencesHelper;
 
     TextView e_name,e_email;
-
+    CircleImageView e_dp;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
     Toolbar toolbar;
@@ -34,6 +53,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     TextView name,email;
+    private RequestQueue rQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +79,8 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
         View headerView = navigationView.getHeaderView(0);
         e_name = headerView.findViewById(R.id.emp_name_dp);
         e_email= headerView.findViewById(R.id.emp_email_dp);
+        e_dp=headerView.findViewById(R.id.e_dp);
+        updateDisplayProfile();
         e_name.setText(sharedPrefrencesHelper.getUsername());
         e_email.setText(sharedPrefrencesHelper.getEmail());
         
@@ -72,6 +94,49 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
 
 
+    }
+
+    private void updateDisplayProfile() {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getDisplayProfile.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                String imageEncoded;
+                                //Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
+                                JSONObject jsonObject1 = jsonObject.getJSONObject("details");
+                                imageEncoded=jsonObject1.getString("imagelocation");
+                                byte[] decodedByte = Base64.decode(imageEncoded, 0);
+                                Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+                                e_dp.setImageBitmap(svdimg);
+                            } else {
+                                Toast.makeText(EmployeeHome.this, "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmployeeHome.this, error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmployeeHome.this);
+        rQueue.add(stringRequest3);
     }
 
     @Override

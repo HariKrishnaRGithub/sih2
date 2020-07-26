@@ -160,8 +160,12 @@ public class EmpProfileFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 getPreview();
+                                setDisplayProfile();
+                                updateDisplayProfile();
+                                alertDialog.cancel();
                             }
                         });
+
                         submit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -170,6 +174,8 @@ public class EmpProfileFragment extends Fragment {
                                 alertDialog.cancel();
                             }
                         });
+
+
                         return false;
                     }
                 });
@@ -692,6 +698,7 @@ public class EmpProfileFragment extends Fragment {
                 select = 1;
                 ImageView previewDp = previewDpView.findViewById(R.id.displayPicture);
                 previewDp.setImageBitmap(bitmap);
+                displayPicture.setImageBitmap(bitmap);
             } catch (IOException e) {
                 select = 0;
             }
