@@ -71,7 +71,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class EmpProfileFragment extends Fragment {
     SharedPrefrencesHelper sharedPrefrencesHelper;
     TextView firstname, lastname, username, email, cancel, skillsListTV, degreeTV, experienceTV, empDiscriptionTV;
-    Button addNewSkillButton, addNewDegreeButton, degreeSubmitButton, addExperienceButton,refreshButton;
+    Button addNewSkillButton, addNewDegreeButton, degreeSubmitButton, addExperienceButton, refreshButton;
     CardView skillCard, degreeCD, innerDegreeCD, experienceCD, innerExperienceCV;
     Spinner specializationSpinner, topicSpinner, levelSpinner, degreeSpinner;
     private RequestQueue rQueue;
@@ -106,7 +106,7 @@ public class EmpProfileFragment extends Fragment {
         empDiscriptionTV = view.findViewById(R.id.empDiscriptionTV);
         displayPicture = view.findViewById(R.id.displayPicture);
         experienceLV = view.findViewById(R.id.experienceLV);
-        refreshButton=view.findViewById(R.id.refreshButton);
+        refreshButton = view.findViewById(R.id.refreshButton);
 
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,21 +160,16 @@ public class EmpProfileFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 getPreview();
-
-                                alertDialog.cancel();
                             }
                         });
-
                         submit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 setDisplayProfile();
-                                updateDisplayProfile();
                                 alertDialog.cancel();
+                                updateDisplayProfile();
                             }
                         });
-
-
                         return false;
                     }
                 });
@@ -244,6 +239,7 @@ public class EmpProfileFragment extends Fragment {
                 return false;
             }
         });
+
 
         skillsLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> arg0, View v, final int index, long arg3) {
@@ -582,7 +578,7 @@ public class EmpProfileFragment extends Fragment {
                             if (jsonObject.optString("success").equals("1")) {
                                 //Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("details");
-                                imageEncoded=jsonObject1.getString("imagelocation");
+                                imageEncoded = jsonObject1.getString("imagelocation");
                                 byte[] decodedByte = Base64.decode(imageEncoded, 0);
                                 Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
                                 displayPicture.setImageBitmap(svdimg);
@@ -614,7 +610,7 @@ public class EmpProfileFragment extends Fragment {
 
     private void setDisplayProfile() {
         ImageView previewImage;
-        previewImage=previewDpView.findViewById(R.id.displayPicture);
+        previewImage = previewDpView.findViewById(R.id.displayPicture);
         Bitmap bitmap = ((BitmapDrawable) previewImage.getDrawable()).getBitmap();
         displayPicture.setImageBitmap(bitmap);
 
@@ -654,7 +650,7 @@ public class EmpProfileFragment extends Fragment {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", sharedPrefrencesHelper.getUsername());
-                params.put("imageEncoded",imageEncoded);
+                params.put("imageEncoded", imageEncoded);
                 return params;
             }
         };
