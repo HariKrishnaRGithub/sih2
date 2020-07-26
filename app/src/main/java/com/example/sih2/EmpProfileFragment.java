@@ -115,6 +115,7 @@ public class EmpProfileFragment extends Fragment {
             }
         });
 
+        updateDisplayProfile();
         displayPicture.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -577,6 +578,9 @@ public class EmpProfileFragment extends Fragment {
                                 //Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("details");
                                 imageEncoded=jsonObject1.getString("imagelocation");
+                                byte[] decodedByte = Base64.decode(imageEncoded, 0);
+                                Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+                                displayPicture.setImageBitmap(svdimg);
                             } else {
                                 Toast.makeText(EmpProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
                             }
@@ -607,7 +611,7 @@ public class EmpProfileFragment extends Fragment {
         ImageView previewImage;
         previewImage=previewDpView.findViewById(R.id.displayPicture);
         Bitmap bitmap = ((BitmapDrawable) previewImage.getDrawable()).getBitmap();
-        //displayPicture.setImageBitmap(bitmap);
+        displayPicture.setImageBitmap(bitmap);
 
         Bitmap image = bitmap;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -674,11 +678,11 @@ public class EmpProfileFragment extends Fragment {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), resultUri);
                 int nh = (int) (bitmap.getHeight() * (250.0 / bitmap.getWidth()));
                 bitmap = Bitmap.createScaledBitmap(bitmap, 250, nh, true);
-                Bitmap image = bitmap;
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                byte[] b = byteArrayOutputStream.toByteArray();
-                imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+                //Bitmap image = bitmap;
+                //ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                //image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                //byte[] b = byteArrayOutputStream.toByteArray();
+                //imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
                 // SharedPreferences.Editor editor = prefs.edit();
                 //editor.putString("namePreferance", itemNAme);
                 //  editor.putString("svdimgs", imageEncoded);
