@@ -3,6 +3,8 @@ package com.example.sih2;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,9 +32,10 @@ import java.util.Map;
 import java.util.Random;
 
 public class RegisterActivity extends AppCompatActivity {
-    TextView loginTV;
+    TextView loginTV,firstNameTV;
     EditText fisrtName, lastName, username, email, password, password1;
     Button registerBtn;
+    CardView lastnameCardView;
     private RequestQueue rQueue;
     private SharedPrefrencesHelper sharedPrefrencesHelper;
 
@@ -42,6 +45,11 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        sharedPrefrencesHelper=new SharedPrefrencesHelper(this);
+        String acc=sharedPrefrencesHelper.getAccountType();
+
+
+
         loginTV = findViewById(R.id.loginTV);
         fisrtName = findViewById(R.id.firstName);
         lastName = findViewById(R.id.lastName);
@@ -50,7 +58,18 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         password1 = findViewById(R.id.password1);
         registerBtn = findViewById(R.id.registerBtn);
-        sharedPrefrencesHelper=new SharedPrefrencesHelper(this);
+        lastnameCardView=findViewById(R.id.lastnameCardView);
+        firstNameTV=findViewById(R.id.firstNameTV);
+
+        if(acc.equals("employee")){
+
+        }
+        if(acc.equals("company")){
+                lastnameCardView.setVisibility(View.GONE);
+                firstNameTV.setText("Company Name");
+                firstNameTV.setHint("Company Name");
+        }
+
         loginTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -164,19 +183,22 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerAction() {
         final String accType=sharedPrefrencesHelper.getAccountType();
         final String fname = fisrtName.getText().toString();
-        final String lname = lastName.getText().toString();
+        String lname = lastName.getText().toString();
         final String uname = username.getText().toString();
         final String mail = email.getText().toString();
         final String pswd = password.getText().toString();
         final String pswd1 = password1.getText().toString();
+        lname=" ";
         if (fname.isEmpty()) {
             fisrtName.setError("First name is required");
             fisrtName.requestFocus();
             return;
         }
         if (lname.isEmpty()) {
-            lastName.setError("Last name is required");
-            lastName.requestFocus();
+            if(accType=="1"){
+                lastName.setError("Last name is required");
+                lastName.requestFocus();
+            }
             return;
         }
         if (uname.isEmpty()) {
@@ -200,6 +222,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        final String finalLname = lname;
         StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "register.php",
                 new Response.Listener<String>() {
                     @Override
@@ -230,7 +253,7 @@ public class RegisterActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("firstname", fname);
-                params.put("lastname", lname);
+                params.put("lastname", finalLname);
                 params.put("username", uname);
                 params.put("email", mail);
                 params.put("password", pswd);
