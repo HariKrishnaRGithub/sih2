@@ -54,6 +54,7 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
     FragmentTransaction fragmentTransaction;
     TextView name,email;
     private RequestQueue rQueue;
+    private String imageEncoded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,50 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
         fragmentTransaction.add(R.id.company_container, new CompHomeFragment());
         fragmentTransaction.commit();
 
+        updateDisplayProfile();
 
+    }
+
+    private void updateDisplayProfile() {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getDisplayProfile.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                //Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
+                                JSONObject jsonObject1 = jsonObject.getJSONObject("details");
+                                imageEncoded = jsonObject1.getString("imagelocation");
+                                byte[] decodedByte = Base64.decode(imageEncoded, 0);
+                                Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+                                c_dp.setImageBitmap(svdimg);
+                            } else {
+                                Toast.makeText(CompanyHome.this, "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(CompanyHome.this, error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(CompanyHome.this);
+        rQueue.add(stringRequest3);
     }
 
     @Override
@@ -114,6 +158,14 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.company_container, new CompProfileFragment());
                 toolbar.setTitle("Profile");
+                fragmentTransaction.commit();
+                break;
+            case R.id.comp_jobs_menu_item:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.company_container, new CompJobsFragment());
+                toolbar.setTitle("Jobs");
                 fragmentTransaction.commit();
                 break;
             case R.id.comp_about_menu_item:

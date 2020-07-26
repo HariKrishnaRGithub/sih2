@@ -69,6 +69,7 @@ import co.lujun.androidtagview.TagView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EmpProfileFragment extends Fragment {
+
     SharedPrefrencesHelper sharedPrefrencesHelper;
     TextView firstname, lastname, username, email, cancel, skillsListTV, degreeTV, experienceTV, empDiscriptionTV;
     Button addNewSkillButton, addNewDegreeButton, degreeSubmitButton, addExperienceButton, refreshButton;

@@ -33,10 +33,5 @@ public class CompHomeFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
 
-
-    }
 }
