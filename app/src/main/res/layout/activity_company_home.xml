@@ -1,87 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/company_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    tools:context=".CompanyHome"
-    android:orientation="vertical">
-    <ScrollView
+    android:background="@drawable/gradient_background_2"
+    tools:context=".MainActivity">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_margin="30dp"
-        android:scrollbars="vertical">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/company_drawer_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E91E58" />
+
+        <include
+            layout="@layout/company_content_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:background="#E91E58" />
+    </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:gravity="center"
-                android:text="Company"
-                android:textColor="#FFFFFF"
-                android:textSize="30dp"
-                android:textStyle="bold" />
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/companynavigationview"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#FFFFFF"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/company_drawer_header"
+        app:itemTextColor="#09203F"
+        app:menu="@menu/company_drawer_menu" />
 
-            <TextView
-                android:id="@+id/firstnameemp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:text="First Name"
-                android:textColor="#FFFFFF"
-                android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/lastnameemp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:text="Last Name"
-                android:textColor="#FFFFFF"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/usernameemp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:text="Username"
-                android:textColor="#FFFFFF"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/emailemp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:text="Email"
-                android:textColor="#FFFFFF"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/acctypeemp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:text="AccountType"
-                android:textColor="#FFFFFF"
-                android:textSize="20dp" />
-
-        </LinearLayout>
-    </ScrollView>
-    <Button
-        android:id="@+id/logoutBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:text="Logout"
-        android:layout_margin="30dp"
-        android:textColor="#FFF"
-        android:textSize="20dp"
-        />
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

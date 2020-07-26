@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="dark_blue">#3023AE</color>
     <color name="purple">#c86dd7</color>
+    <color name="colorPrimaryCompany">#99003EB1</color>
+    <color name="colorPrimaryDarkCompany">#CC002B70</color>
 
     <color name="secondary_text_color_white">#80FFFFFF</color>
     <color name="secondary_text_material_light">#E6FFFFFF</color>
