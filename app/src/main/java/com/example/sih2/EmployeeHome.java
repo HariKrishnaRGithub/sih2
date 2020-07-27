@@ -172,6 +172,11 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.emp_settings_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.employee_container, new SettingsFragment());
+                toolbar.setTitle("Settings");
+                fragmentTransaction.commit();
                 break;
             case R.id.emp_feedback_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -184,7 +189,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
             case R.id.emp_quit_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeHome.this);
-                builder.setTitle("BETTER FUTURE");
+                builder.setTitle("Better Future");
                 builder.setIcon(R.mipmap.ic_launcher);
                 builder.setMessage("Do you want to exit?")
                         .setCancelable(false)

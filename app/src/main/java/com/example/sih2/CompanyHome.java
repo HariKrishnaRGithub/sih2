@@ -178,6 +178,11 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.comp_settings_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.company_container, new SettingsFragment());
+                toolbar.setTitle("Settings");
+                fragmentTransaction.commit();
                 break;
             case R.id.comp_feedback_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -190,7 +195,7 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
             case R.id.comp_quit_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 AlertDialog.Builder builder = new AlertDialog.Builder(CompanyHome.this);
-                builder.setTitle("BETTER FUTURE");
+                builder.setTitle("Better Future");
                 builder.setIcon(R.mipmap.ic_launcher);
                 builder.setMessage("Do you want to exit?")
                         .setCancelable(false)
