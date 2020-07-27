@@ -1,9 +1,12 @@
 package com.example.sih2;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -11,12 +14,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
@@ -40,19 +45,58 @@ public class CompJobsFragment extends Fragment {
     Button addNewJobButton;
     SharedPrefrencesHelper sharedPrefrencesHelper;
     Spinner specializationSpinner, topicSpinner, levelSpinner;
+    MyListView jobsLV;
     private RequestQueue rQueue;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_comp_jobs, container, false);
 
         sharedPrefrencesHelper = new SharedPrefrencesHelper(this.getActivity());
         username = sharedPrefrencesHelper.getUsername();
+        jobsLV=view.findViewById(R.id.jobsLV);
         addNewJobButton = view.findViewById(R.id.addNewJobButton);
         //default method calls
-
+        updateJobsLV();
         //main
+
+        jobsLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> arg0, View v, final int index, long arg3) {
+                PopupMenu popup = new PopupMenu(CompJobsFragment.this.getActivity(), jobsLV);
+                popup.getMenuInflater().inflate(R.menu.popup_delete, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        View row = jobsLV.getAdapter().getView(index, view, container);
+                        final TextView temptitle = row.findViewById(R.id.titleInJobs);
+                        final TextView tempdiscription=row.findViewById(R.id.discriptionInJobs);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Delete job");
+                        builder.setMessage("Do you want to delete the job " + temptitle.getText().toString() + " ?")
+                                .setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        deleteCompJob(temptitle.getText().toString(),tempdiscription.getText().toString());
+                                        updateJobsLV();
+                                        dialog.cancel();
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                        return false;
+                    }
+                });
+                popup.show();
+                return false;
+            }
+        });
+        
         addNewJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +108,7 @@ public class CompJobsFragment extends Fragment {
                 alertDialog.show();
 
                 final EditText jobTitleET, jobDiscriptionET, jobExperienceET;
-                final Button cancelJobButton, nextInJobButton, addSkillsForJob;
+                final Button cancelJobButton, nextInJobButton, addSkillsForJob,doneButton;
                 final MyListView skillsLV;
                 skillsLV = dialogView.findViewById(R.id.skillsLV);
                 jobTitleET = dialogView.findViewById(R.id.jobTitleET);
@@ -72,6 +116,7 @@ public class CompJobsFragment extends Fragment {
                 jobExperienceET = dialogView.findViewById(R.id.jobDiscriptionET);
                 cancelJobButton = dialogView.findViewById(R.id.cancelJobButton);
                 nextInJobButton = dialogView.findViewById(R.id.nextInJobButton);
+                doneButton=dialogView.findViewById(R.id.doneButton);
                 addSkillsForJob = dialogView.findViewById(R.id.addSkillsforJobButton);
                 cancelJobButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -87,6 +132,8 @@ public class CompJobsFragment extends Fragment {
                         final String discription=jobDiscriptionET.getText().toString();
                         jobTitleET.setEnabled(false);
                         jobDiscriptionET.setEnabled(false);
+                        String tempexp=jobExperienceET.getText().toString();
+                        jobExperienceET.setText(tempexp);
                         jobExperienceET.setEnabled(false);
                         skillsLV.setVisibility(View.VISIBLE);
                         addSkillsForJob.setVisibility(View.VISIBLE);
@@ -181,12 +228,112 @@ public class CompJobsFragment extends Fragment {
 
                     }
                 });
+                doneButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.cancel();
+                    }
+                });
             }
         });
 
         //end of oncreate
         return view;
     }
+
+    private void deleteCompJob(final String title, final String discription) {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "deleteCompJob.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                Toast.makeText(getActivity(), "deleted", Toast.LENGTH_SHORT).show();
+                                updateJobsLV();
+                            } else {
+                                Toast.makeText(CompJobsFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(CompJobsFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(CompJobsFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                params.put("title", title);
+                params.put("discription", discription);
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(CompJobsFragment.this.getActivity());
+        rQueue.add(stringRequest3);
+    }
+
+    private void updateJobsLV() {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getCompJobs.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                final ArrayList titleList, discriptionList;
+                                titleList=new ArrayList();
+                                discriptionList=new ArrayList();
+                                JSONArray jsonArray = jsonObject.getJSONArray("details");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject3 = jsonArray.getJSONObject(i);
+                                    String temptitle = jsonObject3.getString("jname");
+                                    String tempdiscription = jsonObject3.getString("discription");
+                                    titleList.add(temptitle);
+                                    discriptionList.add(tempdiscription);
+
+                                }
+                                JobsListAdapter jobsListAdapter = new JobsListAdapter(CompJobsFragment.this.getActivity(), titleList, discriptionList);
+                                jobsLV.setAdapter(jobsListAdapter);
+                                jobsListAdapter.notifyDataSetChanged();
+                            } else {
+                                //Toast.makeText(CompJobsFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(CompJobsFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(CompJobsFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(CompJobsFragment.this.getActivity());
+        rQueue.add(stringRequest3);
+        
+    }
+
 
     private void updateSkillsLV(View dialogView, final String title, final String discription) {
         final ArrayList<String> topicsList, specializationList, levelsList;
@@ -215,11 +362,12 @@ public class CompJobsFragment extends Fragment {
                                     levelsList.add(templevel);
 
                                 }
-
+                                SkillsListAdapter skillsListAdapter2 = new SkillsListAdapter(CompJobsFragment.this.getActivity(), topicsList, specializationList, levelsList);
+                                skillsLV.setAdapter(skillsListAdapter2);
+                                skillsListAdapter2.notifyDataSetChanged();
                                 SkillsListAdapter skillsListAdapter = new SkillsListAdapter(CompJobsFragment.this.getActivity(), topicsList, specializationList, levelsList);
                                 skillsLV.setAdapter(skillsListAdapter);
                                 skillsListAdapter.notifyDataSetChanged();
-
                             } else {
                                 Toast.makeText(CompJobsFragment.this.getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                             }
@@ -242,7 +390,6 @@ public class CompJobsFragment extends Fragment {
                 params.put("username", sharedPrefrencesHelper.getUsername());
                 params.put("title", title);
                 params.put("discription", discription);
-
                 return params;
             }
         };
@@ -490,4 +637,24 @@ public class CompJobsFragment extends Fragment {
     }
 
     //end of class
+}
+class JobsListAdapter extends ArrayAdapter {
+    ArrayList<String> title, discription;
+    public JobsListAdapter(Context context, ArrayList<String> title, ArrayList<String> discription) {
+        super(context, R.layout.custom_listview_comp_jobs, R.id.titleInJobs,title);
+        this.title = title;
+        this.discription = discription;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row = inflater.inflate(R.layout.custom_listview_comp_jobs, parent, false);
+        TextView titleInJobs=row.findViewById(R.id.titleInJobs);
+        TextView disctiptionInJobs = row.findViewById(R.id.discriptionInJobs);
+        titleInJobs.setText(title.get(position));
+        disctiptionInJobs.setText(discription.get(position));
+        return row;
+    }
 }
