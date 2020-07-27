@@ -117,6 +117,8 @@ public class EmpProfileFragment extends Fragment {
         });
 
         updateDisplayProfile();
+
+        //when display picture is long clicked
         displayPicture.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -1542,15 +1544,12 @@ class ExperienceListAdapter extends ArrayAdapter {
 }
 
 class MyListView extends ListView {
-
     public MyListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
     public MyListView(Context context) {
         super(context);
     }
-
     public MyListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
