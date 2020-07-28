@@ -10,4 +10,13 @@
 
     <color name="secondary_text_color_white">#80FFFFFF</color>
     <color name="secondary_text_material_light">#E6FFFFFF</color>
+
+    <!--dark-->
+    <color name="colorPrimaryNight">#16202c</color>
+    <color name="colorPrimaryDarkNight">#141d26</color>
+    <color name="colorAccentNight">#ffffff</color>
+
+    <color name="bgColor">#1DA1F2</color>
+    <color name="bgColorNight">#3b3e42</color>
+
 </resources>
