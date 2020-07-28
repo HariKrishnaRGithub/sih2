@@ -249,7 +249,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() { // exit dialog
 
         AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeHome.this);
-        builder.setTitle("BETTER FUTURE");
+        builder.setTitle("Better Future");
         builder.setIcon(R.mipmap.ic_launcher);
         builder.setMessage("Do you want to exit?")
                 .setCancelable(false)
