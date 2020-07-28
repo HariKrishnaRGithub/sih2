@@ -223,6 +223,7 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
                 builder = new AlertDialog.Builder(CompanyHome.this);
                 //builder.setTitle(R.string.app_name);
                 builder.setIcon(R.mipmap.ic_launcher);
+                builder.setTitle("Logout");
                 builder.setMessage("Do you want to Logout?")
                         .setCancelable(false)
                         .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
