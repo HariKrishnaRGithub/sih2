@@ -11,10 +11,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
@@ -60,6 +63,8 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_home);
+
+        isOnline();
 
         sharedPrefrencesHelper =new SharedPrefrencesHelper(this);
 
@@ -243,5 +248,34 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
 
 
         return true;
+    }
+    public boolean isOnline() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        else
+        {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("No internet");
+            builder.setIcon(R.mipmap.ic_launcher);
+            builder.setMessage("You are not connected to internet.Try again")
+                    .setCancelable(false)
+                    .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("open settings", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        return false;
     }
 }

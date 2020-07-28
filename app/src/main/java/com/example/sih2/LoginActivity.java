@@ -1,7 +1,13 @@
 package com.example.sih2;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -35,6 +41,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        isOnline();
+
         registerTV = findViewById(R.id.registerTV);
         user = findViewById(R.id.user);
         password = findViewById(R.id.password);
@@ -134,5 +143,35 @@ public class LoginActivity extends AppCompatActivity {
         };
         rQueue = Volley.newRequestQueue(LoginActivity.this);
         rQueue.add(stringRequest);
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        else
+        {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("No internet");
+            builder.setIcon(R.mipmap.ic_launcher);
+            builder.setMessage("You are not connected to internet.Try again")
+                    .setCancelable(false)
+                    .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("open settings", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        return false;
     }
 }
