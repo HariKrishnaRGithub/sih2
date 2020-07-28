@@ -8,7 +8,7 @@
         android:id="@+id/c_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorPrimaryDark"
         android:foregroundGravity="center"
         app:title="Home"
         app:titleTextColor="@color/design_default_color_background" />
