@@ -34,8 +34,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_margin="10dp"
                         android:text="Jobs"
                         android:textColor="#000000"
                         android:textSize="24sp"
@@ -52,7 +51,7 @@
                     <com.example.sih2.MyListView
                         android:id="@+id/jobsLV"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="50dp" />
 
                     <Button
                         android:id="@+id/addNewJobButton"

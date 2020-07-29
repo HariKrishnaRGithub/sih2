@@ -15,6 +15,7 @@
                 />
             <item
                 android:id="@+id/comp_jobs_menu_item"
+                android:icon="@drawable/create_jobs"
                 android:title="Jobs"
                 />
         </menu>
@@ -24,14 +25,14 @@
             <item
                 android:id="@+id/comp_settings_menu_item"
                 android:icon="@drawable/employee_settings"
-                android:title="Account Settings" />
+                android:title="Settings" />
             <item
                 android:id="@+id/comp_about_menu_item"
                 android:icon="@drawable/about"
                 android:title="About Us" />
             <item
                 android:id="@+id/comp_feedback_menu_item"
-                android:icon="@drawable/employee_profile"
+                android:icon="@drawable/feedback"
                 android:title="Feedback" />
             <item
                 android:id="@+id/comp_quit_menu_item"

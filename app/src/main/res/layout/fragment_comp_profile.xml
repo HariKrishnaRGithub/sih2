@@ -62,8 +62,7 @@
                         android:id="@+id/refreshButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_margin="10dp"
                         android:background="@drawable/corner_round_shape"
                         android:text="refresh" />
 

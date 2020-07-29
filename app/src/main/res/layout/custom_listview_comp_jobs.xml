@@ -20,14 +20,19 @@
             android:id="@+id/titleInJobs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text="Title"
+            android:textColor="@color/colorPrimaryDarkNight"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/discriptionInJobs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:layout_margin="5dp"
+            />
     </LinearLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
