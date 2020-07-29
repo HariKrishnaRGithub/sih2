@@ -250,6 +250,30 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
 
         return true;
     }
+
+    @Override
+    public void onBackPressed() { // exit dialog
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(CompanyHome.this);
+        builder.setTitle("Better Future");
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setMessage("Do you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
     public boolean isOnline() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
