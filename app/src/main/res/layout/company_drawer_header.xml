@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/bgColor"
-    android:paddingBottom="5dp">
+    android:paddingBottom="10dp">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -15,6 +15,8 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/circle_bag"
         android:contentDescription="TODO"
+        android:cropToPadding="true"
+        android:padding="5dp"
         android:src="@drawable/profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +30,7 @@
         android:layout_marginTop="10dp"
         android:text="TextView"
         android:textColor="@color/secondary_text_material_light"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/c_dp" />

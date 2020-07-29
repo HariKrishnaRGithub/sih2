@@ -19,8 +19,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
-            app:contentPadding="10dp">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,6 +34,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
                     android:text="New Job Opening"
+                    android:textColor="@color/colorPrimaryNight"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -81,7 +81,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:hint="experience required"
+                        android:hint="Experience required"
                         android:inputType="numberDecimal"
                         android:padding="10dp"
                         android:textSize="16sp" />
@@ -92,7 +92,7 @@
                         android:layout_weight="1"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
-                        android:text="( in years )"
+                        android:text="years"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -134,7 +134,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp">
 
                     <Button
                         android:id="@+id/doneButton"
@@ -149,7 +150,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_shape"
-                        android:text="add a new skill for job"
+                        android:text="add required skills"
                         android:visibility="gone" />
                 </LinearLayout>
 
