@@ -25,7 +25,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="20dp"
-                android:fontFamily="@font/product_sans_regular"
                 android:gravity="center"
                 android:text="Welcome to BetterFuture!"
                 android:textColor="#FFFFFF"
@@ -36,7 +35,6 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/product_sans_regular"
                 android:gravity="center"
                 android:text="Go set your profile !"
                 android:textColor="@color/secondary_text_material_light" />

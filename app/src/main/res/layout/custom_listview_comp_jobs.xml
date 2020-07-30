@@ -21,7 +21,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:fontFamily="@font/product_sans_regular"
                 android:paddingLeft="10dp"
                 android:text="Title"
                 android:textColor="@color/colorPrimaryDarkNight"
@@ -33,7 +32,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:fontFamily="@font/product_sans_regular"
                 android:paddingLeft="10dp"
                 android:text="TextView" />
         </LinearLayout>

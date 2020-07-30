@@ -35,7 +35,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/employee_drawer_header"
         app:itemTextColor="#09203F"
-        android:fontFamily="@font/product_sans_regular"
         app:menu="@menu/employee_drawer_menu" />
 
 

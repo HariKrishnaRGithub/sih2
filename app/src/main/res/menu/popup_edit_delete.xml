@@ -2,10 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/edit_popup_menu"
-        android:title="Edit"
-        android:fontFamily="@font/product_sans_regular"/>
+        android:title="Edit" />
     <item
         android:id="@+id/delete_popup_menu"
-        android:title="Delete"
-        android:fontFamily="@font/product_sans_regular"/>
+        android:title="Delete" />
 </menu>

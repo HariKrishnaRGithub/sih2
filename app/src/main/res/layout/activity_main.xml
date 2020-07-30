@@ -21,7 +21,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:fontFamily="@font/product_sans_regular"
                 android:gravity="center"
                 android:text="Welcome to something Big!!"
                 android:textColor="#FFFFFF"
@@ -33,7 +32,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:fontFamily="@font/product_sans_regular"
                 android:text="First Name"
                 android:textColor="#FFFFFF"
                 android:textSize="20dp" />
@@ -43,7 +41,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:fontFamily="@font/product_sans_regular"
                 android:text="Last Name"
                 android:textColor="#FFFFFF"
                 android:textSize="20dp" />
@@ -53,7 +50,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:fontFamily="@font/product_sans_regular"
                 android:text="Username"
                 android:textColor="#FFFFFF"
                 android:textSize="20dp" />
@@ -63,7 +59,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:fontFamily="@font/product_sans_regular"
                 android:text="Email"
                 android:textColor="#FFFFFF"
                 android:textSize="20dp" />
@@ -77,7 +72,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         android:background="@color/colorAccent"
-        android:fontFamily="@font/product_sans_regular"
         android:text="Logout"
         android:textColor="#FFF"
         android:textSize="20dp" />

@@ -74,7 +74,6 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginRight="5dp"
                                         android:layout_weight="0.7"
-                                        android:fontFamily="@font/product_sans_regular"
                                         android:gravity="left"
                                         android:text="Company Name"
                                         android:textColor="@color/secondary_text_material_light"
@@ -87,7 +86,6 @@
                                     android:id="@+id/comp_username"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/product_sans_regular"
                                     android:gravity="center|left"
                                     android:text="Username"
                                     android:textColor="@color/secondary_text_material_light" />
@@ -96,7 +94,6 @@
                                     android:id="@+id/comp_email"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/product_sans_regular"
                                     android:gravity="center|left"
                                     android:text="email"
                                     android:textColor="@color/secondary_text_material_light" />
@@ -113,7 +110,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="20dp"
-                                android:fontFamily="@font/product_sans_regular"
                                 android:gravity="center"
                                 android:text="Add Company Description, long press to edit" />
                         </androidx.cardview.widget.CardView>

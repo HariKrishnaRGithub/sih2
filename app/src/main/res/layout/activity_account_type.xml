@@ -45,7 +45,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/product_sans_regular"
                     android:gravity="center"
                     android:text="I am looking for my dream job !"
                     android:textColor="@color/design_default_color_on_secondary"
@@ -73,7 +72,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/product_sans_regular"
                     android:gravity="center"
                     android:text="I want to hire the perfect candidate !"
                     android:textColor="@color/design_default_color_on_secondary"
