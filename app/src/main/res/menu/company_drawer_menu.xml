@@ -1,47 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Menus">
+    <item android:title="Menu"
+        android:fontFamily="@font/product_sans_regular">
         <menu>
             <item
                 android:id="@+id/comp_home_menu_item"
                 android:icon="@drawable/employee_home"
                 android:title="Home"
+                android:fontFamily="@font/product_sans_regular"
                 />
             <item
                 android:id="@+id/comp_profile_menu_item"
                 android:icon="@drawable/emp_profile"
                 android:title="Profile"
+                android:fontFamily="@font/product_sans_regular"
                 />
             <item
                 android:id="@+id/comp_jobs_menu_item"
                 android:icon="@drawable/create_jobs"
                 android:title="Create Jobs"
+                android:fontFamily="@font/product_sans_regular"
                 />
         </menu>
     </item>
-    <item android:title="Others">
+    <item android:title="Others"
+        android:fontFamily="@font/product_sans_regular">
         <menu>
             <item
                 android:id="@+id/comp_settings_menu_item"
                 android:icon="@drawable/employee_settings"
-                android:title="Settings" />
+                android:title="Settings"
+                android:fontFamily="@font/product_sans_regular" />
             <item
                 android:id="@+id/comp_about_menu_item"
                 android:icon="@drawable/about"
-                android:title="About Us" />
+                android:title="About Us"
+                android:fontFamily="@font/product_sans_regular" />
             <item
                 android:id="@+id/comp_feedback_menu_item"
                 android:icon="@drawable/feedback"
-                android:title="Feedback" />
+                android:title="Feedback"
+                android:fontFamily="@font/product_sans_regular" />
             <item
                 android:id="@+id/comp_quit_menu_item"
                 android:title="Quit"
-                android:icon="@drawable/quit" />
+                android:icon="@drawable/quit"
+                android:fontFamily="@font/product_sans_regular" />
             <item
                 android:id="@+id/comp_logout_menu_item"
                 android:title="Log out"
-                android:icon="@drawable/logout" />
+                android:icon="@drawable/logout"
+                android:fontFamily="@font/product_sans_regular" />
         </menu>
     </item>
 </menu>

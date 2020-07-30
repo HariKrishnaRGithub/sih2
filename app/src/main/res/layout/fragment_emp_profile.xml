@@ -75,6 +75,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginRight="5dp"
                                         android:layout_weight="0.7"
+                                        android:fontFamily="@font/product_sans_regular"
                                         android:gravity="left"
                                         android:text="First Name"
                                         android:textColor="@color/secondary_text_material_light"
@@ -86,6 +87,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="0.7"
+                                        android:fontFamily="@font/product_sans_regular"
                                         android:gravity="left"
                                         android:text="Last Name"
                                         android:textColor="@color/secondary_text_material_light"
@@ -97,6 +99,7 @@
                                     android:id="@+id/emp_username"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/product_sans_regular"
                                     android:gravity="center|left"
                                     android:text="Username"
                                     android:textColor="@color/secondary_text_material_light" />
@@ -105,6 +108,7 @@
                                     android:id="@+id/emp_email"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/product_sans_regular"
                                     android:gravity="center|left"
                                     android:text="email"
                                     android:textColor="@color/secondary_text_material_light" />
@@ -121,6 +125,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="20dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:gravity="center"
                                 android:text="Your description will apperar here., long press to edit" />
                         </androidx.cardview.widget.CardView>
@@ -162,6 +167,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Skills"
                                 android:textColor="#000000"
                                 android:textSize="24sp"
@@ -189,6 +195,7 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp"
                                 android:background="#00FFFFFF"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:gravity="center"
                                 android:padding="10dp"
                                 android:text="Add new skill"
@@ -216,6 +223,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Qualification"
                                 android:textColor="#000000"
                                 android:textSize="24sp"
@@ -252,6 +260,7 @@
                                         android:layout_marginTop="5dp"
                                         android:layout_marginBottom="5dp"
                                         android:background="#00FFFFFF"
+                                        android:fontFamily="@font/product_sans_regular"
                                         android:text="add another degree"
                                         android:visibility="visible" />
 
@@ -279,6 +288,7 @@
                                 android:id="@+id/experienceTV"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Experience"
                                 android:textColor="#000000"
                                 android:textSize="24sp"
@@ -297,6 +307,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="#00FFFFFF"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="add an experience" />
 
                         </LinearLayout>
@@ -309,6 +320,7 @@
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/corner_round_shape"
+                        android:fontFamily="@font/product_sans_regular"
                         android:text="refresh" />
 
                 </LinearLayout>

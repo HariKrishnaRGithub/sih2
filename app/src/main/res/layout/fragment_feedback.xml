@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
+                android:fontFamily="@font/product_sans_regular"
                 android:gravity="center"
                 android:text="Thank you for using the App"
                 android:textColor="#FFFFFF"
@@ -35,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="30dp"
+                android:fontFamily="@font/product_sans_regular"
                 android:gravity="center"
                 android:text="Your feedback is always appreciated"
                 android:textColor="#FFFFFF"
@@ -56,6 +58,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#DDF3F6"
+                        android:fontFamily="@font/product_sans_regular"
                         android:gravity="start|center_vertical"
                         android:hint="Subject"
                         android:padding="10dp"
@@ -71,6 +74,7 @@
                         android:id="@+id/edit_text_message"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
+                        android:fontFamily="@font/product_sans_regular"
                         android:gravity="start"
                         android:hint="Enter your feedback here"
                         android:padding="10dp"
@@ -91,6 +95,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/button_shape"
+                android:fontFamily="@font/product_sans_regular"
                 android:text="SUBMIT">
 
             </Button>

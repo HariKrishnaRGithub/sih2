@@ -11,6 +11,7 @@
         android:background="?attr/colorPrimaryDark"
         android:foregroundGravity="center"
         app:title="Home"
+        android:fontFamily="@font/product_sans_regular"
         app:titleTextColor="@color/design_default_color_background" />
 
 </LinearLayout>

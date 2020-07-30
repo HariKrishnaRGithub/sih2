@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="50dp"
+                android:fontFamily="@font/product_sans_regular"
                 android:gravity="center"
                 android:text="S I G N   I N"
                 android:textColor="@color/secondary_text_material_light"
@@ -58,6 +59,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Username or Email"
                                 android:textColorLink="#FFFFFF"
                                 android:textSize="18sp"></TextView>
@@ -66,6 +68,7 @@
                                 android:id="@+id/user"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:hint="Username or Email"
                                 android:inputType="textAutoComplete"
                                 android:singleLine="true"
@@ -88,10 +91,12 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Password"
                                 android:textColorLink="#FFFFFF"
                                 android:textSize="18sp"></TextView>
@@ -111,6 +116,7 @@
                                         android:id="@+id/password"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/product_sans_regular"
                                         android:hint="Password"
                                         android:inputType="textPassword"
                                         android:shadowColor="#FFFFFF"
@@ -153,6 +159,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/button_shape"
+                            android:fontFamily="@font/product_sans_regular"
                             android:text="Login"
                             android:textColorLink="#FFFFFF" />
                     </androidx.cardview.widget.CardView>
@@ -164,6 +171,7 @@
                 android:id="@+id/registerTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/product_sans_regular"
                 android:gravity="center"
                 android:paddingVertical="10dp"
                 android:text="New user? Register an account here !"

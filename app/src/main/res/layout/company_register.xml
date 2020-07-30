@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="50dp"
+                android:fontFamily="@font/product_sans_regular"
                 android:text="Create Account : Company"
                 android:textColor="@color/design_default_color_background"
                 android:textSize="24sp"
@@ -54,6 +55,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:paddingTop="10dp"
                                 android:text="Company Name"
                                 android:textColorLink="#FFFFFF"
@@ -63,6 +65,7 @@
                                 android:id="@+id/firstName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:hint="Company Name"
                                 android:inputType="text"
                                 android:singleLine="true"
@@ -89,6 +92,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:paddingTop="10dp"
                                 android:text="Email"
                                 android:textColorLink="#FFFFFF"
@@ -98,6 +102,7 @@
                                 android:id="@+id/emailemp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:hint="Email"
                                 android:inputType="textEmailAddress"
                                 android:singleLine="true"
@@ -123,6 +128,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:paddingTop="10dp"
                                 android:text="Password"
                                 android:textColorLink="#FFFFFF"
@@ -132,6 +138,7 @@
                                 android:id="@+id/password"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:hint="Password"
                                 android:inputType="textPassword"
                                 android:singleLine="true"
@@ -157,6 +164,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:paddingTop="10dp"
                                 android:text="Confirm Password"
                                 android:textColorLink="#FFFFFF"
@@ -166,6 +174,7 @@
                                 android:id="@+id/password1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:hint="Confirm Password"
                                 android:inputType="textPassword"
                                 android:singleLine="true"
@@ -185,9 +194,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/purple"
+                            android:fontFamily="@font/product_sans_regular"
                             android:text="Register"
-                            android:textColorLink="#FFFFFF"
 
+                            android:textColorLink="#FFFFFF"
                             android:textSize="20dp" />
                     </androidx.cardview.widget.CardView>
 
@@ -199,6 +209,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
+                android:fontFamily="@font/product_sans_regular"
                 android:gravity="center"
                 android:paddingVertical="10dp"
                 android:text="Have Account? Login Here"

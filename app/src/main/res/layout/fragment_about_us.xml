@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="50dp"
+                android:fontFamily="@font/product_sans_regular"
                 android:gravity="center"
                 android:text="T E A M  P Y"
                 android:textColor="#FFFFFF"
@@ -35,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
+                android:fontFamily="@font/product_sans_regular"
                 android:gravity="center"
                 android:text="Our Team"
                 android:textColor="#FFFFFF"
@@ -78,6 +80,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Hansen"
                                 android:textColor="@color/design_default_color_on_secondary"
                                 android:textSize="10sp">
@@ -106,6 +109,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Harikrishna"
                                 android:textColor="@color/design_default_color_on_secondary"
                                 android:textSize="10sp">
@@ -134,6 +138,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Harsha"
                                 android:textColor="@color/design_default_color_on_secondary"
                                 android:textSize="10sp">
@@ -167,6 +172,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Anjana"
                                 android:textColor="@color/design_default_color_on_secondary"
                                 android:textSize="10sp">
@@ -195,6 +201,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Aysha"
                                 android:textColor="@color/design_default_color_on_secondary"
                                 android:textSize="10sp">
@@ -223,6 +230,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Chintan"
                                 android:textColor="@color/design_default_color_on_secondary"
                                 android:textSize="10sp"></TextView>
@@ -266,6 +274,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Contact Us"
                                 android:textColor="@color/design_default_color_on_secondary"
                                 android:textSize="18sp"
@@ -389,11 +398,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
+                                android:fontFamily="@font/product_sans_regular"
                                 android:text="Website"
                                 android:textColor="@color/design_default_color_on_secondary"
                                 android:textSize="18sp"
-                                android:textStyle="bold">
-                            </TextView>
+                                android:textStyle="bold"></TextView>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -406,12 +415,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
+                        android:autoLink="web"
+                        android:fontFamily="@font/product_sans_regular"
                         android:paddingLeft="20dp"
                         android:text="www.betterfuture.tech"
                         android:textColor="@color/design_default_color_on_secondary"
                         android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:autoLink="web"></TextView>
+                        android:textStyle="bold"></TextView>
 
                 </LinearLayout>
 
