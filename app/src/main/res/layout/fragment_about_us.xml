@@ -348,7 +348,7 @@
                                 android:layout_gravity="center"
                                 android:layout_margin="10dp"
                                 android:layout_weight="1"
-                                app:srcCompat="@drawable/fb" />
+                                app:srcCompat="@drawable/facebook" />
 
                         </LinearLayout>
 
