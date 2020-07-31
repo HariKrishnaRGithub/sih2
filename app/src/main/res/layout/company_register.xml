@@ -186,8 +186,8 @@
                             android:layout_height="wrap_content"
                             android:background="@color/purple"
                             android:text="Register"
-                            android:textColorLink="#FFFFFF"
 
+                            android:textColorLink="#FFFFFF"
                             android:textSize="20dp" />
                     </androidx.cardview.widget.CardView>
 

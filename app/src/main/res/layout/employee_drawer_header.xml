@@ -18,7 +18,6 @@
         android:textColorHighlight="@color/secondary_text_color_white"
         android:textColorHint="@color/secondary_text_color_white"
         android:textColorLink="@color/secondary_text_color_white"
-        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emp_name_dp" />

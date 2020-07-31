@@ -392,8 +392,7 @@
                                 android:text="Website"
                                 android:textColor="@color/design_default_color_on_secondary"
                                 android:textSize="18sp"
-                                android:textStyle="bold">
-                            </TextView>
+                                android:textStyle="bold"></TextView>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -406,12 +405,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
+                        android:autoLink="web"
                         android:paddingLeft="20dp"
                         android:text="www.betterfuture.tech"
                         android:textColor="@color/design_default_color_on_secondary"
                         android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:autoLink="web"></TextView>
+                        android:textStyle="bold"></TextView>
 
                 </LinearLayout>
 

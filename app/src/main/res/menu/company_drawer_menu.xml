@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Menus">
+    <item android:title="Menu">
         <menu>
             <item
                 android:id="@+id/comp_home_menu_item"
@@ -10,12 +10,13 @@
                 />
             <item
                 android:id="@+id/comp_profile_menu_item"
-                android:icon="@drawable/employee_profile"
+                android:icon="@drawable/emp_profile"
                 android:title="Profile"
                 />
             <item
                 android:id="@+id/comp_jobs_menu_item"
-                android:title="Jobs"
+                android:icon="@drawable/create_jobs"
+                android:title="Create Jobs"
                 />
         </menu>
     </item>
@@ -24,14 +25,14 @@
             <item
                 android:id="@+id/comp_settings_menu_item"
                 android:icon="@drawable/employee_settings"
-                android:title="Account Settings" />
+                android:title="Settings" />
             <item
                 android:id="@+id/comp_about_menu_item"
                 android:icon="@drawable/about"
                 android:title="About Us" />
             <item
                 android:id="@+id/comp_feedback_menu_item"
-                android:icon="@drawable/employee_profile"
+                android:icon="@drawable/feedback"
                 android:title="Feedback" />
             <item
                 android:id="@+id/comp_quit_menu_item"

@@ -5,16 +5,20 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
@@ -22,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +65,8 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_home);
 
+        isOnline();
+
         sharedPrefrencesHelper =new SharedPrefrencesHelper(this);
 
         toolbar =findViewById(R.id.e_toolbar);
@@ -74,7 +81,6 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
-
 
         View headerView = navigationView.getHeaderView(0);
         e_name = headerView.findViewById(R.id.emp_name_dp);
@@ -249,7 +255,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() { // exit dialog
 
         AlertDialog.Builder builder = new AlertDialog.Builder(EmployeeHome.this);
-        builder.setTitle("BETTER FUTURE");
+        builder.setTitle("Better Future");
         builder.setIcon(R.mipmap.ic_launcher);
         builder.setMessage("Do you want to exit?")
                 .setCancelable(false)
@@ -268,5 +274,33 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
 
     }
 
+    public boolean isOnline() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        else
+        {
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("No internet");
+            builder.setIcon(R.mipmap.ic_launcher);
+            builder.setMessage("You are not connected to internet.Try again")
+                    .setCancelable(false)
+                    .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("open settings", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        return false;
+    }
 }

@@ -112,7 +112,8 @@ public class EmpProfileFragment extends Fragment {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "In development", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Refreshed", Toast.LENGTH_SHORT).show();
+                getActivity().recreate();
             }
         });
 

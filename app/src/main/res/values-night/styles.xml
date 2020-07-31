@@ -7,7 +7,7 @@
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
         <item name="colorAccent">@color/colorAccentNight</item>
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">@font/product_sans_regular</item>
 
         <item name="bgColor">@color/bgColorNight</item>
         <item name="android:windowBackground">@color/bgColorNight</item>
