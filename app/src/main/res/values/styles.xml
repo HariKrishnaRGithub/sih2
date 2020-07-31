@@ -16,6 +16,7 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="colorControlHighlight">#00FF6D00</item>
         <item name="android:progressDrawable">@drawable/custom_progressbar_shape</item>
+        <item name="android:fontFamily">@font/product_sans_regular</item>
     </style>
 
 </resources>

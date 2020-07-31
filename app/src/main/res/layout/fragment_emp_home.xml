@@ -30,25 +30,6 @@
                 app:delay="0"
                 app:period="1000" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="20dp"
-                android:gravity="center"
-                android:text="Welcome to BetterFuture!"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Go set your profile !"
-                android:textColor="@color/secondary_text_material_light" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/empHomeRV"
                 android:layout_width="match_parent"
