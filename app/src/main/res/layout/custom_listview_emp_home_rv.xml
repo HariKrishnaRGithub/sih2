@@ -112,6 +112,27 @@
                         android:text="Job Location" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:layout_margin="1dp">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/medal"/>
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:text="Experience Required" />
+                </LinearLayout>
+
                 <TextView
                     android:layout_margin="1dp"
                     android:id="@+id/Match_Percentage"
