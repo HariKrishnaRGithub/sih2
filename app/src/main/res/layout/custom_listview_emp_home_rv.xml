@@ -57,10 +57,10 @@
                     android:layout_margin="1dp">
 
                     <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
                         android:layout_gravity="center"
-                        app:srcCompat="@drawable/job"/>
+                        app:srcCompat="@drawable/work"/>
 
                         <TextView
                             android:id="@+id/Job_Name"
@@ -79,10 +79,10 @@
                     android:layout_margin="1dp">
 
                     <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
                         android:layout_gravity="center"
-                        app:srcCompat="@drawable/job"/>
+                        app:srcCompat="@drawable/description"/>
                         <TextView
                             android:id="@+id/Job_Discription"
                             android:layout_width="match_parent"
