@@ -48,13 +48,6 @@
                     android:textSize="16sp"/>
 
                 <TextView
-                    android:id="@+id/jobid"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:text="TextView" />
-
-                <TextView
                     android:id="@+id/Job_Name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
