@@ -2,6 +2,7 @@ package com.example.sih2;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,16 +51,19 @@ public class CompJobsFragment extends Fragment {
     Spinner specializationSpinner, topicSpinner, levelSpinner;
     MyListView jobsLV;
     private RequestQueue rQueue;
+    RecyclerView recyclerView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_comp_jobs, container, false);
 
-        sharedPrefrencesHelper = new SharedPrefrencesHelper(this.getActivity());
+
+        sharedPrefrencesHelper = new SharedPrefrencesHelper(getActivity());
         username = sharedPrefrencesHelper.getUsername();
         jobsLV = view.findViewById(R.id.jobsLV);
         addNewJobButton = view.findViewById(R.id.addNewJobButton);
+        recyclerView = view.findViewById(R.id.jobsRV);
         //default method calls
         updateJobsLV();
         //main
@@ -79,6 +86,7 @@ public class CompJobsFragment extends Fragment {
                                     .setCancelable(false)
                                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
+
                                             deleteCompJob(temptitle.getText().toString(), tempdiscription.getText().toString());
                                             updateJobsLV();
                                             dialog.cancel();
@@ -210,7 +218,6 @@ public class CompJobsFragment extends Fragment {
                                     });
 
 
-
                                     cancel.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
@@ -240,7 +247,7 @@ public class CompJobsFragment extends Fragment {
                                                     .setCancelable(false)
                                                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int id) {
-                                                            deleteCompJobSkill(title,discription,tempspecialization.getText().toString(), temptopic.getText().toString(), templevel.getText().toString());
+                                                            deleteCompJobSkill(title, discription, tempspecialization.getText().toString(), temptopic.getText().toString(), templevel.getText().toString());
                                                             updateSkillsLV(dialogView, title, discription);
                                                             dialog.cancel();
                                                         }
@@ -415,7 +422,7 @@ public class CompJobsFragment extends Fragment {
                                                         .setCancelable(false)
                                                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                             public void onClick(DialogInterface dialog, int id) {
-                                                                deleteCompJobSkill(title,discription,tempspecialization.getText().toString(), temptopic.getText().toString(), templevel.getText().toString());
+                                                                deleteCompJobSkill(title, discription, tempspecialization.getText().toString(), temptopic.getText().toString(), templevel.getText().toString());
                                                                 updateSkillsLV(dialogView, title, discription);
                                                                 dialog.cancel();
                                                             }
@@ -435,7 +442,7 @@ public class CompJobsFragment extends Fragment {
                                         return false;
                                     }
                                 });
-                                
+
                                 cancel.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -570,6 +577,8 @@ public class CompJobsFragment extends Fragment {
                                 JobsListAdapter jobsListAdapter = new JobsListAdapter(CompJobsFragment.this.getActivity(), titleList, discriptionList);
                                 jobsLV.setAdapter(jobsListAdapter);
                                 jobsListAdapter.notifyDataSetChanged();
+
+                                initRecyclerView(titleList, discriptionList);
                             } else {
                                 //Toast.makeText(CompJobsFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
                             }
@@ -598,7 +607,7 @@ public class CompJobsFragment extends Fragment {
     }
 
 
-    private void updateSkillsLV(View dialogView, final String title, final String discription) {
+    private void updateSkillsLV(final View dialogView, final String title, final String discription) {
         final ArrayList<String> topicsList, specializationList, levelsList;
         topicsList = new ArrayList<>();
         specializationList = new ArrayList<>();
@@ -631,6 +640,7 @@ public class CompJobsFragment extends Fragment {
                                 SkillsListAdapter skillsListAdapter = new SkillsListAdapter(CompJobsFragment.this.getActivity(), topicsList, specializationList, levelsList);
                                 skillsLV.setAdapter(skillsListAdapter);
                                 skillsListAdapter.notifyDataSetChanged();
+
                             } else {
                                 Toast.makeText(CompJobsFragment.this.getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                             }
@@ -899,7 +909,54 @@ public class CompJobsFragment extends Fragment {
 
     }
 
+    private void initRecyclerView(ArrayList title, ArrayList description) {
+        LinearLayoutManager lm = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(lm);
+        JobListRVAdapter adapter = new JobListRVAdapter(title, description, getActivity());
+        recyclerView.setAdapter(adapter);
+    }
     //end of class
+}
+
+class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.ViewHolder> {
+    public JobListRVAdapter(ArrayList<String> description, ArrayList<String> title, Context mContext) {
+        this.description = description;
+        this.title = title;
+        this.mContext = mContext;
+    }
+
+    private ArrayList<String> description = new ArrayList<>();
+    private ArrayList<String> title = new ArrayList<>();
+    private Context mContext;
+
+    @NonNull
+    @Override
+    public JobListRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_listview_comp_jobs, viewGroup, false);
+        JobListRVAdapter.ViewHolder holder = new JobListRVAdapter.ViewHolder(view);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final JobListRVAdapter.ViewHolder viewHolder, final int i) {
+        viewHolder.descriptionTxt.setText(description.get(i));
+        viewHolder.titleTxt.setText(title.get(i));
+    }
+
+    @Override
+    public int getItemCount() {
+        return title.size();
+    }
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView titleTxt, descriptionTxt;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            titleTxt = (TextView) itemView.findViewById(R.id.titleInJobs);
+            descriptionTxt = (TextView) itemView.findViewById(R.id.discriptionInJobs);
+        }
+    }
+
 }
 
 class JobsListAdapter extends ArrayAdapter {

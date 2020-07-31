@@ -2,6 +2,7 @@ package com.example.sih2;
 
 import android.app.backup.SharedPreferencesBackupHelper;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,22 +11,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.arasthel.asyncjob.AsyncJob;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EmpHomeFragment extends Fragment{
     employeeHomeSelected listener;
     SharedPrefrencesHelper sharedPrefrencesHelper;
-
-
+    RecyclerView empHomeRV;
+    private RequestQueue rQueue;
 
     @Nullable
     @Override
@@ -34,6 +52,7 @@ public class EmpHomeFragment extends Fragment{
 
         sharedPrefrencesHelper =new SharedPrefrencesHelper(this.getActivity());
         ImageSlider imageSlider=view.findViewById(R.id.slider);
+        empHomeRV=view.findViewById(R.id.empHomeRV);
 
         List<SlideModel> slideModels=new ArrayList<>();
         slideModels.add(new SlideModel("https://news.efinancialcareers.com/binaries/content/gallery/efinancial-careers/articles/2019/05/google-san-fran.jpg","  Google"));
@@ -43,9 +62,82 @@ public class EmpHomeFragment extends Fragment{
         slideModels.add(new SlideModel("https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__340.jpg","   Infosys"));
         imageSlider.setImageList(slideModels,true);
 
-
+        updateEmpHomeRV();
 
         return view;
+    }
+
+    private void updateEmpHomeRV() {
+        AsyncJob.doInBackground(new AsyncJob.OnBackgroundJob() {
+            @Override
+            public void doOnBackground() {
+                StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "updateEmpHomeRV.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+                                ArrayList<String> companyname = new ArrayList<>();
+                                ArrayList<String> jobid = new ArrayList<>();
+                               ArrayList<String> jobname = new ArrayList<>();
+                                ArrayList<String> jobdiscription = new ArrayList<>();
+                                ArrayList<String> matchpercentage = new ArrayList<>();
+                                JSONArray jsonArray = jsonObject.getJSONArray("details");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject3 = jsonArray.getJSONObject(i);
+                                    String companyname1 = jsonObject3.getString("Company_Name");
+                                    String jobid1 = jsonObject3.getString("jobid");
+                                    String jobname1 = jsonObject3.getString("Job_Name");
+                                    String jobdiscription1 = jsonObject3.getString("Job_Discription");
+                                    String matchpercentage1 = jsonObject3.getString("Match_Percentage");
+
+                                    companyname.add(companyname1);
+                                    jobid.add(jobid1);
+                                    jobname.add(jobname1);
+                                    jobdiscription.add(jobdiscription1);
+                                    matchpercentage.add(matchpercentage1);
+                                }
+                                //EmpJobListRVAdapter empJobListRVAdapter=new EmpJobListRVAdapter(companyname,jobid,jobname,jobdiscription,matchpercentage,getContext());
+                                initJobsRV(companyname,jobid,jobname,jobdiscription,matchpercentage);
+
+                                //Toast.makeText(getActivity(), "Skill deleted", Toast.LENGTH_SHORT).show();
+                            } else {
+
+                                Toast.makeText(getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(EmpHomeFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(EmpHomeFragment.this.getActivity());
+        rQueue.add(stringRequest3);
+                AsyncJob.doOnMainThread(new AsyncJob.OnMainThreadJob() {
+                    @Override
+                    public void doInUIThread() {
+                        // Toast.makeText(getActivity(), "Result was: ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -63,4 +155,63 @@ public class EmpHomeFragment extends Fragment{
     public interface employeeHomeSelected{
         public void btnProfileClicked();
     }
+    private void initJobsRV(ArrayList companyname, ArrayList jobid,ArrayList jobname, ArrayList jobdiscription, ArrayList matchpercentage) {
+        LinearLayoutManager lm = new LinearLayoutManager(getActivity());
+        empHomeRV.setLayoutManager(lm);
+        EmpJobListRVAdapter adapter = new EmpJobListRVAdapter(companyname,jobid,jobname,jobdiscription,matchpercentage, getActivity());
+        empHomeRV.setAdapter(adapter);
+    }
+}
+class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewHolder> {
+    public EmpJobListRVAdapter(ArrayList<String> companyname, ArrayList<String> jobid,ArrayList<String> jobname,ArrayList<String> jobdiscription,ArrayList<String> matchpercentage,  Context mContext) {
+        this.companyname=companyname;
+        this.jobname=jobname;
+        this.jobid=jobid;
+        this.jobdiscription=jobdiscription;
+        this.matchpercentage=matchpercentage;
+        this.mContext = mContext;
+    }
+
+    private ArrayList<String> companyname = new ArrayList<>();
+    private ArrayList<String> jobid = new ArrayList<>();
+    private ArrayList<String> jobname = new ArrayList<>();
+    private ArrayList<String> jobdiscription = new ArrayList<>();
+    private ArrayList<String> matchpercentage = new ArrayList<>();
+    private Context mContext;
+
+    @NonNull
+    @Override
+    public EmpJobListRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.custom_listview_emp_home_rv, viewGroup, false);
+        EmpJobListRVAdapter.ViewHolder holder = new EmpJobListRVAdapter.ViewHolder(view);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final EmpJobListRVAdapter.ViewHolder viewHolder, final int i) {
+
+        viewHolder.companynameTV.setText(companyname.get(i));
+        viewHolder.jobidTV.setText(jobid.get(i));
+        viewHolder.jobnameTV.setText(jobname.get(i));
+        viewHolder.jobdiscriptionTV.setText(jobdiscription.get(i));
+        viewHolder.matchpercentageTV.setText(matchpercentage.get(i));
+    }
+
+    @Override
+    public int getItemCount() {
+        return companyname.size();
+    }
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView companynameTV,jobidTV,jobnameTV,jobdiscriptionTV,matchpercentageTV;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            companynameTV=(TextView)itemView.findViewById(R.id.Company_Name);
+            jobidTV=(TextView) itemView.findViewById(R.id.jobid);
+            jobnameTV=itemView.findViewById(R.id.Job_Name);
+            jobdiscriptionTV=itemView.findViewById(R.id.Job_Discription);
+            matchpercentageTV=itemView.findViewById(R.id.Match_Percentage);
+        }
+    }
+
 }

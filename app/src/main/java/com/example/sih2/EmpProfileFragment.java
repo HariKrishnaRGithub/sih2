@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,6 +40,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.arasthel.asyncjob.AsyncJob;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -71,9 +73,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class EmpProfileFragment extends Fragment {
 
     SharedPrefrencesHelper sharedPrefrencesHelper;
-    TextView firstname, lastname, username, email, cancel, skillsListTV, degreeTV, experienceTV, empDiscriptionTV;
+    TextView firstname, lastname, username, email, skillsListTV, degreeTV, empDiscriptionTV;
     Button addNewSkillButton, addNewDegreeButton, degreeSubmitButton, addExperienceButton, refreshButton;
-    CardView skillCard, degreeCD, innerDegreeCD, experienceCD, innerExperienceCV;
+    CardView skillCard, degreeCD, innerDegreeCD;
     Spinner specializationSpinner, topicSpinner, levelSpinner, degreeSpinner;
     private RequestQueue rQueue;
     String specialization, topic, level, degree, imageEncoded = "";
@@ -81,8 +83,6 @@ public class EmpProfileFragment extends Fragment {
     MyListView skillsLV, experienceLV;
     View previewDpView;
 
-
-    TagContainerLayout educationTags;
     CircleImageView displayPicture;
 
     @Nullable
@@ -90,7 +90,7 @@ public class EmpProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_emp_profile, container, false);
 
-        sharedPrefrencesHelper = new SharedPrefrencesHelper(this.getActivity());
+        sharedPrefrencesHelper = new SharedPrefrencesHelper(getActivity());
         firstname = view.findViewById(R.id.emp_firstname);
         lastname = view.findViewById(R.id.emp_lastname);
         username = view.findViewById(R.id.emp_username);
@@ -570,45 +570,64 @@ public class EmpProfileFragment extends Fragment {
     }
 
     private void updateDisplayProfile() {
-        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getDisplayProfile.php",
-                new Response.Listener<String>() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                    @Override
-                    public void onResponse(String response) {
-                        rQueue.getCache().clear();
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if (jsonObject.optString("success").equals("1")) {
-                                //Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
-                                JSONObject jsonObject1 = jsonObject.getJSONObject("details");
-                                imageEncoded = jsonObject1.getString("imagelocation");
-                                byte[] decodedByte = Base64.decode(imageEncoded, 0);
-                                Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-                                displayPicture.setImageBitmap(svdimg);
-                            } else {
-                                Toast.makeText(EmpProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
+        AsyncJob.doInBackground(new AsyncJob.OnBackgroundJob() {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", sharedPrefrencesHelper.getUsername());
-                return params;
+            public void doOnBackground() {
+                try {
+                    StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getDisplayProfile.php",
+                            new Response.Listener<String>() {
+                                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                @Override
+                                public void onResponse(String response) {
+                                    rQueue.getCache().clear();
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        if (jsonObject.optString("success").equals("1")) {
+                                            JSONObject jsonObject1 = jsonObject.getJSONObject("details");
+                                            imageEncoded = jsonObject1.getString("imagelocation");
+                                            byte[] decodedByte = Base64.decode(imageEncoded, 0);
+                                            Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+                                            displayPicture.setImageBitmap(svdimg);
+                                        } else {
+                                            Toast.makeText(EmpProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(EmpProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                                }
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("username", sharedPrefrencesHelper.getUsername());
+                            return params;
+                        }
+                    };
+                    rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
+                    rQueue.add(stringRequest3);
+
+                    // Create a fake result (MUST be final)
+                    final boolean result = true;
+                }catch(Exception e)
+                {
+                    Toast.makeText(getActivity(), ""+e, Toast.LENGTH_SHORT).show();
+                }
+
+                // Send the result to the UI thread and show it on a Toast
+                AsyncJob.doOnMainThread(new AsyncJob.OnMainThreadJob() {
+                    @Override
+                    public void doInUIThread() {
+                       // Toast.makeText(getActivity(), "Result was: ", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-        };
-        rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
-        rQueue.add(stringRequest3);
+        });
     }
 
     private void setDisplayProfile() {
@@ -843,46 +862,7 @@ public class EmpProfileFragment extends Fragment {
         rQueue.add(stringRequest3);
     }
 
-    /*
-        private void setDisplayPicture() {
-            CropImage.ActivityBuilder activity = CropImage.activity();
-            activity.setGuidelines(CropImageView.Guidelines.ON);
-            activity.setAspectRatio(1, 1);
-            activity.start(getContext(),this);
-        }
-        @Override
-        public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
-                CropImage.ActivityResult result=CropImage.getActivityResult(data);
-
-                Uri resultUri = result.getUri();
-                int select=0;
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), resultUri);
-                    int nh = (int) (bitmap.getHeight() * (250.0 / bitmap.getWidth()));
-                    bitmap = Bitmap.createScaledBitmap(bitmap, 250, nh, true);
-                    Bitmap image = bitmap;
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                    byte[] b = byteArrayOutputStream.toByteArray();
-                    imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-                   // SharedPreferences.Editor editor = prefs.edit();
-                    //editor.putString("namePreferance", itemNAme);
-                  //  editor.putString("svdimgs", imageEncoded);
-                   // editor.apply();
-                    //displayPicture.setImageBitmap(bitmap);
-                    //Glide.with(this).load(path).into(profileImg);
-                    select = 1;
-                    displayPicture.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    select = 0;
-                }
-
-            }
-        }
-    */
     private void deletEmpDegree(final String tagText) {
         StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "deleteEmpDegree.php",
                 new Response.Listener<String>() {
@@ -1451,7 +1431,6 @@ public class EmpProfileFragment extends Fragment {
         rQueue = Volley.newRequestQueue(EmpProfileFragment.this.getActivity());
         rQueue.add(stringRequest3);
     }
-
 
 }
 

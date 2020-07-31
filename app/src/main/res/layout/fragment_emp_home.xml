@@ -10,7 +10,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:scrollbars="vertical">
 
@@ -49,6 +49,11 @@
                 android:gravity="center"
                 android:text="Go set your profile !"
                 android:textColor="@color/secondary_text_material_light" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/empHomeRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

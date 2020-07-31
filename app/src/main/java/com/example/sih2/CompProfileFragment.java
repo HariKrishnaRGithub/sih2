@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,6 +40,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.arasthel.asyncjob.AsyncJob;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -62,6 +64,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import co.lujun.androidtagview.ColorFactory;
 import co.lujun.androidtagview.TagContainerLayout;
@@ -74,6 +77,7 @@ public class CompProfileFragment extends Fragment {
     View previewDpView;
     TextView firstname, lastname, username, email;
     SharedPrefrencesHelper sharedPrefrencesHelper;
+
     private RequestQueue rQueue;
     private String imageEncoded;
 
@@ -83,7 +87,7 @@ public class CompProfileFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_comp_profile, container, false);
 
         //Start of the classs
-        sharedPrefrencesHelper = new SharedPrefrencesHelper(this.getActivity());
+        sharedPrefrencesHelper = new SharedPrefrencesHelper(getActivity());
         firstname = view.findViewById(R.id.emp_firstname);
         lastname = view.findViewById(R.id.emp_lastname);
         username = view.findViewById(R.id.emp_username);
@@ -104,7 +108,7 @@ public class CompProfileFragment extends Fragment {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(CompProfileFragment.this.getActivity());
                         final ViewGroup viewGroup = view.findViewById(android.R.id.content);
-                        final View dialogView = LayoutInflater.from(CompProfileFragment.this.getActivity()).inflate(R.layout.popup_edit_display_picture, viewGroup, false);
+                        final View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.popup_edit_display_picture, viewGroup, false);
                         builder.setView(dialogView);
                         final AlertDialog alertDialog = builder.create();
                         alertDialog.show();
@@ -158,97 +162,110 @@ public class CompProfileFragment extends Fragment {
     }
 
 
-
     private void setDisplayProfile() {
-        ImageView previewImage;
-        previewImage = previewDpView.findViewById(R.id.displayPicture);
-        Bitmap bitmap = ((BitmapDrawable) previewImage.getDrawable()).getBitmap();
-        company_image.setImageBitmap(bitmap);
+                ImageView previewImage;
+                previewImage = previewDpView.findViewById(R.id.displayPicture);
+                final Bitmap bitmap = ((BitmapDrawable) previewImage.getDrawable()).getBitmap();
+                company_image.setImageBitmap(bitmap);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] b = byteArrayOutputStream.toByteArray();
+                imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
 
-        Bitmap image = bitmap;
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] b = byteArrayOutputStream.toByteArray();
-        imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+                StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "setDisplayProfile.php",
+                        new Response.Listener<String>() {
 
-        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "setDisplayProfile.php",
-                new Response.Listener<String>() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                    @Override
-                    public void onResponse(String response) {
-                        rQueue.getCache().clear();
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if (jsonObject.optString("success").equals("1")) {
-                                Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
-                                updateDisplayProfile();
-                            } else {
-                                Toast.makeText(CompProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                            @Override
+                            public void onResponse(String response) {
+                                rQueue.getCache().clear();
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    if (jsonObject.optString("success").equals("1")) {
+                                        Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
+                                        updateDisplayProfile();
+                                    } else {
+                                        Toast.makeText(CompProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                                    e.printStackTrace();
+                                }
                             }
-                        } catch (JSONException e) {
-                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(CompProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                            }
+                        }) {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(CompProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("username", sharedPrefrencesHelper.getUsername());
+                        params.put("imageEncoded", imageEncoded);
+                        return params;
                     }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", sharedPrefrencesHelper.getUsername());
-                params.put("imageEncoded", imageEncoded);
-                return params;
-            }
-        };
-        rQueue = Volley.newRequestQueue(CompProfileFragment.this.getActivity());
-        rQueue.add(stringRequest3);
+                };
+                rQueue = Volley.newRequestQueue(CompProfileFragment.this.getActivity());
+                rQueue.add(stringRequest3);
     }
 
+
     private void updateDisplayProfile() {
-        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getDisplayProfile.php",
-                new Response.Listener<String>() {
-                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                    @Override
-                    public void onResponse(String response) {
-                        rQueue.getCache().clear();
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if (jsonObject.optString("success").equals("1")) {
-                                //Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
-                                JSONObject jsonObject1 = jsonObject.getJSONObject("details");
-                                imageEncoded = jsonObject1.getString("imagelocation");
-                                byte[] decodedByte = Base64.decode(imageEncoded, 0);
-                                Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-                                company_image.setImageBitmap(svdimg);
-                            } else {
-                                Toast.makeText(CompProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(CompProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
+        AsyncJob.doInBackground(new AsyncJob.OnBackgroundJob() {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", sharedPrefrencesHelper.getUsername());
-                return params;
+            public void doOnBackground() {
+                //WRITE THE CODE HERE
+                StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "getDisplayProfile.php",
+                        new Response.Listener<String>() {
+                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                            @Override
+                            public void onResponse(String response) {
+                                rQueue.getCache().clear();
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    if (jsonObject.optString("success").equals("1")) {
+                                        //Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
+                                        JSONObject jsonObject1 = jsonObject.getJSONObject("details");
+                                        imageEncoded = jsonObject1.getString("imagelocation");
+                                        byte[] decodedByte = Base64.decode(imageEncoded, 0);
+                                        final Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+                                        company_image.setImageBitmap(svdimg);
+                                    } else {
+                                        Toast.makeText(getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                            }
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("username", sharedPrefrencesHelper.getUsername());
+                        return params;
+                    }
+                };
+                rQueue = Volley.newRequestQueue(getActivity());
+                rQueue.add(stringRequest3);
+
+                final boolean result = true;
+                AsyncJob.doOnMainThread(new AsyncJob.OnMainThreadJob() {
+                    @Override
+                    public void doInUIThread() {
+                        // Toast.makeText(getActivity(), "Result was: ", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-        };
-        rQueue = Volley.newRequestQueue(CompProfileFragment.this.getActivity());
-        rQueue.add(stringRequest3);
+        });
+
     }
 
     private void getPreview() {
@@ -283,9 +300,11 @@ public class CompProfileFragment extends Fragment {
                 //displayPicture.setImageBitmap(bitmap);
                 //Glide.with(this).load(path).into(profileImg);
                 select = 1;
+                final Bitmap finalBitmap = bitmap;
                 ImageView previewDp = previewDpView.findViewById(R.id.displayPicture);
-                previewDp.setImageBitmap(bitmap);
-                company_image.setImageBitmap(bitmap);
+                previewDp.setImageBitmap(finalBitmap);
+                company_image.setImageBitmap(finalBitmap);
+
             } catch (IOException e) {
                 select = 0;
             }
@@ -293,3 +312,20 @@ public class CompProfileFragment extends Fragment {
         }
     }
 }
+
+/*
+AsyncJob.doInBackground(new AsyncJob.OnBackgroundJob() {
+                @Override
+                public void doOnBackground() {
+
+                //WRITE THE CODE HERE
+                    final boolean result = true;
+                    AsyncJob.doOnMainThread(new AsyncJob.OnMainThreadJob() {
+                        @Override
+                        public void doInUIThread() {
+                            // Toast.makeText(getActivity(), "Result was: ", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+*/

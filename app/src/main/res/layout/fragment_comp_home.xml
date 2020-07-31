@@ -38,6 +38,11 @@
                 android:gravity="center"
                 android:text="Go set your profile !"
                 android:textColor="@color/secondary_text_material_light" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/compHomeRV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
