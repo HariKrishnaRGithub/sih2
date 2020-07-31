@@ -83,27 +83,24 @@ public class EmpHomeFragment extends Fragment{
                             if (jsonObject.optString("success").equals("1")) {
                                 Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
                                 ArrayList<String> companyname = new ArrayList<>();
-                                ArrayList<String> jobid = new ArrayList<>();
-                               ArrayList<String> jobname = new ArrayList<>();
+                                ArrayList<String> jobname = new ArrayList<>();
                                 ArrayList<String> jobdiscription = new ArrayList<>();
                                 ArrayList<String> matchpercentage = new ArrayList<>();
                                 JSONArray jsonArray = jsonObject.getJSONArray("details");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject3 = jsonArray.getJSONObject(i);
                                     String companyname1 = jsonObject3.getString("Company_Name");
-                                    String jobid1 = jsonObject3.getString("jobid");
                                     String jobname1 = jsonObject3.getString("Job_Name");
                                     String jobdiscription1 = jsonObject3.getString("Job_Discription");
                                     String matchpercentage1 = jsonObject3.getString("Match_Percentage");
 
                                     companyname.add(companyname1);
-                                    jobid.add(jobid1);
                                     jobname.add(jobname1);
                                     jobdiscription.add(jobdiscription1);
                                     matchpercentage.add(matchpercentage1);
                                 }
                                 //EmpJobListRVAdapter empJobListRVAdapter=new EmpJobListRVAdapter(companyname,jobid,jobname,jobdiscription,matchpercentage,getContext());
-                                initJobsRV(companyname,jobid,jobname,jobdiscription,matchpercentage);
+                                initJobsRV(companyname,jobname,jobdiscription,matchpercentage);
 
                                 //Toast.makeText(getActivity(), "Skill deleted", Toast.LENGTH_SHORT).show();
                             } else {
@@ -156,25 +153,23 @@ public class EmpHomeFragment extends Fragment{
     public interface employeeHomeSelected{
         public void btnProfileClicked();
     }
-    private void initJobsRV(ArrayList companyname, ArrayList jobid,ArrayList jobname, ArrayList jobdiscription, ArrayList matchpercentage) {
+    private void initJobsRV(ArrayList companyname,ArrayList jobname, ArrayList jobdiscription, ArrayList matchpercentage) {
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         empHomeRV.setLayoutManager(lm);
-        EmpJobListRVAdapter adapter = new EmpJobListRVAdapter(companyname,jobid,jobname,jobdiscription,matchpercentage, getActivity());
+        EmpJobListRVAdapter adapter = new EmpJobListRVAdapter(companyname,jobname,jobdiscription,matchpercentage, getActivity());
         empHomeRV.setAdapter(adapter);
     }
 }
 class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewHolder> {
-    public EmpJobListRVAdapter(ArrayList<String> companyname, ArrayList<String> jobid,ArrayList<String> jobname,ArrayList<String> jobdiscription,ArrayList<String> matchpercentage,  Context mContext) {
+    public EmpJobListRVAdapter(ArrayList<String> companyname,ArrayList<String> jobname,ArrayList<String> jobdiscription,ArrayList<String> matchpercentage,  Context mContext) {
         this.companyname=companyname;
         this.jobname=jobname;
-        this.jobid=jobid;
         this.jobdiscription=jobdiscription;
         this.matchpercentage=matchpercentage;
         this.mContext = mContext;
     }
 
     private ArrayList<String> companyname = new ArrayList<>();
-    private ArrayList<String> jobid = new ArrayList<>();
     private ArrayList<String> jobname = new ArrayList<>();
     private ArrayList<String> jobdiscription = new ArrayList<>();
     private ArrayList<String> matchpercentage = new ArrayList<>();
@@ -192,7 +187,6 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
     public void onBindViewHolder(@NonNull final EmpJobListRVAdapter.ViewHolder viewHolder, final int i) {
 
         viewHolder.companynameTV.setText(companyname.get(i));
-        viewHolder.jobidTV.setText(jobid.get(i));
         viewHolder.jobnameTV.setText(jobname.get(i));
         viewHolder.jobdiscriptionTV.setText(jobdiscription.get(i));
         viewHolder.matchpercentageTV.setText(matchpercentage.get(i));
@@ -203,12 +197,11 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
         return companyname.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView companynameTV,jobidTV,jobnameTV,jobdiscriptionTV,matchpercentageTV;
+        private TextView companynameTV,jobnameTV,jobdiscriptionTV,matchpercentageTV;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             companynameTV=(TextView)itemView.findViewById(R.id.Company_Name);
-            jobidTV=(TextView) itemView.findViewById(R.id.jobid);
             jobnameTV=itemView.findViewById(R.id.Job_Name);
             jobdiscriptionTV=itemView.findViewById(R.id.Job_Discription);
             matchpercentageTV=itemView.findViewById(R.id.Match_Percentage);
