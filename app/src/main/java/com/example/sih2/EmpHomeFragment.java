@@ -55,6 +55,7 @@ public class EmpHomeFragment extends Fragment{
         empHomeRV=view.findViewById(R.id.empHomeRV);
 
         List<SlideModel> slideModels=new ArrayList<>();
+        slideModels.add(new SlideModel(R.drawable.betterfuture));
         slideModels.add(new SlideModel("https://news.efinancialcareers.com/binaries/content/gallery/efinancial-careers/articles/2019/05/google-san-fran.jpg","  Google"));
         slideModels.add(new SlideModel("https://www.ft.com/__origami/service/image/v2/images/raw/https%3A%2F%2Fd1e00ek4ebabms.cloudfront.net%2Fproduction%2Fe0ca7758-da2c-4f49-aa87-b35f4a7551a5.jpg?fit=scale-down&source=next&width=700","   Microsoft"));
         slideModels.add(new SlideModel("https://zdnet2.cbsistatic.com/hub/i/r/2017/03/13/9771951a-1439-4fab-8424-ca024674545e/resize/770xauto/735eb233abb7fad6d8bd505c8c2adf57/apple-event.jpg","   Apple"));

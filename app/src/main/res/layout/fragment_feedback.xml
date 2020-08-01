@@ -91,7 +91,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/button_shape"
-                android:text="SUBMIT">
+                android:text="SUBMIT"
+                android:textColor="@color/secondary_text_material_light">
 
             </Button>
 
