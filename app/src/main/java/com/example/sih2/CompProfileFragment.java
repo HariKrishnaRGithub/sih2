@@ -181,9 +181,11 @@ public class CompProfileFragment extends Fragment {
                                 try {
                                     JSONObject jsonObject = new JSONObject(response);
                                     if (jsonObject.optString("success").equals("1")) {
+
                                         Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
-                                        updateDisplayProfile();
+                                       updateDisplayProfile();
                                     } else {
+                                       // Toast.makeText(getActivity(), jsonObject.optString("message"), Toast.LENGTH_SHORT).show();
                                         Toast.makeText(CompProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (JSONException e) {

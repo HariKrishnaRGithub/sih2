@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -68,7 +69,10 @@ public class CompJobsFragment extends Fragment {
         updateJobsLV();
         //main
 
-        jobsLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        //RV start
+
+        //RVEnd
+        jobsLV.setOnItemLongClickListener(new OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> arg0, View v, final int index, long arg3) {
                 PopupMenu popup = new PopupMenu(CompJobsFragment.this.getActivity(), jobsLV);
                 popup.getMenuInflater().inflate(R.menu.popup_edit_delete, popup.getMenu());
@@ -227,7 +231,7 @@ public class CompJobsFragment extends Fragment {
                                 }
                             });
 
-                            skillsLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                            skillsLV.setOnItemLongClickListener(new OnItemLongClickListener() {
                                 public boolean onItemLongClick(AdapterView<?> arg0, View v, final int index, long arg3) {
 
                                     PopupMenu popup = new PopupMenu(CompJobsFragment.this.getActivity(), skillsLV);
@@ -402,7 +406,7 @@ public class CompJobsFragment extends Fragment {
                                     }
                                 });
 
-                                skillsLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                                skillsLV.setOnItemLongClickListener(new OnItemLongClickListener() {
                                     public boolean onItemLongClick(AdapterView<?> arg0, View v, final int index, long arg3) {
 
                                         PopupMenu popup = new PopupMenu(CompJobsFragment.this.getActivity(), skillsLV);
@@ -947,7 +951,7 @@ class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.ViewHolder>
     public int getItemCount() {
         return title.size();
     }
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView titleTxt, descriptionTxt;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
