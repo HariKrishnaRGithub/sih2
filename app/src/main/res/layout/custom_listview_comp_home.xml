@@ -64,6 +64,13 @@
                     </LinearLayout>
 
                 <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="Job Name" />
+
+                <TextView
                     android:id="@+id/empusername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
