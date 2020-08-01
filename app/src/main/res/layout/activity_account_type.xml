@@ -42,6 +42,12 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="10dp"
+                    app:srcCompat="@drawable/company" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -69,11 +75,17 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="10dp"
+                    app:srcCompat="@drawable/worker1" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="I want to hire the perfect candidate !"
+                    android:text="I want to hire a perfect candidate !"
                     android:textColor="@color/design_default_color_on_secondary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
