@@ -9,6 +9,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/product_sans_regular</item>
         <item name="bgColor">@color/bgColor</item>
+        <item name="bgColorLight">@color/bgColorLight</item>
 
     </style>
     <style name="MyProgressBarTwo" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">

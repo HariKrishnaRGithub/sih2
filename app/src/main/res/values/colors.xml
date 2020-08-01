@@ -19,4 +19,8 @@
     <color name="bgColor">#1DA1F2</color>
     <color name="bgColorNight">#3b3e42</color>
 
+    <color name="bgColorLight">#3328BCFF</color>
+    <color name="bgColorLightNight">#A9A9A9</color>
+
+
 </resources>

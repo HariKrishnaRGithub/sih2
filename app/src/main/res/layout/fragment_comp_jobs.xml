@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#3328BCFF">
+                    android:background="?attr/bgColorLight">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -51,25 +51,24 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/jobsRV"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/colorPrimaryDark" />
+                        android:layout_height="match_parent"/>
 
                     <com.example.sih2.MyListView
                         android:id="@+id/jobsLV"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:layout_margin="10dp"
+                        android:layout_margin="20dp"
                         android:divider="@android:color/transparent"
                         android:dividerHeight="10dp"
                         />
 
                     <Button
                         android:id="@+id/addNewJobButton"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:background="#00FFFFFF"
+                        android:background="?attr/bgColorLight"
                         android:gravity="center"
                         android:padding="10dp"
                         android:text="add a new job opening"
