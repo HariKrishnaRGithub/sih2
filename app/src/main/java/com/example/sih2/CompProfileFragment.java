@@ -41,6 +41,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.arasthel.asyncjob.AsyncJob;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -230,9 +232,11 @@ public class CompProfileFragment extends Fragment {
                                         //Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
                                         JSONObject jsonObject1 = jsonObject.getJSONObject("details");
                                         imageEncoded = jsonObject1.getString("imagelocation");
-                                        byte[] decodedByte = Base64.decode(imageEncoded, 0);
+                                        Log.i("lol",imageEncoded);
+                                        /*byte[] decodedByte = Base64.decode(imageEncoded, 0);
                                         final Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-                                        company_image.setImageBitmap(svdimg);
+                                        company_image.setImageBitmap(svdimg);*/
+                                        Glide.with(getContext()).load(imageEncoded).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(company_image);
                                     } else {
                                         Toast.makeText(getActivity(), "failed", Toast.LENGTH_SHORT).show();
                                     }

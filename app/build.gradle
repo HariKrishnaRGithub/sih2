@@ -38,7 +38,8 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'co.lujun:androidtagview:1.1.7'
     implementation 'androidx.appcompat:appcompat:1.0.1'
-
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     //chinthan's profile
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'

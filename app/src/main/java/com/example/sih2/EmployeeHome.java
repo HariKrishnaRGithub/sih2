@@ -36,6 +36,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;
@@ -115,10 +117,8 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                                 String imageEncoded;
                                 //Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("details");
-                                imageEncoded=jsonObject1.getString("imagelocation");
-                                byte[] decodedByte = Base64.decode(imageEncoded, 0);
-                                Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-                                e_dp.setImageBitmap(svdimg);
+                                imageEncoded = jsonObject1.getString("imagelocation");
+                                Glide.with(getApplicationContext()).load(imageEncoded).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(e_dp);
                             } else {
                                 Toast.makeText(EmployeeHome.this, "failed", Toast.LENGTH_SHORT).show();
                             }

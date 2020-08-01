@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -70,7 +71,7 @@ public class CompJobsFragment extends Fragment {
         //main
 
         //RV start
-
+        
         //RVEnd
         jobsLV.setOnItemLongClickListener(new OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> arg0, View v, final int index, long arg3) {
@@ -945,6 +946,223 @@ class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.ViewHolder>
     public void onBindViewHolder(@NonNull final JobListRVAdapter.ViewHolder viewHolder, final int i) {
         viewHolder.descriptionTxt.setText(description.get(i));
         viewHolder.titleTxt.setText(title.get(i));
+        viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*
+                PopupMenu popup = new PopupMenu(CompJobsFragment.this.getActivity(), jobsLV);
+                popup.getMenuInflater().inflate(R.menu.popup_edit_delete, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        View row = jobsLV.getAdapter().getView(index, view, container);
+                        final TextView temptitle = row.findViewById(R.id.titleInJobs);
+                        final TextView tempdiscription = row.findViewById(R.id.discriptionInJobs);
+
+                        if (item.getTitle().toString().equals("Delete")) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                            builder.setTitle("Delete job");
+                            builder.setMessage("Do you want to delete the job " + temptitle.getText().toString() + " ?")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+
+                                            deleteCompJob(temptitle.getText().toString(), tempdiscription.getText().toString());
+                                            updateJobsLV();
+                                            dialog.cancel();
+                                        }
+                                    })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+                        if (item.getTitle().toString().equals("Edit")) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(CompJobsFragment.this.getActivity());
+                            final ViewGroup viewGroup = view.findViewById(android.R.id.content);
+                            final View dialogView = LayoutInflater.from(CompJobsFragment.this.getActivity()).inflate(R.layout.popup_add_new_job, viewGroup, false);
+                            builder.setView(dialogView);
+                            final AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+
+                            final EditText jobTitleET, jobDiscriptionET, jobExperienceET;
+                            final Button cancelJobButton, nextInJobButton, addSkillsForJob, doneButton;
+                            final MyListView skillsLV;
+                            skillsLV = dialogView.findViewById(R.id.skillsLV);
+                            jobTitleET = dialogView.findViewById(R.id.jobTitleET);
+                            jobDiscriptionET = dialogView.findViewById(R.id.jobDiscriptionET);
+                            jobExperienceET = dialogView.findViewById(R.id.jobDiscriptionET);
+                            cancelJobButton = dialogView.findViewById(R.id.cancelJobButton);
+                            nextInJobButton = dialogView.findViewById(R.id.nextInJobButton);
+                            doneButton = dialogView.findViewById(R.id.doneButton);
+                            addSkillsForJob = dialogView.findViewById(R.id.addSkillsforJobButton);
+                            jobTitleET.setText(temptitle.getText().toString());
+                            jobExperienceET.setText(tempdiscription.getText().toString());
+                            jobTitleET.setEnabled(false);
+                            jobDiscriptionET.setEnabled(false);
+                            jobExperienceET.setEnabled(false);
+                            skillsLV.setVisibility(View.VISIBLE);
+                            addSkillsForJob.setVisibility(View.VISIBLE);
+                            doneButton.setVisibility(View.VISIBLE);
+                            cancelJobButton.setVisibility(View.GONE);
+                            nextInJobButton.setVisibility(View.GONE);
+                            updateSkillsLV(dialogView, temptitle.getText().toString(), tempdiscription.getText().toString());
+                            cancelJobButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.cancel();
+                                }
+                            });
+
+                            addNewJob(jobTitleET.getText().toString(), jobDiscriptionET.getText().toString(), jobExperienceET.getText().toString());
+                            final String title = jobTitleET.getText().toString();
+                            final String discription = jobDiscriptionET.getText().toString();
+
+                            addSkillsForJob.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    AlertDialog.Builder builder2 = new AlertDialog.Builder(CompJobsFragment.this.getActivity());
+                                    final ViewGroup viewGroup2 = view.findViewById(android.R.id.content);
+                                    final View dialogView2 = LayoutInflater.from(CompJobsFragment.this.getActivity()).inflate(R.layout.popup_add_skills_emp, viewGroup2, false);
+                                    builder2.setView(dialogView2);
+                                    final AlertDialog alertDialog2 = builder2.create();
+                                    alertDialog2.show();
+
+                                    specializationSpinner = dialogView2.findViewById(R.id.specializationSpinner);
+                                    topicSpinner = dialogView2.findViewById(R.id.topicSpinner);
+                                    levelSpinner = dialogView2.findViewById(R.id.levelSpinnner);
+                                    Button cancel, addSkillButton;
+                                    cancel = dialogView2.findViewById(R.id.cancel);
+                                    addSkillButton = dialogView2.findViewById(R.id.addSkillButton);
+
+                                    final ArrayList<String> topicsList, speciazationList, levelsList;
+                                    topicsList = new ArrayList<String>();
+                                    speciazationList = new ArrayList<String>();
+                                    levelsList = new ArrayList<String>();
+
+                                    initializeSpecializationSpinner(dialogView2, speciazationList);
+                                    initializeLevelsSpinner(dialogView2, levelsList);
+
+                                    levelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                            level = (String) parent.getItemAtPosition(position);
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> parent) {
+
+                                        }
+                                    });
+
+                                    // Setting topicSpinner using SpecializationSpinner
+
+                                    specializationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> parent, View view,
+                                                                   int position, long id) {
+                                            //Toast.makeText(CompJobsFragment.this.getActivity(), (String) parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                                            specialization = (String) parent.getItemAtPosition(position);
+                                            updateTopicsSpinner(dialogView2, topicsList);
+                                        }
+
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> parent) {
+                                            // TODO Auto-generated method stub
+                                        }
+                                    });
+
+                                    topicSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                            topic = (String) (String) parent.getItemAtPosition(position);
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> parent) {
+
+                                        }
+                                    });
+
+                                    addSkillButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            uploadSkills(title, discription);
+                                            updateSkillsLV(dialogView, title, discription);
+                                            alertDialog2.cancel();
+                                        }
+                                    });
+
+
+                                    cancel.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            alertDialog2.cancel();
+                                        }
+                                    });
+                                }
+                            });
+
+                            skillsLV.setOnItemLongClickListener(new OnItemLongClickListener() {
+                                public boolean onItemLongClick(AdapterView<?> arg0, View v, final int index, long arg3) {
+
+                                    PopupMenu popup = new PopupMenu(CompJobsFragment.this.getActivity(), skillsLV);
+                                    popup.getMenuInflater().inflate(R.menu.popup_delete, popup.getMenu());
+                                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                        @Override
+                                        public boolean onMenuItemClick(MenuItem item) {
+
+                                            View row = skillsLV.getAdapter().getView(index, view, container);
+                                            final TextView tempspecialization = row.findViewById(R.id.specializationTV);
+                                            final TextView temptopic = row.findViewById(R.id.topicTV);
+                                            final TextView templevel = row.findViewById(R.id.levelTV);
+
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                            builder.setTitle("Delete Skill for the job");
+                                            builder.setMessage("Do you want to delete the skill " + temptopic.getText().toString() + " under " + tempspecialization.getText().toString() + " for the jon ?")
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            deleteCompJobSkill(title, discription, tempspecialization.getText().toString(), temptopic.getText().toString(), templevel.getText().toString());
+                                                            updateSkillsLV(dialogView, title, discription);
+                                                            dialog.cancel();
+                                                        }
+                                                    })
+                                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                            AlertDialog alert = builder.create();
+                                            alert.show();
+
+                                            return false;
+                                        }
+                                    });
+                                    popup.show();//showing popup menu
+                                    return false;
+                                }
+                            });
+                            doneButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    alertDialog.cancel();
+                                }
+                            });
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+                return false;
+
+                 */
+            }
+        });
     }
 
     @Override
@@ -952,12 +1170,16 @@ class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.ViewHolder>
         return title.size();
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         private TextView titleTxt, descriptionTxt;
+        LinearLayoutCompat parentLayout;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             titleTxt = (TextView) itemView.findViewById(R.id.titleInJobs);
             descriptionTxt = (TextView) itemView.findViewById(R.id.discriptionInJobs);
+            parentLayout = (LinearLayoutCompat)itemView.findViewById(R.id.linear_layout);
         }
     }
 

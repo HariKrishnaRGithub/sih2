@@ -41,6 +41,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.arasthel.asyncjob.AsyncJob;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -586,9 +588,7 @@ public class EmpProfileFragment extends Fragment {
                                         if (jsonObject.optString("success").equals("1")) {
                                             JSONObject jsonObject1 = jsonObject.getJSONObject("details");
                                             imageEncoded = jsonObject1.getString("imagelocation");
-                                            byte[] decodedByte = Base64.decode(imageEncoded, 0);
-                                            Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-                                            displayPicture.setImageBitmap(svdimg);
+                                            Glide.with(getContext()).load(imageEncoded).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(displayPicture);
                                         } else {
                                             Toast.makeText(EmpProfileFragment.this.getActivity(), "failed", Toast.LENGTH_SHORT).show();
                                         }

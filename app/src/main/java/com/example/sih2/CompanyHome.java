@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,6 +35,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;
@@ -115,9 +118,7 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
                                 //Toast.makeText(getActivity(), "Image upload success", Toast.LENGTH_SHORT).show();
                                 JSONObject jsonObject1 = jsonObject.getJSONObject("details");
                                 imageEncoded = jsonObject1.getString("imagelocation");
-                                byte[] decodedByte = Base64.decode(imageEncoded, 0);
-                                Bitmap svdimg = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-                                c_dp.setImageBitmap(svdimg);
+                                Glide.with(getApplicationContext()).load(imageEncoded).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE).into(c_dp);
                             } else {
                                 Toast.makeText(CompanyHome.this, "failed", Toast.LENGTH_SHORT).show();
                             }
