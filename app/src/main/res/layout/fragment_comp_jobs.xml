@@ -51,7 +51,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/jobsRV"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:visibility="gone" />
 
                     <com.example.sih2.MyListView
                         android:id="@+id/jobsLV"
