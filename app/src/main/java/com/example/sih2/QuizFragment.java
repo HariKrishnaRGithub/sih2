@@ -115,6 +115,7 @@ public class QuizFragment<view> extends Fragment {
                                 adapter=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,finalList);
                                 listView.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
+                                quizbutton.setVisibility(View.GONE);
                             }
                         }
                     });
