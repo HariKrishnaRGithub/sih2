@@ -29,6 +29,12 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/feedback_icon"/>
+
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
@@ -89,7 +95,7 @@
 
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/button_shape"
                 android:text="SUBMIT"
                 android:textColor="@color/secondary_text_material_light">

@@ -202,7 +202,7 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
                 drawerLayout.closeDrawer(GravityCompat.START);
                 AlertDialog.Builder builder = new AlertDialog.Builder(CompanyHome.this);
                 builder.setTitle("Better Future");
-                builder.setIcon(R.mipmap.ic_launcher);
+                builder.setIcon(R.drawable.exit);
                 builder.setMessage("Do you want to exit?")
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -222,7 +222,7 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
                 drawerLayout.closeDrawer(GravityCompat.START);
 
                 builder = new AlertDialog.Builder(CompanyHome.this);
-                builder.setIcon(R.mipmap.ic_launcher);
+                builder.setIcon(R.drawable.logout_icon);
                 builder.setTitle("Logout");
                 builder.setMessage("Do you want to Logout?")
                         .setCancelable(false)
@@ -256,7 +256,7 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
 
         AlertDialog.Builder builder = new AlertDialog.Builder(CompanyHome.this);
         builder.setTitle("Better Future");
-        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setIcon(R.drawable.exit);
         builder.setMessage("Do you want to exit?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -285,7 +285,7 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("No internet");
-            builder.setIcon(R.mipmap.ic_launcher);
+            builder.setIcon(R.drawable.error);
             builder.setMessage("You are not connected to internet.Try again")
                     .setCancelable(false)
                     .setPositiveButton("Close", new DialogInterface.OnClickListener() {
