@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -67,13 +69,7 @@ public class CompJobsFragment extends Fragment {
         //default method calls
         updateJobsLV();
         //main
-        recyclerView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getActivity(), getTag()+" print ", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
+
         //RV start
 
         //RVEnd
@@ -925,6 +921,7 @@ public class CompJobsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
     //end of class
+
 }
 
 class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.ViewHolder> {
@@ -957,6 +954,7 @@ class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.ViewHolder>
             @Override
             public void onClick(View v) {
 
+
             }
         });
     }
@@ -973,7 +971,6 @@ class JobListRVAdapter extends RecyclerView.Adapter<JobListRVAdapter.ViewHolder>
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             titleTxt = (TextView) itemView.findViewById(R.id.titleInJobs);
             descriptionTxt = (TextView) itemView.findViewById(R.id.discriptionInJobs);
             parentLayout = (LinearLayoutCompat)itemView.findViewById(R.id.linear_layout);

@@ -90,10 +90,10 @@ public class EmpHomeFragment extends Fragment{
                                 JSONArray jsonArray = jsonObject.getJSONArray("details");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject3 = jsonArray.getJSONObject(i);
-                                    String companyname1 = jsonObject3.getString("Company_Name");
-                                    String jobname1 = jsonObject3.getString("Job_Name");
-                                    String jobdiscription1 = jsonObject3.getString("Job_Discription");
-                                    String matchpercentage1 = jsonObject3.getString("Match_Percentage");
+                                    String companyname1 = jsonObject3.getString("companyname");
+                                    String jobname1 = jsonObject3.getString("jobname");
+                                    String jobdiscription1 = jsonObject3.getString("jobdiscription");
+                                    String matchpercentage1 = jsonObject3.getString("match_percentage");
 
                                     companyname.add(companyname1);
                                     jobname.add(jobname1);

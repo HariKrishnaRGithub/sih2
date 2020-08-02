@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -153,6 +156,17 @@ class EmpListRVAdapter extends RecyclerView.Adapter<EmpListRVAdapter.ViewHolder>
         viewHolder.firstnameTV.setText(firstname.get(i));
         viewHolder.lastnameTV.setText(lastname.get(i));
         viewHolder.matchpercentageTV.setText(matchpercentage.get(i));
+        viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                final ViewGroup viewGroup = v.findViewById(android.R.id.content);
+                final View dialogView = LayoutInflater.from(mContext).inflate(R.layout.popup_add_new_job, viewGroup, false);
+                builder.setView(dialogView);
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
     }
 
     @Override
@@ -160,10 +174,12 @@ class EmpListRVAdapter extends RecyclerView.Adapter<EmpListRVAdapter.ViewHolder>
         return empusername.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
+        LinearLayoutCompat parentLayout;
         private TextView empusernameTV,firstnameTV,lastnameTV,matchpercentageTV;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            parentLayout=(LinearLayoutCompat)itemView.findViewById(R.id.comp_home_RV_layout);
             empusernameTV=(TextView)itemView.findViewById(R.id.empusername); 
             firstnameTV=(TextView)itemView.findViewById(R.id.firstname);
             lastnameTV=(TextView)itemView.findViewById(R.id.lastname); 

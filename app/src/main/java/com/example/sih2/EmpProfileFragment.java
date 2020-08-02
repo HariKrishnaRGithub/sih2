@@ -115,7 +115,11 @@ public class EmpProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Refreshed", Toast.LENGTH_SHORT).show();
-                getActivity().recreate();
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(EmpProfileFragment.this)
+                        .attach(EmpProfileFragment.this)
+                        .commit();
             }
         });
 
