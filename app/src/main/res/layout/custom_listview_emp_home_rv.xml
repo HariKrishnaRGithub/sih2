@@ -106,6 +106,7 @@
 
                     <TextView
 
+                        android:id="@+id/jobloactionTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
@@ -127,11 +128,19 @@
 
                     <TextView
 
+                        android:id="@+id/experiencerequiredTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
                         android:text="Experience Required" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/jobId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:visibility="gone" />
 
                 <TextView
                     android:layout_margin="1dp"

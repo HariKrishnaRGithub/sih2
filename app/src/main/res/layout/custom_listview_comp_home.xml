@@ -42,6 +42,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+
+                    android:id="@+id/jobNamE"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_shape"
+                    android:paddingLeft="10dp"
+                    android:text="Job Name" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -67,17 +76,17 @@
                 </LinearLayout>
 
                 <TextView
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:text="Job Name" />
-
-                <TextView
                     android:id="@+id/empusername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
+                    android:text="TextView"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/discriptionJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="TextView" />
 
                 <TextView
@@ -86,6 +95,13 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
                     android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/jobidJ"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 

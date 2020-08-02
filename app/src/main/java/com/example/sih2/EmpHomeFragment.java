@@ -61,11 +61,9 @@ public class EmpHomeFragment extends Fragment{
         slideModels.add(new SlideModel("https://zdnet2.cbsistatic.com/hub/i/r/2017/03/13/9771951a-1439-4fab-8424-ca024674545e/resize/770xauto/735eb233abb7fad6d8bd505c8c2adf57/apple-event.jpg","   Apple"));
         slideModels.add(new SlideModel("https://cdnuploads.aa.com.tr/uploads/Contents/2019/02/06/thumbs_b_c_2f7bc0bac6400f27b8bdec0cf6d40f7d.jpg?v=181112","   WhatsApp"));
         slideModels.add(new SlideModel("https://www.infosys.com/content/dam/infosys-web/en/global-resource/media-resources/images/Bangalore-New-001.jpg","   Infosys"));
-        //https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__340.jpg
+
         imageSlider.setImageList(slideModels,true);
-
         updateEmpHomeRV();
-
         return view;
     }
 
@@ -87,9 +85,16 @@ public class EmpHomeFragment extends Fragment{
                                 ArrayList<String> jobname = new ArrayList<>();
                                 ArrayList<String> jobdiscription = new ArrayList<>();
                                 ArrayList<String> matchpercentage = new ArrayList<>();
+                                ArrayList<String> jobid = new ArrayList<>();
+                                ArrayList<String> location = new ArrayList<>();
+                                ArrayList<String> experience = new ArrayList<>();
                                 JSONArray jsonArray = jsonObject.getJSONArray("details");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject3 = jsonArray.getJSONObject(i);
+
+                                    String jobid1= jsonObject3.getString("jobid");
+                                    String experience1=jsonObject3.getString("experience");
+                                    String location1=jsonObject3.getString("location");
                                     String companyname1 = jsonObject3.getString("companyname");
                                     String jobname1 = jsonObject3.getString("jobname");
                                     String jobdiscription1 = jsonObject3.getString("jobdiscription");
@@ -99,9 +104,12 @@ public class EmpHomeFragment extends Fragment{
                                     jobname.add(jobname1);
                                     jobdiscription.add(jobdiscription1);
                                     matchpercentage.add(matchpercentage1);
+                                    jobid.add(jobid1);
+                                    experience.add(experience1);
+                                    location.add(location1);
                                 }
                                 //EmpJobListRVAdapter empJobListRVAdapter=new EmpJobListRVAdapter(companyname,jobid,jobname,jobdiscription,matchpercentage,getContext());
-                                initJobsRV(companyname,jobname,jobdiscription,matchpercentage);
+                                initJobsRV(companyname,jobname,jobdiscription,matchpercentage,jobid,location,experience);
 
                                 //Toast.makeText(getActivity(), "Skill deleted", Toast.LENGTH_SHORT).show();
                             } else {
@@ -154,19 +162,22 @@ public class EmpHomeFragment extends Fragment{
     public interface employeeHomeSelected{
         public void btnProfileClicked();
     }
-    private void initJobsRV(ArrayList companyname,ArrayList jobname, ArrayList jobdiscription, ArrayList matchpercentage) {
+    private void initJobsRV(ArrayList companyname,ArrayList jobname, ArrayList jobdiscription, ArrayList matchpercentage, ArrayList jobid,ArrayList location,ArrayList experience) {
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         empHomeRV.setLayoutManager(lm);
-        EmpJobListRVAdapter adapter = new EmpJobListRVAdapter(companyname,jobname,jobdiscription,matchpercentage, getActivity());
+        EmpJobListRVAdapter adapter = new EmpJobListRVAdapter(companyname,jobname,jobdiscription,matchpercentage,jobid,location,experience, getActivity());
         empHomeRV.setAdapter(adapter);
     }
 }
 class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewHolder> {
-    public EmpJobListRVAdapter(ArrayList<String> companyname,ArrayList<String> jobname,ArrayList<String> jobdiscription,ArrayList<String> matchpercentage,  Context mContext) {
+    public EmpJobListRVAdapter(ArrayList<String> companyname,ArrayList<String> jobname,ArrayList<String> jobdiscription,ArrayList<String> matchpercentage,ArrayList<String> jobid,ArrayList<String> location, ArrayList<String> experience,  Context mContext) {
         this.companyname=companyname;
         this.jobname=jobname;
         this.jobdiscription=jobdiscription;
         this.matchpercentage=matchpercentage;
+        this.jobid=jobid;
+        this.location=location;
+        this.experience=experience;
         this.mContext = mContext;
     }
 
@@ -174,6 +185,10 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
     private ArrayList<String> jobname = new ArrayList<>();
     private ArrayList<String> jobdiscription = new ArrayList<>();
     private ArrayList<String> matchpercentage = new ArrayList<>();
+    private ArrayList<String> jobid = new ArrayList<>();
+    private ArrayList<String> location = new ArrayList<>();
+    private ArrayList<String> experience = new ArrayList<>();
+
     private Context mContext;
 
     @NonNull
@@ -191,6 +206,9 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
         viewHolder.jobnameTV.setText(jobname.get(i));
         viewHolder.jobdiscriptionTV.setText(jobdiscription.get(i));
         viewHolder.matchpercentageTV.setText(matchpercentage.get(i));
+        viewHolder.jobidTV.setText(jobid.get(i));
+        viewHolder.experienceTV.setText(experience.get(i));
+        viewHolder.locationTV.setText(location.get(i));
     }
 
     @Override
@@ -198,7 +216,7 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
         return companyname.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView companynameTV,jobnameTV,jobdiscriptionTV,matchpercentageTV;
+        private TextView companynameTV,jobnameTV,jobdiscriptionTV,matchpercentageTV,jobidTV,experienceTV,locationTV;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -206,6 +224,9 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
             jobnameTV=itemView.findViewById(R.id.Job_Name);
             jobdiscriptionTV=itemView.findViewById(R.id.Job_Discription);
             matchpercentageTV=itemView.findViewById(R.id.Match_Percentage);
+            jobidTV=itemView.findViewById(R.id.jobId);
+            experienceTV=itemView.findViewById(R.id.experiencerequiredTV);
+            locationTV=itemView.findViewById(R.id.jobloactionTV);
         }
     }
 
