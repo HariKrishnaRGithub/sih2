@@ -66,15 +66,27 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <TextView
-
-                    android:id="@+id/jobNamE"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:paddingLeft="10dp"
-                    android:text="Job Name"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:layout_margin="1dp">
+
+                    <ImageView
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/work"/>
+                        <TextView
+
+                            android:id="@+id/jobNamE"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:text="Job Name"
+                            />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/empusername"
@@ -84,12 +96,25 @@
                     android:text="TextView"
                     android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/discriptionJ"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:paddingLeft="10dp"
-                    android:text="TextView" />
+                    android:layout_margin="1dp">
+
+                    <ImageView
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/description"/>
+                        <TextView
+                            android:id="@+id/discriptionJ"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:text="TextView" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/matchpercentage"
