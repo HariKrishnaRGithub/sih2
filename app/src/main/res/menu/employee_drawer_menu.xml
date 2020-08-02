@@ -13,6 +13,11 @@
                 android:icon="@drawable/emp_profile"
                 android:title="Profile"
                 />
+            <item
+                android:id="@+id/emp_quiz_menu_item"
+                android:icon="@drawable/quiz"
+                android:title="Quiz"
+                />
         </menu>
     </item>
     <item android:title="Others">

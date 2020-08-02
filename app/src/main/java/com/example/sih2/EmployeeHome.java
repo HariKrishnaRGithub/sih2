@@ -168,6 +168,14 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle("Profile");
                 fragmentTransaction.commit();
                 break;
+            case R.id.emp_quiz_menu_item:
+                drawerLayout.closeDrawer(GravityCompat.START);
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.employee_container, new QuizFragment());
+                toolbar.setTitle("Quiz");
+                fragmentTransaction.commit();
+                break;
             case R.id.emp_about_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 fragmentManager = getSupportFragmentManager();

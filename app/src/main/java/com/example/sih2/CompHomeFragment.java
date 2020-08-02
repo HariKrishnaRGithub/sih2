@@ -186,5 +186,4 @@ class EmpListRVAdapter extends RecyclerView.Adapter<EmpListRVAdapter.ViewHolder>
             matchpercentageTV=itemView.findViewById(R.id.matchpercentage);
         }
     }
-
 }
