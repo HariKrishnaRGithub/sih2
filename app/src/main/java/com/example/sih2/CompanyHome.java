@@ -222,7 +222,6 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
                 drawerLayout.closeDrawer(GravityCompat.START);
 
                 builder = new AlertDialog.Builder(CompanyHome.this);
-                //builder.setTitle(R.string.app_name);
                 builder.setIcon(R.mipmap.ic_launcher);
                 builder.setTitle("Logout");
                 builder.setMessage("Do you want to Logout?")

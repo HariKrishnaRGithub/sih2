@@ -224,7 +224,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 drawerLayout.closeDrawer(GravityCompat.START);
 
                 builder = new AlertDialog.Builder(EmployeeHome.this);
-                builder.setTitle(R.string.app_name);
+                builder.setTitle("Logout");
                 builder.setIcon(R.mipmap.ic_launcher);
                 builder.setMessage("Do you want to Logout?")
                         .setCancelable(false)
