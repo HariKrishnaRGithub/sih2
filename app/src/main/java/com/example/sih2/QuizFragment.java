@@ -1,6 +1,5 @@
 package com.example.sih2;
 
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -9,19 +8,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,111 +35,145 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class QuizFragment<view> extends Fragment {
-    ListView qLv;
-    ArrayList speciazationL, topicL, ans1L, ans2L, q1, q2;
-    int length;
+
     private RequestQueue rQueue;
     SharedPrefrencesHelper sharedPrefrencesHelper;
-    ListView simpleList;
-    String[] questions;
-    Button submit;
+    ListView listView;
+    Button quizbutton;
+    TextView resultText;
+    ArrayAdapter adapter;
+    ArrayList<String> topics;
+    ArrayList<String> specialization;
+    ArrayList question1;
+    ArrayList<String> question2;
+    ArrayList<String> answer1;
+    ArrayList<String> answer2;
+    ArrayList finalList;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
         sharedPrefrencesHelper = new SharedPrefrencesHelper(QuizFragment.this.getActivity());
+        resultText=view.findViewById(R.id.resultText);
+        listView = view.findViewById(R.id.quizLV);
+        quizbutton=view.findViewById(R.id.quizbutton);
+        quizbutton.setText("start");
 
-        ArrayList<String> arrayList=new ArrayList();
-        arrayList.add("q1");
-        arrayList.add("q2");
-// get the string array from string.xml file
-        //questions = arrayList.con
+        topics=new ArrayList<>();
+        specialization=new ArrayList<>();
+        question1=new ArrayList();
+        question2=new ArrayList<String>();
+        answer1=new ArrayList<>();
+        answer2=new ArrayList<>();
+        finalList=new ArrayList();
 
-// get the reference of ListView and Button
-        simpleList = (ListView) view.findViewById(R.id.simpleListView);
-        submit = (Button) view.findViewById(R.id.submit);
-// set the adapter to fill the data in the ListView
-        CustomAdapter customAdapter = new CustomAdapter(getContext(), questions);
-        simpleList.setAdapter(customAdapter);
-// perform setOnClickListerner event on Button
-        submit.setOnClickListener(new View.OnClickListener() {
+        initializeQuiz();
+        quizbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message = "";
-// get the value of selected answers from custom adapter
-                for (int i = 0; i < CustomAdapter.selectedAnswers.size(); i++) {
-                    message = message + "\n" + (i + 1) + " " + CustomAdapter.selectedAnswers.get(i);
+                if(quizbutton.getText().toString().equals("start")){
+                    quizbutton.setText("next level");
+                    listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+                    adapter=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_multiple_choice,question1);
+                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }else{
+                    quizbutton.setText("done");
+                    int len = listView.getCount();
+                    SparseBooleanArray checked = listView.getCheckedItemPositions();
+                    for (int i = 0; i < len; i++)
+                        if (checked.get(i)) {
+                            answer1.set(i,"1");
+                            //Toast.makeText(getContext(), specialization.get(i)+" "+topics.get(i), Toast.LENGTH_SHORT).show();
+                            /* do whatever you want with the checked item */
+                        }
+                    listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+                    adapter=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_multiple_choice,question2);
+                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+                    quizbutton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(quizbutton.getText().toString().equals("done")){
+                                int len = listView.getCount();
+                                SparseBooleanArray checked = listView.getCheckedItemPositions();
+                                for (int i = 0; i < len; i++)
+                                    if (checked.get(i)) {
+                                        answer2.set(i,"1");
+                                        //Toast.makeText(getContext(), specialization.get(i)+" "+topics.get(i), Toast.LENGTH_SHORT).show();
+                                    }
+                                    quizbutton.setText("start");
+                                int len2 = listView.getCount();
+                                for (int i = 0; i < len; i++){
+                                    if((answer1.get(i)==answer2.get(i)) && answer1.get(i).equals("1")){
+                                        finalList.add(topics.get(i)+" ("+specialization.get(i));
+                                    }
+                                    }
+                                resultText.setVisibility(View.VISIBLE);
+                                adapter=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,finalList);
+                                listView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
                 }
-// display the message on screen with the help of Toast.
-                Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
             }
         });
-
         return view;
+    }
+
+    private void initializeQuiz() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "quiz.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+                                JSONArray jsonArray = jsonObject.getJSONArray("details");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject3 = jsonArray.getJSONObject(i);
+                                    String sname = jsonObject3.getString("sname");
+                                    String topicName = jsonObject3.getString("topicName");
+                                    String question11= jsonObject3.getString("question1");
+                                    String question22=jsonObject3.getString("question2");
+                                    String answer11=jsonObject3.getString("answer1");
+                                    String answer22=jsonObject3.getString("answer2");
+                                    specialization.add(sname);
+                                    topics.add(topicName);
+                                    question1.add(question11);
+                                    question2.add(question22);
+                                    answer1.add(answer11);
+                                    answer2.add(answer22);
+                                    //Toast.makeText(CompJobsFragment.this.getActivity(),tempvar , Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(QuizFragment.this.getActivity(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(QuizFragment.this.getActivity(), "In catch " + e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(QuizFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(QuizFragment.this.getActivity());
+        rQueue.add(stringRequest);
     }
 }
 
-class CustomAdapter extends BaseAdapter {
-    Context context;
-    String[] questionsList;
-    LayoutInflater inflter;
-    public static ArrayList<String> selectedAnswers;
-
-    public CustomAdapter(Context applicationContext, String[] questionsList) {
-        this.context = context;
-        this.questionsList = questionsList;
-// initialize arraylist and add static string for all the questions
-        selectedAnswers = new ArrayList<>();
-        for (int i = 0; i < questionsList.length; i++) {
-            selectedAnswers.add("Not Attempted");
-        }
-        inflter = (LayoutInflater.from(applicationContext));
-    }
-
-    @Override
-    public int getCount() {
-        return questionsList.length;
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
-
-    @Override
-    public View getView(final int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.custom_listview_quiz, null);
-// get the reference of TextView and Button's
-        TextView question = (TextView) view.findViewById(R.id.question);
-        RadioButton yes = (RadioButton) view.findViewById(R.id.yes);
-        RadioButton no = (RadioButton) view.findViewById(R.id.no);
-// perform setOnCheckedChangeListener event on yes button
-        yes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-// set Yes values in ArrayList if RadioButton is checked
-                if (isChecked)
-                    selectedAnswers.set(i, "Yes");
-            }
-        });
-// perform setOnCheckedChangeListener event on no button
-        no.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-// set No values in ArrayList if RadioButton is checked
-                if (isChecked)
-                    selectedAnswers.set(i, "No");
-
-            }
-        });
-// set the value in TextView
-        question.setText(questionsList[i]);
-        return view;
-    }
-}

@@ -4,39 +4,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".QuizFragment"
-    android:background="?attr/bgColor">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/textView13"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <!-- ListView and Submit Button-->
-            <ListView
-                android:id="@+id/simpleListView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/submit"
-                android:divider="@color/material_blue_grey_800"
-                android:dividerHeight="1dp"
-                android:footerDividersEnabled="false" />
+            android:layout_height="wrap_content"
+            android:text="quiz" />
 
-            <Button
-                android:id="@+id/submit"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="20dp"
-                android:background="#0f0"
-                android:text="Submit"
-                android:textColor="#fff"
-                android:textSize="20sp" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/resultText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="We have analysed that you have these skills. Work on them and get these added to your profile !"
+            android:visibility="gone" />
+
+        <ListView
+            android:id="@+id/quizLV"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:visibility="visible">
+
+        </ListView>
+
+        <Button
+            android:id="@+id/quizbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="start" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/skillsLVLV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 </LinearLayout>
