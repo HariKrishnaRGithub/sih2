@@ -77,7 +77,7 @@ public class CompProfileFragment extends Fragment {
 
     ImageView company_image;
     View previewDpView;
-    TextView firstname, lastname, username, email;
+    TextView firstname, lastname, username, email,compDiscriptionTV;
     SharedPrefrencesHelper sharedPrefrencesHelper;
 
     private RequestQueue rQueue;
@@ -90,14 +90,70 @@ public class CompProfileFragment extends Fragment {
 
         //Start of the classs
         sharedPrefrencesHelper = new SharedPrefrencesHelper(getActivity());
-        firstname = view.findViewById(R.id.emp_firstname);
-        lastname = view.findViewById(R.id.emp_lastname);
-        username = view.findViewById(R.id.emp_username);
-        email = view.findViewById(R.id.emp_email);
+        firstname = view.findViewById(R.id.comp_name);
+        username = view.findViewById(R.id.comp_username);
+        email = view.findViewById(R.id.comp_email);
         company_image = view.findViewById(R.id.company_image);
+        compDiscriptionTV=view.findViewById(R.id.compDiscriptionTV);
+
+        firstname.setText(sharedPrefrencesHelper.getFirstname());
+        username.setText(sharedPrefrencesHelper.getUsername());
+        email.setText(sharedPrefrencesHelper.getEmail());
 
         //default refresh functions
         updateDisplayProfile();
+        if (sharedPrefrencesHelper.getDiscription().equals("null")) {
+            compDiscriptionTV.setText("Long press to set a description for your profile");
+        } else {
+            compDiscriptionTV.setText(sharedPrefrencesHelper.getDiscription());
+        }
+
+        compDiscriptionTV.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(final View v) {
+
+                PopupMenu popup = new PopupMenu(CompProfileFragment.this.getActivity(), compDiscriptionTV);
+                popup.getMenuInflater().inflate(R.menu.popup_edit, popup.getMenu());
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(CompProfileFragment.this.getActivity());
+                        final ViewGroup viewGroup = view.findViewById(android.R.id.content);
+                        View dialogView = LayoutInflater.from(CompProfileFragment.this.getActivity()).inflate(R.layout.popup_change_emp_discription, viewGroup, false);
+                        builder.setView(dialogView);
+                        final AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+
+                        final EditText editText2 = dialogView.findViewById(R.id.empdiscriptionET);
+                        editText2.setText(compDiscriptionTV.getText().toString());
+                        editText2.requestFocus();
+
+                        dialogView.findViewById(R.id.empdiscriptioncancel).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.cancel();
+                            }
+                        });
+                        dialogView.findViewById(R.id.empdiscriptionokay).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                sharedPrefrencesHelper.setDiscription(editText2.getText().toString());
+                                compDiscriptionTV.setText(editText2.getText().toString());
+                                updateCompDiscription();
+                                alertDialog.cancel();
+                            }
+                        });
+
+
+                        return true;
+                    }
+                });
+
+                popup.show();//showing popup menu
+                return false;
+            }
+        });
 
         company_image.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -161,6 +217,46 @@ public class CompProfileFragment extends Fragment {
 
         //End of the Class
         return view;
+    }
+
+    private void updateCompDiscription() {
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "updateEmpDiscription.php",
+                new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    @Override
+                    public void onResponse(String response) {
+                        rQueue.getCache().clear();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.optString("success").equals("1")) {
+
+
+                            } else {
+                                //Toast.makeText(EmpProfileFragment.this.getActivity(), "error", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            //Toast.makeText(EmpProfileFragment.this.getActivity(), "In catch "+e.toString(), Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(CompProfileFragment.this.getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("discription", sharedPrefrencesHelper.getDiscription());
+                params.put("username", sharedPrefrencesHelper.getUsername());
+                return params;
+            }
+        };
+        rQueue = Volley.newRequestQueue(CompProfileFragment.this.getActivity());
+        rQueue.add(stringRequest3);
     }
 
 

@@ -186,6 +186,7 @@ class EmpListRVAdapter extends RecyclerView.Adapter<EmpListRVAdapter.ViewHolder>
                 alertDialog.show();
             }
         });
+
     }
 
     @Override
