@@ -2,6 +2,7 @@ package com.example.sih2;
 
 import android.app.backup.SharedPreferencesBackupHelper;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -205,12 +206,18 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
         viewHolder.companynameTV.setText(companyname.get(i));
         viewHolder.jobnameTV.setText(jobname.get(i));
         viewHolder.jobdiscriptionTV.setText(jobdiscription.get(i));
-        viewHolder.matchpercentageTV.setText(matchpercentage.get(i));
         viewHolder.jobidTV.setText(jobid.get(i));
-        viewHolder.experienceTV.setText(experience.get(i));
         viewHolder.locationTV.setText(location.get(i));
+        viewHolder.experienceTV.setText(experience.get(i));
+        String s=matchpercentage.get(i);
+        Float f=Float.parseFloat(s);
+        if(f>100){
+            viewHolder.matchpercentageTV.setText("100 & You pocess more skills than required for this job");
+        }else{
+            int ff=(int)f.intValue();
+            viewHolder.matchpercentageTV.setText(ff+"");
+        }
     }
-
     @Override
     public int getItemCount() {
         return companyname.size();

@@ -113,11 +113,12 @@ public class CompJobsFragment extends Fragment {
                             final AlertDialog alertDialog = builder.create();
                             alertDialog.show();
 
-                            final EditText jobTitleET, jobDiscriptionET, jobExperienceET;
+                            final EditText jobTitleET, jobDiscriptionET, jobExperienceET,jobLocationTV;
                             final Button cancelJobButton, nextInJobButton, addSkillsForJob, doneButton;
                             final MyListView skillsLV;
                             skillsLV = dialogView.findViewById(R.id.skillsLV);
                             jobTitleET = dialogView.findViewById(R.id.jobTitleET);
+                            jobLocationTV=dialogView.findViewById(R.id.jobloactionTV);
                             jobDiscriptionET = dialogView.findViewById(R.id.jobDiscriptionET);
                             jobExperienceET = dialogView.findViewById(R.id.jobDiscriptionET);
                             cancelJobButton = dialogView.findViewById(R.id.cancelJobButton);
@@ -129,6 +130,7 @@ public class CompJobsFragment extends Fragment {
                             jobTitleET.setEnabled(false);
                             jobDiscriptionET.setEnabled(false);
                             jobExperienceET.setEnabled(false);
+                            jobLocationTV.setEnabled(false);
                             skillsLV.setVisibility(View.VISIBLE);
                             addSkillsForJob.setVisibility(View.VISIBLE);
                             doneButton.setVisibility(View.VISIBLE);
@@ -142,7 +144,7 @@ public class CompJobsFragment extends Fragment {
                                 }
                             });
 
-                            addNewJob(jobTitleET.getText().toString(), jobDiscriptionET.getText().toString(), jobExperienceET.getText().toString());
+                            addNewJob(jobTitleET.getText().toString(), jobDiscriptionET.getText().toString(), jobExperienceET.getText().toString(),jobLocationTV.getText().toString());
                             final String title = jobTitleET.getText().toString();
                             final String discription = jobDiscriptionET.getText().toString();
 
@@ -297,11 +299,12 @@ public class CompJobsFragment extends Fragment {
                 final AlertDialog alertDialog = builder.create();
                 alertDialog.show();
 
-                final EditText jobTitleET, jobDiscriptionET, jobExperienceET;
+                final EditText jobTitleET, jobDiscriptionET, jobExperienceET,jobLocationTV;
                 final Button cancelJobButton, nextInJobButton, addSkillsForJob, doneButton;
                 final MyListView skillsLV;
                 skillsLV = dialogView.findViewById(R.id.skillsLV);
                 jobTitleET = dialogView.findViewById(R.id.jobTitleET);
+                jobLocationTV=dialogView.findViewById(R.id.jobloactionTV);
                 jobDiscriptionET = dialogView.findViewById(R.id.jobDiscriptionET);
                 jobExperienceET = dialogView.findViewById(R.id.jobDiscriptionET);
                 cancelJobButton = dialogView.findViewById(R.id.cancelJobButton);
@@ -317,11 +320,12 @@ public class CompJobsFragment extends Fragment {
                 nextInJobButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addNewJob(jobTitleET.getText().toString(), jobDiscriptionET.getText().toString(), jobExperienceET.getText().toString());
+                        addNewJob(jobTitleET.getText().toString(), jobDiscriptionET.getText().toString(), jobExperienceET.getText().toString(),jobLocationTV.getText().toString());
                         final String title = jobTitleET.getText().toString();
                         final String discription = jobDiscriptionET.getText().toString();
                         jobTitleET.setEnabled(false);
                         jobDiscriptionET.setEnabled(false);
+                        jobLocationTV.setEnabled(false);
                         String tempexp = jobExperienceET.getText().toString();
                         jobExperienceET.setText(tempexp);
                         jobExperienceET.setEnabled(false);
@@ -870,7 +874,7 @@ public class CompJobsFragment extends Fragment {
         rQueue.add(stringRequest);
     }
 
-    private void addNewJob(final String title, final String discription, final String years) {
+    private void addNewJob(final String title, final String discription, final String years,final String location) {
 
         StringRequest stringRequest3 = new StringRequest(Request.Method.POST, getResources().getString(R.string.url) + "addNewJob.php",
                 new Response.Listener<String>() {
@@ -906,6 +910,7 @@ public class CompJobsFragment extends Fragment {
                 params.put("title", title);
                 params.put("discription", discription);
                 params.put("years", years);
+                params.put("location", location);
                 return params;
             }
         };

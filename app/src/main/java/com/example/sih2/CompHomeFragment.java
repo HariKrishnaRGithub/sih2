@@ -171,10 +171,17 @@ class EmpListRVAdapter extends RecyclerView.Adapter<EmpListRVAdapter.ViewHolder>
         viewHolder.empusernameTV.setText(empusername.get(i));
         viewHolder.firstnameTV.setText(firstname.get(i));
         viewHolder.lastnameTV.setText(lastname.get(i));
-        viewHolder.matchpercentageTV.setText(matchpercentage.get(i));
         viewHolder.jobidTV.setText(jobid.get(i));
         viewHolder.jobnameTV.setText(jobnamne.get(i));
         viewHolder.empdiscriptionTV.setText(empdiscription.get(i));
+        String s=matchpercentage.get(i);
+        Float f=Float.parseFloat(s);
+        if(f>100){
+            viewHolder.matchpercentageTV.setText("100 & The candidate pocesses more skill levels than required for this job");
+        }else{
+            int ff=(int)f.intValue();
+            viewHolder.matchpercentageTV.setText(ff+"");
+        }
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
