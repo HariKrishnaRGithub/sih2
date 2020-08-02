@@ -4,23 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/bgColor"
-    android:orientation="vertical">
-
-    <Switch
-        android:id="@+id/switch_darkmode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:text="Dark Mode"
-        android:textColor="@color/secondary_text_material_light" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="Under Development"
-        android:textColor="@color/secondary_text_material_light"
-        android:textSize="18sp" />
-</LinearLayout>
+    android:orientation="vertical"/>
