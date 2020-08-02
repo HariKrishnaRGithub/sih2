@@ -34,7 +34,6 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
                     android:text="New Job Opening"
-                    android:textColor="@color/colorPrimaryNight"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
