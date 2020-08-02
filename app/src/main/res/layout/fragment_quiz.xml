@@ -6,13 +6,37 @@
     tools:context=".QuizFragment"
     android:background="?attr/bgColor">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Skill Analyser"
-        android:textColor="@color/secondary_text_material_light"
-        android:textSize="24dp"
-        android:gravity="center"
-        android:padding="10dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!-- ListView and Submit Button-->
+            <ListView
+                android:id="@+id/simpleListView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/submit"
+                android:divider="@color/material_blue_grey_800"
+                android:dividerHeight="1dp"
+                android:footerDividersEnabled="false" />
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                android:background="#0f0"
+                android:text="Submit"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

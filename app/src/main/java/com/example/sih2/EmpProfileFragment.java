@@ -144,7 +144,7 @@ public class EmpProfileFragment extends Fragment {
                         alertDialog.show();
 
                         ImageView imageView = view.findViewById(R.id.displayPicture);
-                        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
                         final ImageView displayPicture;
                         Button cancel, delete, edit, submit;
                         displayPicture = dialogView.findViewById(R.id.displayPicture);
