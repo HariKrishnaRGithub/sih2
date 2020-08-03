@@ -23,10 +23,6 @@
     <item android:title="Others">
         <menu>
             <item
-                android:id="@+id/emp_settings_menu_item"
-                android:icon="@drawable/employee_settings"
-                android:title="Settings" />
-            <item
                 android:id="@+id/emp_about_menu_item"
                 android:icon="@drawable/about"
                 android:title="About Us" />

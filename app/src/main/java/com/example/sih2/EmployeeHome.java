@@ -184,14 +184,6 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle("About Us");
                 fragmentTransaction.commit();
                 break;
-            case R.id.emp_settings_menu_item:
-                drawerLayout.closeDrawer(GravityCompat.START);
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.employee_container, new SettingsFragment());
-                toolbar.setTitle("Settings");
-                fragmentTransaction.commit();
-                break;
             case R.id.emp_feedback_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 fragmentManager = getSupportFragmentManager();
