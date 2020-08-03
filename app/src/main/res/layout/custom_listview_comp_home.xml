@@ -77,7 +77,7 @@
                     <ImageView
                         android:layout_width="13dp"
                         android:layout_height="13dp"
-                        android:layout_gravity="center"
+                        android:layout_gravity="start"
                         app:srcCompat="@drawable/work" />
 
                     <TextView
@@ -107,7 +107,7 @@
                     <ImageView
                         android:layout_width="13dp"
                         android:layout_height="13dp"
-                        android:layout_gravity="center"
+                        android:layout_gravity="start"
                         app:srcCompat="@drawable/description"/>
                         <TextView
                             android:id="@+id/discriptionJ"
