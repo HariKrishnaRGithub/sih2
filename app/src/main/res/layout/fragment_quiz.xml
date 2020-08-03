@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Select Skills"
+                android:text="Tick the list with a clear mind casually"
                 android:textColor="@color/design_default_color_on_secondary"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -42,7 +42,7 @@
                 android:id="@+id/quizLV"
                 android:layout_width="match_parent"
                 android:layout_height="450dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
             </ListView>
 

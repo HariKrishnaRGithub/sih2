@@ -73,6 +73,7 @@ public class QuizFragment<view> extends Fragment {
             @Override
             public void onClick(View v) {
                 if(quizbutton.getText().toString().equals("start")){
+                    listView.setVisibility(View.VISIBLE);
                     quizbutton.setText("next level");
                     listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
                     adapter=new ArrayAdapter(getContext(),android.R.layout.simple_list_item_multiple_choice,question1);

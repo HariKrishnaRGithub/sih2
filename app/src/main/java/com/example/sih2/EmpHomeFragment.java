@@ -319,6 +319,7 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
 
                     @Override
                     public void onClick(View arg0) {
+                        Toast.makeText(mContext, "Applied", Toast.LENGTH_SHORT).show();
                         String to=compemail.get(i);
                         String subject="Job Application";
                         String message="";
