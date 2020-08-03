@@ -191,6 +191,7 @@ public class EmpHomeFragment extends Fragment{
     }
 }
 class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewHolder> {
+    SharedPrefrencesHelper sharedPrefrencesHelper;
     private  RequestQueue rQueue;
     public EmpJobListRVAdapter(ArrayList<String> companyname,ArrayList<String> jobname,ArrayList<String> jobdiscription,ArrayList<String> matchpercentage,ArrayList<String> jobid,ArrayList<String> location, ArrayList<String> experience,ArrayList<String> compemail,  Context mContext) {
         this.companyname=companyname;
@@ -225,7 +226,7 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull final EmpJobListRVAdapter.ViewHolder viewHolder, final int i) {
-
+        sharedPrefrencesHelper = new SharedPrefrencesHelper(mContext);
         viewHolder.companynameTV.setText(companyname.get(i));
         viewHolder.jobnameTV.setText(jobname.get(i));
         viewHolder.jobdiscriptionTV.setText(jobdiscription.get(i));
@@ -325,11 +326,35 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
                         email.putExtra(Intent.EXTRA_EMAIL, new String[]{ to});
                         email.putExtra(Intent.EXTRA_SUBJECT, subject);
                         email.putExtra(Intent.EXTRA_TEXT, message);
-
                         //need this to prompts email client only
                         email.setType("message/rfc822");
-
                         mContext.startActivity(Intent.createChooser(email, "Choose an Email client :"));
+                        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, "http://www.betterfuture.tech/android/sih/" + "notifyCompany.php",
+                                new Response.Listener<String>() {
+                                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                    @Override
+                                    public void onResponse(String response) {
+                                        rQueue.getCache().clear();
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(mContext, error.toString(), Toast.LENGTH_LONG).show();
+                                        Log.i("error :", error.toString());
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("From", sharedPrefrencesHelper.getFirstname()+" "+sharedPrefrencesHelper.getLastname());
+                                params.put("To",compemail.get(i));
+                                return params;
+                            }
+                        };
+                        rQueue = Volley.newRequestQueue(mContext);
+                        rQueue.add(stringRequest2);
+
                     }
                 });
             }
