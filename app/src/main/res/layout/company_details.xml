@@ -5,20 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:isScrollContainer="true">
-
+    android:isScrollContainer="true"
+    android:orientation="vertical">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -33,7 +33,8 @@
                     android:layout_height="match_parent"
                     android:background="?attr/bgColor"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="20dp"
+                    android:layout_margin="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -102,7 +103,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="20dp"
                                 android:gravity="center"
-                                android:text="Add Company Description, long press to edit" />
+                                android:text="Company Description" />
                         </androidx.cardview.widget.CardView>
 
                     </LinearLayout>
@@ -115,11 +116,15 @@
                 android:id="@+id/textView16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Job skills" />
+                android:text="Skills Required"
+                android:textSize="20dp"
+                android:paddingTop="20dp"
+                android:paddingLeft="10dp"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_margin="20dp">
 
                 <com.example.sih2.MyListView
                     android:id="@+id/skillsLV"
@@ -127,14 +132,14 @@
                     android:layout_height="match_parent" />
 
             </androidx.cardview.widget.CardView>
-
             <Button
                 android:id="@+id/applybutton"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="apply" />
-
+                android:text="apply"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/button_shape"
+                android:layout_margin="20dp"/>
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
