@@ -109,7 +109,7 @@ public class QuizFragment<view> extends Fragment {
                                 int len2 = listView.getCount();
                                 for (int i = 0; i < len; i++){
                                     if((answer1.get(i)==answer2.get(i)) && answer1.get(i).equals("1")){
-                                        finalList.add(topics.get(i)+" ("+specialization.get(i));
+                                        finalList.add(topics.get(i)+" ("+specialization.get(i)+")");
                                     }
                                     }
                                 resultText.setVisibility(View.VISIBLE);
