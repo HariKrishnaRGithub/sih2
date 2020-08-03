@@ -65,6 +65,21 @@ public class EmpHomeFragment extends Fragment{
         slideModels.add(new SlideModel("https://zdnet2.cbsistatic.com/hub/i/r/2017/03/13/9771951a-1439-4fab-8424-ca024674545e/resize/770xauto/735eb233abb7fad6d8bd505c8c2adf57/apple-event.jpg","   Apple"));
         slideModels.add(new SlideModel("https://cdnuploads.aa.com.tr/uploads/Contents/2019/02/06/thumbs_b_c_2f7bc0bac6400f27b8bdec0cf6d40f7d.jpg?v=181112","   WhatsApp"));
         slideModels.add(new SlideModel("https://www.infosys.com/content/dam/infosys-web/en/global-resource/media-resources/images/Bangalore-New-001.jpg","   Infosys"));
+        slideModels.add(new SlideModel("https://cdn.mos.cms.futurecdn.net/6BhB3LboXX6eYMbwqgAxDn-650-80.jpg.webp","  IBM"));
+        slideModels.add(new SlideModel("https://english.cdn.zeenews.com/sites/default/files/2020/05/18/861577-accenture.jpg","   Accenture"));
+        slideModels.add(new SlideModel("https://content.techgig.com/thumb/msid-72051706,width-860,resizemode-4/TCS-joins-hands-with-Phoenix-Group-to-transform-Standard-Life-business.jpg?488935","   TCS"));
+        slideModels.add(new SlideModel("https://i0.wp.com/nairametrics.com/wp-content/uploads/2019/02/JPMorgan-Chase-Co.....-JPMorgan-Chase.png?w=680&ssl=1","   JP Morgan"));
+        slideModels.add(new SlideModel("https://img.etimg.com/thumb/msid-75353604,width-210,imgsize-415634,,resizemode-4,quality-100/mindtree-pti.jpg","   Mindtree"));
+        slideModels.add(new SlideModel("https://www.latestlaws.com/media/2018/08/Wipro.jpg","   Wipro"));
+        slideModels.add(new SlideModel("http://ddnews.gov.in/sites/default/files/axis%20bank%205.jpg","   Axis Bank"));
+        slideModels.add(new SlideModel("https://media.glassdoor.com/l/4469/houston-rockets-office.jpg","   Toyota"));
+        slideModels.add(new SlideModel("https://img.theweek.in/content/dam/week/news/biz-tech/images/2019/7/3/flipkart.jpg","   Flipkart"));
+        slideModels.add(new SlideModel("https://media.glassdoor.com/l/15/8e/50/d1/headquarters.jpg","   Honda"));
+        slideModels.add(new SlideModel("https://images.newindianexpress.com/uploads/user/imagelibrary/2020/4/20/w900X450/amazon_AP.jpg","   Amazon"));
+        slideModels.add(new SlideModel("https://www.itbusiness.ca/wp-content/uploads/2018/02/GM-Markham-Facility-slide-12.jpg","   General Motors"));
+
+
+
 
         imageSlider.setImageList(slideModels,true);
         updateEmpHomeRV();
