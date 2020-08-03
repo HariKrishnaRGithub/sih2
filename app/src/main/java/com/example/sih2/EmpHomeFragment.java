@@ -11,12 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -89,6 +92,7 @@ public class EmpHomeFragment extends Fragment{
                                 ArrayList<String> jobid = new ArrayList<>();
                                 ArrayList<String> location = new ArrayList<>();
                                 ArrayList<String> experience = new ArrayList<>();
+                                ArrayList<String> compemail=new ArrayList<>();
                                 JSONArray jsonArray = jsonObject.getJSONArray("details");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject3 = jsonArray.getJSONObject(i);
@@ -100,17 +104,18 @@ public class EmpHomeFragment extends Fragment{
                                     String jobname1 = jsonObject3.getString("jobname");
                                     String jobdiscription1 = jsonObject3.getString("jobdiscription");
                                     String matchpercentage1 = jsonObject3.getString("match_percentage");
-
+                                    String compemail1=jsonObject3.getString("compemail");
                                     companyname.add(companyname1);
                                     jobname.add(jobname1);
                                     jobdiscription.add(jobdiscription1);
                                     matchpercentage.add(matchpercentage1);
                                     jobid.add(jobid1);
                                     experience.add(experience1);
+                                    compemail.add(compemail1);
                                     location.add(location1);
                                 }
                                 //EmpJobListRVAdapter empJobListRVAdapter=new EmpJobListRVAdapter(companyname,jobid,jobname,jobdiscription,matchpercentage,getContext());
-                                initJobsRV(companyname,jobname,jobdiscription,matchpercentage,jobid,location,experience);
+                                initJobsRV(companyname,jobname,jobdiscription,matchpercentage,jobid,location,experience,compemail);
 
                                 //Toast.makeText(getActivity(), "Skill deleted", Toast.LENGTH_SHORT).show();
                             } else {
@@ -163,15 +168,16 @@ public class EmpHomeFragment extends Fragment{
     public interface employeeHomeSelected{
         public void btnProfileClicked();
     }
-    private void initJobsRV(ArrayList companyname,ArrayList jobname, ArrayList jobdiscription, ArrayList matchpercentage, ArrayList jobid,ArrayList location,ArrayList experience) {
+    private void initJobsRV(ArrayList companyname,ArrayList jobname, ArrayList jobdiscription, ArrayList matchpercentage, ArrayList jobid,ArrayList location,ArrayList experience,ArrayList compemail) {
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         empHomeRV.setLayoutManager(lm);
-        EmpJobListRVAdapter adapter = new EmpJobListRVAdapter(companyname,jobname,jobdiscription,matchpercentage,jobid,location,experience, getActivity());
+        EmpJobListRVAdapter adapter = new EmpJobListRVAdapter(companyname,jobname,jobdiscription,matchpercentage,jobid,location,experience,compemail, getActivity());
         empHomeRV.setAdapter(adapter);
     }
 }
 class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewHolder> {
-    public EmpJobListRVAdapter(ArrayList<String> companyname,ArrayList<String> jobname,ArrayList<String> jobdiscription,ArrayList<String> matchpercentage,ArrayList<String> jobid,ArrayList<String> location, ArrayList<String> experience,  Context mContext) {
+    private  RequestQueue rQueue;
+    public EmpJobListRVAdapter(ArrayList<String> companyname,ArrayList<String> jobname,ArrayList<String> jobdiscription,ArrayList<String> matchpercentage,ArrayList<String> jobid,ArrayList<String> location, ArrayList<String> experience,ArrayList<String> compemail,  Context mContext) {
         this.companyname=companyname;
         this.jobname=jobname;
         this.jobdiscription=jobdiscription;
@@ -179,6 +185,7 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
         this.jobid=jobid;
         this.location=location;
         this.experience=experience;
+        this.compemail=compemail;
         this.mContext = mContext;
     }
 
@@ -189,6 +196,7 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
     private ArrayList<String> jobid = new ArrayList<>();
     private ArrayList<String> location = new ArrayList<>();
     private ArrayList<String> experience = new ArrayList<>();
+    private ArrayList<String> compemail = new ArrayList<>();
 
     private Context mContext;
 
@@ -217,6 +225,101 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
             int ff=(int)f.intValue();
             viewHolder.matchpercentageTV.setText(ff+"% of your skills are matching with the required skills for this job");
         }
+        viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                final ViewGroup viewGroup = v.findViewById(android.R.id.content);
+                final View dialogView = LayoutInflater.from(mContext).inflate(R.layout.company_details, viewGroup, false);
+                builder.setView(dialogView);
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                Button applyButton;
+                applyButton=dialogView.findViewById(R.id.applybutton);
+                TextView comp_name=dialogView.findViewById(R.id.comp_name);
+                final TextView comp_email=dialogView.findViewById(R.id.comp_email);
+                TextView comp_discription=dialogView.findViewById(R.id.compDiscriptionTV);
+                comp_name.setText(companyname.get(i));
+                comp_email.setText(compemail.get(i));
+                comp_discription.setText(jobdiscription.get(i));
+                final ArrayList<String> topicsList, specializationList, levelsList;
+                topicsList = new ArrayList<>();
+                specializationList = new ArrayList<>();
+                levelsList = new ArrayList<>();
+                final MyListView skillsLV=dialogView.findViewById(R.id.skillsLV);
+                StringRequest stringRequest2 = new StringRequest(Request.Method.POST, "http://www.betterfuture.tech/android/sih/" + "getCompDetails.php",
+                        new Response.Listener<String>() {
+                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                            @Override
+                            public void onResponse(String response) {
+                                rQueue.getCache().clear();
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    if (jsonObject.optString("success").equals("1")) {
+                                        JSONArray jsonArray = jsonObject.getJSONArray("details");
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject jsonObject3 = jsonArray.getJSONObject(i);
+                                            String temptopic = jsonObject3.getString("topicName");
+                                            String tempspecialization = jsonObject3.getString("sname");
+                                            String templevel = jsonObject3.getString("lname");
+                                            topicsList.add(temptopic);
+                                            specializationList.add(tempspecialization);
+                                            levelsList.add(templevel);
+
+                                        }
+
+                                        SkillsListAdapter skillsListAdapter = new SkillsListAdapter(mContext, topicsList, specializationList, levelsList);
+                                        skillsLV.setAdapter(skillsListAdapter);
+                                        skillsListAdapter.notifyDataSetChanged();
+
+                                    } else {
+                                        Toast.makeText(mContext, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    Toast.makeText(mContext, "In catch " + e.toString(), Toast.LENGTH_LONG).show();
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(mContext, error.toString(), Toast.LENGTH_LONG).show();
+                                Log.i("error :", error.toString());
+                            }
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("username", jobid.get(i));
+                        return params;
+                    }
+                };
+                rQueue = Volley.newRequestQueue(mContext);
+                rQueue.add(stringRequest2);
+
+                applyButton.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View arg0) {
+                        String to=compemail.get(i);
+                        String subject="Job Application";
+                        String message="";
+                        Intent email = new Intent(Intent.ACTION_SEND);
+                        email.putExtra(Intent.EXTRA_EMAIL, new String[]{ to});
+                        email.putExtra(Intent.EXTRA_SUBJECT, subject);
+                        email.putExtra(Intent.EXTRA_TEXT, message);
+
+                        //need this to prompts email client only
+                        email.setType("message/rfc822");
+
+                        mContext.startActivity(Intent.createChooser(email, "Choose an Email client :"));
+                    }
+                });
+            }
+        });
+
     }
     @Override
     public int getItemCount() {
@@ -224,6 +327,7 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView companynameTV,jobnameTV,jobdiscriptionTV,matchpercentageTV,jobidTV,experienceTV,locationTV;
+        LinearLayoutCompat parentLayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -234,6 +338,7 @@ class EmpJobListRVAdapter extends RecyclerView.Adapter<EmpJobListRVAdapter.ViewH
             jobidTV=itemView.findViewById(R.id.jobId);
             experienceTV=itemView.findViewById(R.id.experiencerequiredTV);
             locationTV=itemView.findViewById(R.id.jobloactionTV);
+            parentLayout=itemView.findViewById(R.id.parentLayout);
         }
     }
 
