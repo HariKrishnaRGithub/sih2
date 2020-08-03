@@ -182,14 +182,6 @@ public class CompanyHome extends AppCompatActivity implements NavigationView.OnN
                 toolbar.setTitle("About Us");
                 fragmentTransaction.commit();
                 break;
-            case R.id.comp_settings_menu_item:
-                drawerLayout.closeDrawer(GravityCompat.START);
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.company_container, new SettingsFragment());
-                toolbar.setTitle("Settings");
-                fragmentTransaction.commit();
-                break;
             case R.id.comp_feedback_menu_item:
                 drawerLayout.closeDrawer(GravityCompat.START);
                 fragmentManager = getSupportFragmentManager();
