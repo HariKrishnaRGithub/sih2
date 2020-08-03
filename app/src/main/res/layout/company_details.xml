@@ -118,7 +118,8 @@
                 android:layout_height="wrap_content"
                 android:text="Skills Required"
                 android:textSize="20dp"
-                android:paddingTop="20dp"/>
+                android:paddingTop="20dp"
+                android:paddingLeft="10dp"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
