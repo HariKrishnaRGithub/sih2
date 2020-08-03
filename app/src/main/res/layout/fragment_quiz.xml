@@ -22,6 +22,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="Select Skills"
+                android:textColor="@color/design_default_color_on_secondary"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
@@ -33,6 +34,7 @@
                 android:padding="10dp"
                 android:text="We have analysed that you have these skills. Work on them and get these added to your profile !"
                 android:textSize="18dp"
+                android:textColor="@color/design_default_color_on_secondary"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
