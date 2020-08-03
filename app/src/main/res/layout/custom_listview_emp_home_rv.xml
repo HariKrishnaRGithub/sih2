@@ -151,20 +151,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:layout_margin="1dp">
 
-                    <TextView
-                        android:id="@+id/textView18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:text="Match Percentage :" />
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_gravity="start"
+                        android:layout_marginTop="1dp"
+                        app:srcCompat="@drawable/percentage"/>
 
                     <TextView
                         android:id="@+id/Match_Percentage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
                         android:paddingLeft="10dp"
                         android:text="TextView" />
                 </LinearLayout>

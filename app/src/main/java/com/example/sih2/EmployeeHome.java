@@ -173,7 +173,7 @@ public class EmployeeHome extends AppCompatActivity implements NavigationView.On
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.employee_container, new QuizFragment());
-                toolbar.setTitle("Quiz");
+                toolbar.setTitle("Skill Analyser");
                 fragmentTransaction.commit();
                 break;
             case R.id.emp_about_menu_item:
