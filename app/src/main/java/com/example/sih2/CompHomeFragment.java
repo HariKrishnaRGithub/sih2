@@ -177,10 +177,10 @@ class EmpListRVAdapter extends RecyclerView.Adapter<EmpListRVAdapter.ViewHolder>
         String s=matchpercentage.get(i);
         Float f=Float.parseFloat(s);
         if(f>100){
-            viewHolder.matchpercentageTV.setText("100 & The candidate pocesses more skill levels than required for this job");
+            viewHolder.matchpercentageTV.setText("100% qualified & The candidate pocesses more skill levels than required for this job");
         }else{
             int ff=(int)f.intValue();
-            viewHolder.matchpercentageTV.setText(ff+"");
+            viewHolder.matchpercentageTV.setText(ff+"% of skills are matching with skills of the candidate");
         }
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
